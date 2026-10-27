@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>package-trends</title>
+<style>
+  :root { --ink: #16161a; --paper: #fbfbf9; --muted: #6b6b74; --rule: #e6e6e1; --up: #137a4b; --down: #b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #ececef; --paper: #15151a; --muted: #9a9aa4; --rule: #2c2c34; --up: #4ac98a; --down: #ff8a7d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px 64px; background: var(--paper); color: var(--ink);
+         font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+       margin: 40px 0 12px; font-weight: 600; }
+  p.lede { margin: 0 0 8px; color: var(--muted); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .row code { flex: 0 0 190px; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .kpi { border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+  .kpi .n { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi .meta { display: flex; align-items: baseline; gap: 8px; }
+  .kpi .name { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+  .chg { font-size: 13px; font-variant-numeric: tabular-nums; }
+  .chg[data-direction=up] { color: var(--up); }
+  .chg[data-direction=down] { color: var(--down); }
+  .chg[data-direction=flat] { color: var(--muted); }
+  .cmp { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: center; margin: 6px 0; }
+  .cmp span { font-size: 12px; color: var(--muted); }
+  .err { color: var(--down); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>@plainmatter/package-trends</h1>
+  <p class="lede">Live from <code>api.npmjs.org</code>, no key and no proxy. Core entry only, no framework.</p>
+
+  <h2>Sparkline</h2>
+  <div id="sparks"></div>
+
+  <h2>Text</h2>
+  <div id="texts"></div>
+
+  <h2>KPI</h2>
+  <div class="grid" id="kpis"></div>
+
+  <h2>Why daily series get smoothed</h2>
+  <p class="lede">Same 30 days of <code>react</code>, raw against a 7-day mean.</p>
+  <div id="cmp"></div>
+</main>
+
+<script type="module">
+import {
+  fetchDownloads, computeTrend, sparklineSvg,
+  formatCount, formatExact, formatChange, changeDirection, describeTrend,
+} from "../dist/index.js";
+
+const NAMES = ["react", "vue", "svelte", "@tanstack/react-table"];
+
+const ranges = await Promise.all(
+  NAMES.map((name) => fetchDownloads(name, { period: "last-month" }).catch((error) => ({ error, name })))
+);
+
+const ok = ranges.filter((r) => !r.error);
+const failed = ranges.filter((r) => r.error);
+
+for (const range of ok) {
+  const trend = computeTrend(range);
+  const change = formatChange(trend.changeRatio, "en-US");
+  const direction = changeDirection(trend);
+
+  document.querySelector("#sparks").insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <code>${range.package}</code>
+      ${sparklineSvg(trend.values, { width: 180, height: 34, dot: true, label: describeTrend(trend, "en-US") })}
+    </div>`);
+
+  document.querySelector("#texts").insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <code>${range.package}</code>
+      <span>${formatCount(trend.total, "en-US")} downloads
+        <span class="chg" data-direction="${direction}">${change}</span></span>
+    </div>`);
+
+  document.querySelector("#kpis").insertAdjacentHTML("beforeend", `
+    <div class="kpi">
+      <div class="meta">
+        <span class="n" title="${formatExact(trend.total, "en-US")}">${formatCount(trend.total, "en-US")}</span>
+        <span class="chg" data-direction="${direction}">${change}</span>
+      </div>
+      <div class="name">${range.package}</div>
+      ${sparklineSvg(trend.values, { width: 150, height: 30, fill: "color-mix(in oklab, currentColor 12%, transparent)" })}
+    </div>`);
+}
+
+for (const f of failed) {
+  document.querySelector("#sparks").insertAdjacentHTML("beforeend",
+    `<div class="row"><code>${f.name}</code><span class="err">${f.error.message}</span></div>`);
+}
+
+const reactRange = ok.find((r) => r.package === "react");
+if (reactRange) {
+  const raw = computeTrend(reactRange, { smooth: 1 });
+  const smooth = computeTrend(reactRange, { smooth: 7 });
+  const weekly = computeTrend(reactRange, { aggregate: "week" });
+  document.querySelector("#cmp").innerHTML = `
+    <div class="cmp"><span>raw</span>${sparklineSvg(raw.values, { width: 420, height: 40 })}</div>
+    <div class="cmp"><span>7-day mean</span>${sparklineSvg(smooth.values, { width: 420, height: 40 })}</div>
+    <div class="cmp"><span>weekly</span>${sparklineSvg(weekly.values, { width: 420, height: 40, dot: true })}</div>`;
+}
+
+document.body.dataset.ready = String(ok.length);
+</script>
+</body>
+</html>

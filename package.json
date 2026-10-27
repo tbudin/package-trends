@@ -1,0 +1,67 @@
+{
+  "name": "@plainmatter/package-trends",
+  "version": "0.1.0",
+  "description": "npm download trends as a sparkline, a line of text, or a KPI block. Zero dependencies, works without a proxy.",
+  "keywords": [
+    "npm",
+    "downloads",
+    "trends",
+    "sparkline",
+    "kpi",
+    "stats",
+    "badge",
+    "react"
+  ],
+  "license": "MIT",
+  "author": "Thomas Budin",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./types/react.d.ts",
+      "default": "./dist/react.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "types",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
+    "esbuild": "0.24.2",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "typescript": "5.7.2",
+    "vitest": "2.1.8"
+  }
+}
