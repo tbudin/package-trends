@@ -3,6 +3,27 @@ import type { DownloadRange, Period } from "./types.js";
 
 export const NPM_DOWNLOADS_ENDPOINT = "https://api.npmjs.org/downloads";
 
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Builds the explicit range the API takes, `YYYY-MM-DD:YYYY-MM-DD`.
+ *
+ * npm serves at most 18 months of history and the range is inclusive at both
+ * ends. Dates are UTC, which is what the API reports in.
+ */
+export function between(from: string | Date, to: string | Date): string {
+  const start = asDay(from);
+  const end = asDay(to);
+  if (start > end) throw new RangeError(`Range starts after it ends: ${start} to ${end}`);
+  return `${start}:${end}`;
+}
+
+function asDay(value: string | Date): string {
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  if (!DATE.test(value)) throw new RangeError(`Expected a YYYY-MM-DD date, got "${value}"`);
+  return value;
+}
+
 export interface FetchDownloadsOptions {
   /** Default `"last-month"`. */
   period?: Period;

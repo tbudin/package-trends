@@ -1,9 +1,9 @@
-export { fetchDownloads, normaliseRange, NPM_DOWNLOADS_ENDPOINT } from "./api.js";
+export { fetchDownloads, normaliseRange, between, NPM_DOWNLOADS_ENDPOINT } from "./api.js";
 export type { FetchDownloadsOptions } from "./api.js";
 
 export { PackageTrendsError } from "./error.js";
 
-export { movingAverage, toWeekly, shapeSeries } from "./series.js";
+export { movingAverage, toWeekly, toMonthly, shapeSeries } from "./series.js";
 export type { Aggregate, ShapeOptions } from "./series.js";
 
 export { computeTrend } from "./trend.js";
@@ -36,5 +36,6 @@ export {
   describeTrend,
   formatWeekday,
 } from "./format.js";
+export type { NumberFormat } from "./format.js";
 
 export type { DownloadPoint, DownloadRange, Period, Trend } from "./types.js";

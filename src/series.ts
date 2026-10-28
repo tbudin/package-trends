@@ -60,7 +60,41 @@ export function toWeekly(points: readonly DownloadPoint[]): DownloadPoint[] {
   return weeks.reverse();
 }
 
-export type Aggregate = "day" | "week";
+/**
+ * Sums the series into calendar months.
+ *
+ * A month that the series only partly covers is dropped at either end: a
+ * three-day stub shown beside whole months reads as a collapse in downloads
+ * rather than as a short period.
+ */
+export function toMonthly(points: readonly DownloadPoint[]): DownloadPoint[] {
+  if (points.length === 0) return [];
+
+  const buckets = new Map<string, { sum: number; last: string; days: number }>();
+  for (const point of points) {
+    const key = point.day.slice(0, 7);
+    const bucket = buckets.get(key) ?? { sum: 0, last: point.day, days: 0 };
+    bucket.sum += point.downloads;
+    bucket.last = point.day;
+    bucket.days += 1;
+    buckets.set(key, bucket);
+  }
+
+  const keys = [...buckets.keys()].sort();
+  const whole = keys.filter((key) => buckets.get(key)!.days === daysInMonth(key));
+
+  // Nothing whole (a short range inside one month): keep what there is rather
+  // than returning an empty chart.
+  const chosen = whole.length > 0 ? whole : keys;
+  return chosen.map((key) => ({ day: buckets.get(key)!.last, downloads: buckets.get(key)!.sum }));
+}
+
+function daysInMonth(key: string): number {
+  const [year, month] = key.split("-").map(Number);
+  return new Date(Date.UTC(year!, month!, 0)).getUTCDate();
+}
+
+export type Aggregate = "day" | "week" | "month";
 
 export interface ShapeOptions {
   /**
@@ -68,7 +102,11 @@ export interface ShapeOptions {
    * `"fill"` (the default) interpolates them; `"zero"` takes them literally.
    */
   gaps?: GapPolicy;
-  /** `"week"` sums into 7-day buckets. Default `"day"`. */
+  /**
+   * `"week"` sums into 7-day buckets measured back from the latest day;
+   * `"month"` sums into calendar months, dropping partial ones at either end.
+   * Default `"day"`.
+   */
   aggregate?: Aggregate;
   /**
    * Trailing-mean window applied to daily points. Default 7 for `"day"`, and
@@ -82,6 +120,11 @@ export interface ShapeOptions {
 export function shapeSeries(range: DownloadRange, options: ShapeOptions = {}): DownloadPoint[] {
   const { aggregate = "day", smooth, gaps } = options;
   const points = applyGaps(range.points, gaps).points;
+
+  if (aggregate === "month") {
+    const monthly = toMonthly(points);
+    return monthly.length > 0 ? monthly : points.slice();
+  }
 
   if (aggregate === "week") {
     const weekly = toWeekly(points);

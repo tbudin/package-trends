@@ -169,6 +169,56 @@ The field to build on is `confidence`. A slope on its own will happily tell you
 `react` is falling by 390,000 a day; the r² of 0.05 behind it is what says the
 month was flat and the slope is noise.
 
+## Typography, display and formatting
+
+There is no `fontWeight` prop, and no `display` prop. One `styles` object
+carries all of it, merged over each part's own inline style:
+
+```tsx
+<PackageTrend
+  package="react"
+  variant="kpi"
+  styles={{
+    root:   { display: "inline-flex" },   // or "inline", "block", anything
+    count:  { fontWeight: 400 },          // the headline is 600 by default
+    change: { fontWeight: 700 },
+    label:  { opacity: 1 },
+    chart:  { opacity: 0.45 },
+  }}
+/>
+```
+
+Numbers go through `Intl.NumberFormat`, and you pass its options straight
+through rather than learning a second vocabulary:
+
+```tsx
+<PackageTrend
+  package="react"
+  numberFormat={{ notation: "standard" }}          // 954,531,699 not 954.5M
+  percentFormat={{ maximumFractionDigits: 2 }}     // +3.81% not +4%
+  locale="en-US"
+/>
+```
+
+## Hover and keyboard
+
+`interactive` makes the chart follow the pointer and take keyboard focus.
+Arrow keys step through the days, Escape clears, and the day under the pointer
+is announced in a live region — a chart that only responds to a mouse is no
+chart at all for some readers.
+
+```tsx
+<PackageTrend package="react" variant="kpi" interactive />
+<PackageTrend package="react" interactive onActivePoint={(p) => setDay(p)} />
+```
+
+In the KPI variant the headline and the label follow the pointer, so there is
+no floating tooltip to position and nothing to clip. `onActivePoint` hands you
+the day if you would rather render the readout yourself.
+
+There are no axes, and that is deliberate: a sparkline is defined by their
+absence. If you need labelled axes you want a chart library, not this.
+
 ## Styling
 
 Nothing ships a stylesheet. The chart strokes in `currentColor`, so it takes the
@@ -209,8 +259,21 @@ wording can still carry the numbers:
 | `PackageTrendsError` | Thrown with `package` and, for an HTTP failure, `status`. |
 
 `period` takes npm's own values (`last-day`, `last-week`, `last-month`,
-`last-year`) or an explicit `YYYY-MM-DD:YYYY-MM-DD` range. npm serves at most 18
-months of history and caches responses for five minutes.
+`last-year`) or an explicit range, which `between()` builds and validates:
+
+```ts
+import { between } from "@plainmatter/package-trends";
+
+<PackageTrend package="react" period={between("2026-06-01", "2026-08-31")} />
+```
+
+npm serves at most 18 months of history, the range is inclusive at both ends,
+and responses are cached for five minutes.
+
+`aggregate` takes `"day"` (the default, smoothed over 7), `"week"` for 7-day
+buckets measured back from the latest day, or `"month"` for calendar months
+with the partial ones at either end dropped — a three-day stub beside whole
+months reads as a collapse rather than as a short period.
 
 ## Running the examples
 

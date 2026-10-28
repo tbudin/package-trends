@@ -29,6 +29,7 @@ export function computeTrend(range: DownloadRange, options: ShapeOptions = {}): 
   }
 
   const { change, changeRatio } = splitChange(points);
+  const shaped = shapeSeries(range, options);
 
   return {
     package: range.package,
@@ -41,7 +42,8 @@ export function computeTrend(range: DownloadRange, options: ShapeOptions = {}): 
     trough,
     change,
     changeRatio,
-    values: shapeSeries(range, options).map((point) => point.downloads),
+    values: shaped.map((point) => point.downloads),
+    shapedPoints: shaped,
     points,
     gapDays: repaired.gapDays,
   };

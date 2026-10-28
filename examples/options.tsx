@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { PackageTrend, Sparkline } from "../src/react.js";
-import { analyse, computeTrend, fetchDownloads, formatWeekday } from "../src/index.js";
+import { analyse, between, computeTrend, fetchDownloads, formatWeekday } from "../src/index.js";
 import type { DownloadRange } from "../src/types.js";
 
 const PKG = "react";
@@ -220,6 +220,66 @@ function Gallery({ data }: { data: DownloadRange }) {
           <PackageTrend package={PKG} data={data}>
             {({ trend: t }) => <b>{t ? `${t.points.length} days, peak ${t.peak.day}` : "…"}</b>}
           </PackageTrend>
+        </Row>
+      </Group>
+
+      <Group title="styles" note="Weight, display, spacing — one object, merged over each part.">
+        <Row code='(default) count is 600'>
+          <PackageTrend package={PKG} data={data} variant="kpi" locale="en-GB" />
+        </Row>
+        <Row code='styles={{count:{fontWeight:400}, change:{fontWeight:700}}}'>
+          <PackageTrend package={PKG} data={data} variant="kpi" locale="en-GB"
+            styles={{ count: { fontWeight: 400 }, change: { fontWeight: 700 } }} />
+        </Row>
+        <Row code='styles={{root:{display:"inline"}}}  — flows in a sentence'>
+          <span>downloads <PackageTrend package={PKG} data={data} width={70} height={16}
+            styles={{ root: { display: "inline" } }} /> this month</span>
+        </Row>
+        <Row code='styles={{chart:{opacity:.45}}}'>
+          <PackageTrend package={PKG} data={data} width={170} styles={{ chart: { opacity: 0.45 } }} />
+        </Row>
+      </Group>
+
+      <Group title="numberFormat · percentFormat" note="Intl.NumberFormat options, merged over the defaults.">
+        <Row code='(default) compact, 1 decimal'>
+          <PackageTrend package={PKG} data={data} variant="text" locale="en-GB" />
+        </Row>
+        <Row code='numberFormat={{notation:"standard"}}'>
+          <PackageTrend package={PKG} data={data} variant="text" locale="en-GB"
+            numberFormat={{ notation: "standard" }} />
+        </Row>
+        <Row code='numberFormat={{maximumFractionDigits:3}} percentFormat={{maximumFractionDigits:2}}'>
+          <PackageTrend package={PKG} data={data} variant="text" locale="en-GB"
+            numberFormat={{ maximumFractionDigits: 3 }} percentFormat={{ maximumFractionDigits: 2 }} />
+        </Row>
+        <Row code='locale="en-US"  — capital M'>
+          <PackageTrend package={PKG} data={data} variant="text" locale="en-US" />
+        </Row>
+        <Row code='locale="de-DE"'>
+          <PackageTrend package={PKG} data={data} variant="text" locale="de-DE" />
+        </Row>
+      </Group>
+
+      <Group title="interactive" note="Pointer and arrow keys. The KPI headline follows the day under the pointer.">
+        <Row code='interactive'>
+          <span id="hover-kpi">
+            <PackageTrend package={PKG} data={data} variant="kpi" locale="en-GB" interactive width={220} height={44} />
+          </span>
+        </Row>
+        <Row code='interactive  — bare chart, focusable with Tab'>
+          <PackageTrend package={PKG} data={data} interactive width={260} height={44} />
+        </Row>
+        <Row code='interactive chart="column" aggregate="week"'>
+          <PackageTrend package={PKG} data={data} interactive chart="column" aggregate="week" width={200} height={44} />
+        </Row>
+      </Group>
+
+      <Group title="aggregate month · explicit range" note="between() builds the YYYY-MM-DD:YYYY-MM-DD npm takes.">
+        <Row code='aggregate="month"  (needs a year of data)'>
+          <PackageTrend package={PKG} period="last-year" aggregate="month" chart="column" width={200} height={40} />
+        </Row>
+        <Row code='period={between("2026-06-01","2026-08-31")}'>
+          <PackageTrend package={PKG} period={between("2026-06-01", "2026-08-31")} aggregate="week" width={200} />
         </Row>
       </Group>
 

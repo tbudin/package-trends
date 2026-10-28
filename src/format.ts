@@ -1,28 +1,39 @@
 import type { Trend } from "./types.js";
 
+/**
+ * Overrides merged over the defaults. Anything `Intl.NumberFormat` accepts
+ * works, so a different notation, more decimal places, or a currency are all
+ * reachable without this package inventing its own vocabulary.
+ */
+export type NumberFormat = Intl.NumberFormatOptions;
+
+const COUNT_DEFAULTS: Intl.NumberFormatOptions = {
+  notation: "compact",
+  maximumFractionDigits: 1,
+};
+
 /** `1234567` becomes `1.2M`. Rounded counts, for a KPI block or a label. */
-export function formatCount(value: number, locale?: string): string {
-  return new Intl.NumberFormat(locale, {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(Math.round(value));
+export function formatCount(value: number, locale?: string, format?: NumberFormat): string {
+  return new Intl.NumberFormat(locale, { ...COUNT_DEFAULTS, ...format }).format(Math.round(value));
 }
 
 /** `1234567` becomes `1,234,567`. */
-export function formatExact(value: number, locale?: string): string {
-  return new Intl.NumberFormat(locale).format(Math.round(value));
+export function formatExact(value: number, locale?: string, format?: NumberFormat): string {
+  return new Intl.NumberFormat(locale, format).format(Math.round(value));
 }
 
 /**
  * `0.124` becomes `+12%`, and a null ratio becomes an empty string. The sign is
  * always shown, because the direction is the whole point of the number.
  */
-export function formatChange(ratio: number | null, locale?: string): string {
+export function formatChange(ratio: number | null, locale?: string, format?: NumberFormat): string {
   if (ratio === null || !Number.isFinite(ratio)) return "";
   return new Intl.NumberFormat(locale, {
     style: "percent",
     signDisplay: "exceptZero",
+    // a big move needs no decimal; a small one is nothing without it
     maximumFractionDigits: ratio >= 0.1 || ratio <= -0.1 ? 0 : 1,
+    ...format,
   }).format(ratio);
 }
 

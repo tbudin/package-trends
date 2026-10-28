@@ -49,6 +49,8 @@ export interface Trend {
    * rather than counts. Never sum it; the figures above are the real ones.
    */
   values: number[];
+  /** The same shaped series with its days, so a chart index names a date. */
+  shapedPoints: DownloadPoint[];
   /** The daily series every figure above is computed from, gaps repaired. */
   points: DownloadPoint[];
   /**

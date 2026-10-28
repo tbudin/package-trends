@@ -1,4 +1,14 @@
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { fetchDownloads, type FetchDownloadsOptions } from "./api.js";
 import { computeTrend } from "./trend.js";
 import {
@@ -9,9 +19,16 @@ import {
   type MarkKind,
   type SparklineOptions,
 } from "./sparkline.js";
-import { changeDirection, describeTrend, formatChange, formatCount, formatExact } from "./format.js";
+import {
+  changeDirection,
+  describeTrend,
+  formatChange,
+  formatCount,
+  formatExact,
+  type NumberFormat,
+} from "./format.js";
 import type { ShapeOptions } from "./series.js";
-import type { DownloadRange, Period, Trend } from "./types.js";
+import type { DownloadPoint, DownloadRange, Period, Trend } from "./types.js";
 
 export interface UsePackageTrendOptions extends ShapeOptions {
   /**
@@ -97,6 +114,15 @@ export interface ChartProps extends SparklineOptions {
   axisColor?: string;
   /** Fill the container's width instead of sitting at the natural size. */
   fluid?: boolean;
+  /**
+   * Follow the pointer, and take keyboard focus with arrow keys. The chart
+   * draws a guide at the nearest point and reports it through `onActive`.
+   */
+  interactive?: boolean;
+  /** Called with the index under the pointer, or `null` on the way out. */
+  onActive?: (index: number | null) => void;
+  /** Merged over the chart's own inline style. */
+  style?: CSSProperties;
   className?: string;
 }
 
@@ -118,17 +144,57 @@ export function Sparkline({
   axis = false,
   axisColor,
   fluid = false,
+  interactive = false,
+  onActive,
+  style,
   className,
   ...geometry
 }: SparklineProps) {
+  const [active, setActive] = useState<number | null>(null);
+  const svg = useRef<SVGSVGElement>(null);
+
+  const announce = useCallback(
+    (index: number | null) => {
+      setActive(index);
+      onActive?.(index);
+    },
+    [onActive],
+  );
+
   const kinds: MarkKind[] = mark ? [...mark] : dot ? ["last"] : [];
   const body =
     chart === "column"
       ? renderColumns(values, geometry, kinds, { stroke, fill, markColor, axis, axisColor })
       : renderLine(values, geometry, kinds, { stroke, strokeWidth, fill, markColor });
 
+  const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    const box = svg.current?.getBoundingClientRect();
+    if (!box || box.width === 0 || values.length === 0) return;
+    const ratio = (event.clientX - box.left) / box.width;
+    announce(clamp(Math.round(ratio * (values.length - 1)), 0, values.length - 1));
+  };
+
+  const onKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
+    if (values.length === 0) return;
+    const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+    if (step === 0) {
+      if (event.key === "Escape") announce(null);
+      return;
+    }
+    event.preventDefault();
+    announce(clamp((active ?? values.length - 1) + step, 0, values.length - 1));
+  };
+
+  const guide =
+    interactive && active !== null ? renderGuide(active, values, chart, geometry, body, stroke) : null;
+
+  const base: CSSProperties = fluid
+    ? { display: "block", width: "100%", height: "auto" }
+    : { display: "block", maxWidth: "100%", height: "auto" };
+
   return (
     <svg
+      ref={svg}
       className={className}
       viewBox={`0 0 ${body.width} ${body.height}`}
       width={body.width}
@@ -136,16 +202,59 @@ export function Sparkline({
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      style={
-        fluid
-          ? { display: "block", width: "100%", height: "auto" }
-          : { display: "block", maxWidth: "100%", height: "auto" }
-      }
+      tabIndex={interactive ? 0 : undefined}
+      style={{ ...base, ...(interactive ? { touchAction: "none", cursor: "crosshair" } : null), ...style }}
+      {...(interactive
+        ? {
+            onPointerMove,
+            onPointerLeave: () => announce(null),
+            // a touch that is interrupted sends cancel and no leave, which
+            // would otherwise strand the guide where the finger lifted
+            onPointerCancel: () => announce(null),
+            onKeyDown,
+            onBlur: () => announce(null),
+          }
+        : null)}
     >
       {label ? <title>{label}</title> : null}
       {body.nodes}
+      {guide}
     </svg>
   );
+}
+
+function clamp(value: number, low: number, high: number): number {
+  return Math.min(high, Math.max(low, value));
+}
+
+function renderGuide(
+  index: number,
+  values: readonly number[],
+  chart: "line" | "column",
+  geometry: SparklineOptions,
+  body: { width: number; height: number },
+  stroke: string,
+) {
+  const x =
+    chart === "column"
+      ? (index + 0.5) * (body.width / values.length)
+      : values.length === 1
+        ? body.width / 2
+        : (index / (values.length - 1)) * body.width;
+
+  const laid = chart === "column" ? null : sparkline(values, geometry);
+  const y = laid?.points[index]?.[1];
+
+  return (
+    <g pointerEvents="none">
+      <path d={`M${round(x)} 0V${body.height}`} stroke={stroke} strokeWidth={1} opacity={0.3} />
+      {y === undefined ? null : <circle cx={round(x)} cy={round(y)} r={2.6} fill={stroke} />}
+    </g>
+  );
+}
+
+function round(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 function renderLine(
@@ -241,12 +350,29 @@ export interface TrendColors {
   flat?: string;
 }
 
-export interface PackageTrendProps extends UsePackageTrendOptions, Omit<ChartProps, "label"> {
+/**
+ * Inline styles merged over each part's own. This is where font weight,
+ * `display` and anything else typographic belongs — there is no separate prop
+ * for each.
+ */
+export interface TrendStyles {
+  root?: CSSProperties;
+  count?: CSSProperties;
+  change?: CSSProperties;
+  label?: CSSProperties;
+  chart?: CSSProperties;
+}
+
+export interface PackageTrendProps extends UsePackageTrendOptions, Omit<ChartProps, "label" | "style"> {
   /** The package name, scoped names included. */
   package: string;
   /** Default `"sparkline"`. */
   variant?: PackageTrendVariant;
   locale?: string;
+  /** `Intl.NumberFormat` options merged over the defaults for the count. */
+  numberFormat?: NumberFormat;
+  /** `Intl.NumberFormat` options merged over the defaults for the change. */
+  percentFormat?: NumberFormat;
   /**
    * Colours for the rise and fall figures. Unset, they inherit the surrounding
    * text colour, which is what keeps the component out of a host's palette.
@@ -254,12 +380,16 @@ export interface PackageTrendProps extends UsePackageTrendOptions, Omit<ChartPro
    * instead.
    */
   colors?: TrendColors;
+  /** Inline styles per part: weight, display, spacing, anything. */
+  styles?: TrendStyles;
   /**
    * The accessible name for the chart, replacing the sentence built from the
    * trend. A function receives the trend, so the name can still carry the
    * numbers.
    */
   label?: string | ((trend: Trend) => string);
+  /** Called with the day under the pointer while `interactive`. */
+  onActivePoint?: (point: DownloadPoint | null) => void;
   /** Shown while fetching. Default a block at the chart's size. */
   fallback?: ReactNode;
   /** Shown when the fetch fails. Default nothing, so a failure stays quiet. */
@@ -277,7 +407,10 @@ export function PackageTrend({
   package: name,
   variant = "sparkline",
   locale,
+  numberFormat,
+  percentFormat,
   colors,
+  styles,
   chart,
   stroke,
   strokeWidth,
@@ -288,6 +421,9 @@ export function PackageTrend({
   axis,
   axisColor,
   fluid,
+  interactive,
+  onActive,
+  onActivePoint,
   label: labelProp,
   className,
   fallback,
@@ -311,14 +447,35 @@ export function PackageTrend({
     endpoint,
     fetch: fetchImpl,
   });
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleActive = useCallback(
+    (index: number | null) => {
+      setActiveIndex(index);
+      onActive?.(index);
+    },
+    [onActive],
+  );
+
+  const trend = state.trend;
+  // the drawn series is shaped, so the day under the pointer is read off it
+  const activePoint =
+    trend && activeIndex !== null ? (trend.shapedPoints[activeIndex] ?? null) : null;
+
+  useEffect(() => {
+    onActivePoint?.(activePoint);
+  }, [activePoint, onActivePoint]);
 
   if (children) return <>{children(state)}</>;
   if (state.error) return <>{renderError ? renderError(state.error) : null}</>;
 
-  if (!state.trend) {
+  if (!trend) {
     // A block at the chart's size, so nothing moves when the data lands.
     return (
-      <span className={join("pt-loading", className)} style={{ display: "inline-block", opacity: 0.5 }}>
+      <span
+        className={join("pt-loading", className)}
+        style={{ display: "inline-block", opacity: 0.5, ...styles?.root }}
+      >
         {fallback ?? (
           <span
             aria-hidden="true"
@@ -337,14 +494,23 @@ export function PackageTrend({
     );
   }
 
-  const trend = state.trend;
   const label =
     typeof labelProp === "function" ? labelProp(trend) : (labelProp ?? describeTrend(trend, locale));
   const direction = changeDirection(trend);
-  const change = formatChange(trend.changeRatio, locale);
+  const change = formatChange(trend.changeRatio, locale, percentFormat);
+
+  // while the pointer is on a day, the headline shows that day
+  const headline = activePoint
+    ? formatCount(activePoint.downloads, locale, numberFormat)
+    : formatCount(trend.total, locale, numberFormat);
+  const headlineTitle = activePoint
+    ? `${activePoint.day}: ${formatExact(activePoint.downloads, locale)}`
+    : `${formatExact(trend.total, locale)} downloads`;
+
   const changeStyle: CSSProperties = {
     fontVariantNumeric: "tabular-nums",
     color: colors?.[direction],
+    ...styles?.change,
   };
 
   const chartNode = (
@@ -361,22 +527,35 @@ export function PackageTrend({
       axis={axis}
       axisColor={axisColor}
       fluid={fluid}
+      interactive={interactive}
+      onActive={handleActive}
+      style={styles?.chart}
       {...geometry}
     />
   );
 
   if (variant === "sparkline") {
     return (
-      <span className={join("pt-sparkline", className)} style={{ display: "inline-block", maxWidth: "100%" }}>
+      <span
+        className={join("pt-sparkline", className)}
+        style={{ display: "inline-block", maxWidth: "100%", ...styles?.root }}
+      >
         {chartNode}
+        {interactive ? <LiveRegion point={activePoint} locale={locale} /> : null}
       </span>
     );
   }
 
   if (variant === "text") {
     return (
-      <span className={join("pt-text", className)} style={{ fontVariantNumeric: "tabular-nums" }}>
-        <span className="pt-count">{formatCount(trend.total, locale)}</span> downloads
+      <span
+        className={join("pt-text", className)}
+        style={{ fontVariantNumeric: "tabular-nums", ...styles?.root }}
+      >
+        <span className="pt-count" style={styles?.count}>
+          {headline}
+        </span>{" "}
+        downloads
         {change ? (
           <>
             {" "}
@@ -390,50 +569,70 @@ export function PackageTrend({
   }
 
   return (
-    <div className={join("pt-kpi", className)} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+    <div
+      className={join("pt-kpi", className)}
+      style={{ display: "flex", flexDirection: "column", gap: "0.25rem", ...styles?.root }}
+    >
       <div
         className="pt-kpi-head"
         style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}
       >
-        <strong
+        <span
           className="pt-count"
-          style={{ fontSize: "1.5em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
-          title={`${formatExact(trend.total, locale)} downloads`}
+          style={{
+            fontSize: "1.5em",
+            fontWeight: 600,
+            lineHeight: 1,
+            fontVariantNumeric: "tabular-nums",
+            ...styles?.count,
+          }}
+          title={headlineTitle}
         >
-          {formatCount(trend.total, locale)}
-        </strong>
+          {headline}
+        </span>
         {change ? (
           <span className="pt-change" data-direction={direction} style={changeStyle}>
             {change}
           </span>
         ) : null}
       </div>
-      <div className="pt-kpi-label" style={{ opacity: 0.7, fontSize: "0.875em" }}>
-        {trend.package}
+      <div
+        className="pt-kpi-label"
+        style={{ opacity: 0.7, fontSize: "0.875em", ...styles?.label }}
+      >
+        {activePoint ? activePoint.day : trend.package}
       </div>
       {chartNode}
-      <span
-        style={{
-          position: "absolute",
-          width: 1,
-          height: 1,
-          margin: -1,
-          padding: 0,
-          border: 0,
-          overflow: "hidden",
-          clip: "rect(0 0 0 0)",
-          clipPath: "inset(50%)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {label}
-      </span>
+      <span style={VISUALLY_HIDDEN}>{label}</span>
+      {interactive ? <LiveRegion point={activePoint} locale={locale} /> : null}
     </div>
   );
 }
+
+/** Announces the day under the pointer, which the chart itself cannot. */
+function LiveRegion({ point, locale }: { point: DownloadPoint | null; locale?: string }) {
+  return (
+    <span aria-live="polite" style={VISUALLY_HIDDEN}>
+      {point ? `${point.day}: ${formatExact(point.downloads, locale)} downloads` : ""}
+    </span>
+  );
+}
+
+const VISUALLY_HIDDEN: CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  border: 0,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+};
 
 function join(...names: (string | undefined)[]): string {
   return names.filter(Boolean).join(" ");
 }
 
-export type { Domain, MarkKind };
+export type { Domain, MarkKind, NumberFormat };
