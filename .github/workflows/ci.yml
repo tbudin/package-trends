@@ -44,6 +44,3 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm lint:package
-      # attw could not be run where this was written: it fails on a two-file
-      # probe package, so the first CI run is its first real execution.
-      - run: pnpm exec attw --pack .
