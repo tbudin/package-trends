@@ -42,14 +42,19 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "prepublishOnly": "npm run build",
-    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+    "lint:package": "publint --strict",
+    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm lint:package",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
     "react": ">=18"
@@ -60,12 +65,28 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.17.2",
+    "@changesets/cli": "2.27.10",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
     "esbuild": "0.24.2",
+    "publint": "0.2.12",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "typescript": "5.7.2",
     "vitest": "2.1.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbudin/package-trends.git"
+  },
+  "homepage": "https://github.com/tbudin/package-trends#readme",
+  "bugs": {
+    "url": "https://github.com/tbudin/package-trends/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@9.15.0"
 }

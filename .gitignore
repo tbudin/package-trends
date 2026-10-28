@@ -1,0 +1,14 @@
+node_modules/
+dist/
+types/
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*.local
+
+# built example bundles, rebuilt by scripts/build-examples.mjs
+examples/*.js
+!examples/sample.json
+
+# local editor/agent config
+.claude/
