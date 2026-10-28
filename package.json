@@ -1,5 +1,5 @@
 {
-  "name": "@plainmatter/package-trends",
+  "name": "package-trends",
   "version": "0.1.0",
   "description": "npm download trends as a sparkline, a line of text, or a KPI block. Zero dependencies, works without a proxy.",
   "keywords": [
@@ -86,7 +86,6 @@
     "url": "https://github.com/tbudin/package-trends/issues"
   },
   "publishConfig": {
-    "access": "public",
     "provenance": true
   },
   "packageManager": "pnpm@9.15.0"

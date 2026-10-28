@@ -1,4 +1,4 @@
-# @plainmatter/package-trends
+# package-trends
 
 npm download trends as a sparkline, a line of text, or a KPI block.
 
@@ -16,7 +16,7 @@ The npm downloads API needs no key and sends `access-control-allow-origin: *`,
 so this works straight from a browser with no proxy of your own.
 
 ```bash
-npm install @plainmatter/package-trends
+npm install package-trends
 ```
 
 **[tbudin.github.io/package-trends](https://tbudin.github.io/package-trends/)** —
@@ -26,7 +26,7 @@ page](https://tbudin.github.io/package-trends/reference.html).
 ## React
 
 ```tsx
-import { PackageTrend } from "@plainmatter/package-trends/react";
+import { PackageTrend } from "package-trends/react";
 
 <PackageTrend package="react" />                    // sparkline
 <PackageTrend package="react" variant="text" />     // 954.5M downloads +3.8%
@@ -40,8 +40,8 @@ Scoped names work as they are: `<PackageTrend package="@tanstack/react-table" />
 Fetch once on the server and pass it down, and no visitor costs a request:
 
 ```tsx
-import { fetchDownloads } from "@plainmatter/package-trends";
-import { PackageTrend } from "@plainmatter/package-trends/react";
+import { fetchDownloads } from "package-trends";
+import { PackageTrend } from "package-trends/react";
 
 export default async function Page() {
   const data = await fetchDownloads("react", { period: "last-month" });
@@ -67,7 +67,7 @@ The render prop hands you the trend and nothing else:
 Or take the hook and the bare chart:
 
 ```tsx
-import { usePackageTrend, Sparkline } from "@plainmatter/package-trends/react";
+import { usePackageTrend, Sparkline } from "package-trends/react";
 
 const { trend } = usePackageTrend("react", { period: "last-year", aggregate: "week" });
 {trend && <Sparkline values={trend.values} label="react downloads" width={200} dot />}
@@ -79,7 +79,7 @@ The core entry has no framework in it. `sparklineSvg` returns an SVG string for
 a template, an email, a static build, or another framework:
 
 ```js
-import { fetchDownloads, computeTrend, sparklineSvg } from "@plainmatter/package-trends";
+import { fetchDownloads, computeTrend, sparklineSvg } from "package-trends";
 
 const range = await fetchDownloads("react");
 const trend = computeTrend(range);
@@ -265,7 +265,7 @@ and escapes the values.
 </picture>
 
 ```tsx
-import { PackageComparison } from "@plainmatter/package-trends/compare";
+import { PackageComparison } from "package-trends/compare";
 
 <PackageComparison packages={["react", "vue", "svelte", "preact"]} />
 <PackageComparison packages={[...]} variant="table" />
@@ -419,7 +419,7 @@ wording can still carry the numbers:
 `last-year`) or an explicit range, which `between()` builds and validates:
 
 ```ts
-import { between } from "@plainmatter/package-trends";
+import { between } from "package-trends";
 
 <PackageTrend package="react" period={between("2026-06-01", "2026-08-31")} />
 ```

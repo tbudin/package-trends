@@ -1,5 +1,5 @@
 ---
-"@plainmatter/package-trends": minor
+"package-trends": minor
 ---
 
 Compare several packages at once, from a new `/compare` entry:

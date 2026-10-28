@@ -45,8 +45,8 @@
   <p class="note">Live from <code>api.npmjs.org</code>, fetched by this page as you loaded it.</p>
 
   <h2>Install</h2>
-  <pre><code>npm install @plainmatter/package-trends</code></pre>
-  <pre><code>import { PackageTrend } from "@plainmatter/package-trends/react";
+  <pre><code>npm install package-trends</code></pre>
+  <pre><code>import { PackageTrend } from "package-trends/react";
 
 &lt;PackageTrend package="react" /&gt;                 <span class="note">// sparkline</span>
 &lt;PackageTrend package="react" variant="text" /&gt;  <span class="note">// 954.5M downloads +3.8%</span>
@@ -61,7 +61,7 @@
     request, and the chart is in the first paint rather than appearing a moment
     later.
   </p>
-  <pre><code>import { fetchDownloads } from "@plainmatter/package-trends";
+  <pre><code>import { fetchDownloads } from "package-trends";
 
 const data = await fetchDownloads("react", { period: "last-month" });
 return &lt;PackageTrend package="react" data={data} variant="kpi" /&gt;;</code></pre>

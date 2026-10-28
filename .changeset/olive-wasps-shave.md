@@ -1,5 +1,5 @@
 ---
-"@plainmatter/package-trends": minor
+"package-trends": minor
 ---
 
 Column charts, a fixed `domain` so two charts can be compared, point marks,
