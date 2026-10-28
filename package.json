@@ -55,7 +55,8 @@
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
     "prepublishOnly": "pnpm build",
-    "build:docs": "node scripts/build-docs.mjs"
+    "build:docs": "node scripts/build-docs.mjs",
+    "build:shots": "node scripts/build-shots.mjs"
   },
   "peerDependencies": {
     "react": ">=18"

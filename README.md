@@ -2,6 +2,11 @@
 
 npm download trends as a sparkline, a line of text, or a KPI block.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://tbudin.github.io/package-trends/img/variants-dark.png">
+  <img alt="The three variants rendered from react's last 30 days: a bare sparkline, the line “954.5M downloads +3.8%”, and a KPI tile pairing the number with a filled chart" src="https://tbudin.github.io/package-trends/img/variants-light.png" width="940">
+</picture>
+
 Zero dependencies. Measured as a bundler ships it, gzipped: **9.1 kB** for the
 framework-agnostic core, **10.5 kB** with the React components, **12.4 kB** with
 comparison as well — the three entries share their modules, so nothing is
@@ -24,7 +29,7 @@ page](https://tbudin.github.io/package-trends/reference.html).
 import { PackageTrend } from "@plainmatter/package-trends/react";
 
 <PackageTrend package="react" />                    // sparkline
-<PackageTrend package="react" variant="text" />     // 624.9M downloads +4.2%
+<PackageTrend package="react" variant="text" />     // 954.5M downloads +3.8%
 <PackageTrend package="react" variant="kpi" />      // the number, the change, the chart
 ```
 
@@ -116,6 +121,11 @@ instead:
 
 ## Choosing a chart
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://tbudin.github.io/package-trends/img/charts-dark.png">
+  <img alt="Five chart types on the same month of data: line, column, band, step and smooth" src="https://tbudin.github.io/package-trends/img/charts-light.png" width="940">
+</picture>
+
 Two things are worth knowing before you pick `chart="column"`:
 
 - **Columns want fewer, fatter bars.** Thirty days of a busy package, anchored
@@ -130,6 +140,11 @@ A note on locales: `en-GB` renders compact millions as a lowercase `m`
 English, not a bug here. Pass `locale="en-US"` if the capital reads better.
 
 ## Gaps in npm's data
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://tbudin.github.io/package-trends/img/gaps-dark.png">
+  <img alt="The same month drawn twice. Taking the zeros literally, the line collapses to the floor seven times and reads as a falling month with a mean of 23.8M; with the gaps repaired it is level, mean 31.8M, flat" src="https://tbudin.github.io/package-trends/img/gaps-light.png" width="940">
+</picture>
 
 npm's API answers `0` for a day it has no data for, and does not distinguish
 that from a day nobody installed the package. For anything with real traffic
@@ -243,6 +258,11 @@ Outside React, `sparklineSvg(values, { attrs: { id: "pulse" } })` does the same
 and escapes the values.
 
 ## Comparing packages
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://tbudin.github.io/package-trends/img/compare-dark.png">
+  <img alt="react, vue, svelte and preact compared. On the absolute scale three of the four lie flat along the bottom; indexed, all four start at 100 and their growth is comparable" src="https://tbudin.github.io/package-trends/img/compare-light.png" width="940">
+</picture>
 
 ```tsx
 import { PackageComparison } from "@plainmatter/package-trends/compare";
