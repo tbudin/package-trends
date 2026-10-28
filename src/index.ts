@@ -30,8 +30,8 @@ export type { Analysis, AnalyseOptions, Fit, Spike, Streak, WeekdayProfile } fro
 export { pathFrom } from "./curve.js";
 export type { Curve } from "./curve.js";
 
-export { patternId, patternMarkup } from "./pattern.js";
-export type { FillPattern, PatternSpec } from "./pattern.js";
+export { patternId, patternMarkup, patternTile } from "./pattern.js";
+export type { FillPattern, PatternSpec, PatternTile } from "./pattern.js";
 
 export { toBands } from "./bands.js";
 export type { Band } from "./bands.js";

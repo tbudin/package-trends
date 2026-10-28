@@ -22,7 +22,7 @@ import {
   type SparklineOptions,
 } from "./sparkline.js";
 import { toBands, type Band } from "./bands.js";
-import { patternId, patternMarkup, type FillPattern } from "./pattern.js";
+import { patternId, patternTile, type FillPattern } from "./pattern.js";
 import type { Curve } from "./curve.js";
 import {
   changeDirection,
@@ -267,16 +267,33 @@ export function Sparkline({
       {...svgProps}
     >
       {label ? <title>{label}</title> : null}
-      {patternRef ? (
-        <defs
-          dangerouslySetInnerHTML={{
-            __html: patternMarkup({ kind: fillPattern, color: fill!, id: patternRef }),
-          }}
-        />
-      ) : null}
+      {patternRef ? <PatternDefs kind={fillPattern} color={fill!} id={patternRef} /> : null}
       {body.nodes}
       {guide}
     </svg>
+  );
+}
+
+function PatternDefs({ kind, color, id }: { kind: FillPattern; color: string; id: string }) {
+  const tile = patternTile(kind, color);
+  if (!tile) return null;
+
+  return (
+    <defs>
+      <pattern
+        id={id}
+        width={tile.size}
+        height={tile.size}
+        patternUnits="userSpaceOnUse"
+        patternTransform={tile.transform}
+      >
+        {tile.shape.kind === "line" ? (
+          <path d={tile.shape.d} stroke={tile.shape.stroke} strokeWidth={1} fill="none" />
+        ) : (
+          <circle cx={tile.shape.cx} cy={tile.shape.cy} r={tile.shape.r} fill={tile.shape.fill} />
+        )}
+      </pattern>
+    </defs>
   );
 }
 

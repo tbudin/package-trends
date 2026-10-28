@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
 import { PackageTrend, Sparkline } from "../src/react.js";
-import { analyse, between, computeTrend, fetchDownloads, formatWeekday } from "../src/index.js";
+import { analyse, computeTrend, formatWeekday } from "../src/index.js";
 import type { DownloadRange } from "../src/types.js";
 
 const PKG = "react";
@@ -25,7 +23,13 @@ function Group({ title, note, children }: { title: string; note?: string; childr
   );
 }
 
-function Gallery({ data }: { data: DownloadRange }) {
+export interface Datasets {
+  month: DownloadRange;
+  week: DownloadRange;
+  year: DownloadRange;
+}
+
+export function Gallery({ month: data, week, year, source = "live" }: Datasets & { source?: "live" | "snapshot" }) {
   const trend = computeTrend(data);
   const weekly = computeTrend(data, { aggregate: "week" });
   const a = analyse(data);
@@ -33,9 +37,16 @@ function Gallery({ data }: { data: DownloadRange }) {
   return (
     <main>
       <header>
-        <h1>package-trends · every option</h1>
+        <div className="masthead">
+          <h1>
+            package&#8209;trends, <em>every option</em>
+          </h1>
+          <span className="stamp">{data.start} → {data.end}</span>
+        </div>
         <p className="note">
-          Live <code>{data.package}</code>, {data.start} to {data.end}. One fetch, shared by everything below.
+          Every prop the component takes, drawn from {source === "live" ? "a live fetch of" : "a captured month of"}{" "}
+          <code>{data.package}</code> — {data.points.length} days, seven of which npm had no data for.
+          Each row is captioned with the code that produced it.
         </p>
       </header>
 
@@ -172,13 +183,13 @@ function Gallery({ data }: { data: DownloadRange }) {
 
       <Group title="period" note="Each of these is its own fetch in real use.">
         <Row code='period="last-week"'>
-          <PackageTrend package={PKG} period="last-week" width={170} />
+          <PackageTrend package={PKG} data={week} width={170} />
         </Row>
         <Row code='period="last-month"  (default)'>
-          <PackageTrend package={PKG} period="last-month" width={170} />
+          <PackageTrend package={PKG} data={data} width={170} />
         </Row>
         <Row code='period="last-year" aggregate="week"'>
-          <PackageTrend package={PKG} period="last-year" aggregate="week" width={170} />
+          <PackageTrend package={PKG} data={year} aggregate="week" width={170} />
         </Row>
       </Group>
 
@@ -201,6 +212,10 @@ function Gallery({ data }: { data: DownloadRange }) {
         <Row code='label="Weekly pulls"  (read by a screen reader)'>
           <PackageTrend package={PKG} data={data} label="Weekly pulls" width={170} />
         </Row>
+        <Row code='(error — this package does not exist)'>
+          <PackageTrend package="this-package-does-not-exist-xyz" width={170}
+            renderError={() => <em className="err">no such package</em>} />
+        </Row>
         <Row code='(loading — a block at the chart size)'>
           <PackageTrend package={PKG} width={170} fetch={(() => new Promise<Response>(() => {})) as typeof fetch} />
         </Row>
@@ -210,12 +225,7 @@ function Gallery({ data }: { data: DownloadRange }) {
             fetch={(() => new Promise<Response>(() => {})) as typeof fetch}
           />
         </Row>
-        <Row code='renderError={(e) => <em>{e.message}</em>}'>
-          <PackageTrend
-            package="this-package-does-not-exist-xyz-2" width={170}
-            renderError={(e) => <em className="err">{e.message}</em>}
-          />
-        </Row>
+
         <Row code='{({trend}) => ...}  — your own markup'>
           <PackageTrend package={PKG} data={data}>
             {({ trend: t }) => <b>{t ? `${t.points.length} days, peak ${t.peak.day}` : "…"}</b>}
@@ -275,11 +285,11 @@ function Gallery({ data }: { data: DownloadRange }) {
       </Group>
 
       <Group title="aggregate month · explicit range" note="between() builds the YYYY-MM-DD:YYYY-MM-DD npm takes.">
-        <Row code='aggregate="month"  (needs a year of data)'>
-          <PackageTrend package={PKG} period="last-year" aggregate="month" chart="column" width={200} height={40} />
+        <Row code='aggregate="month"  — a year of data'>
+          <PackageTrend package={PKG} data={year} aggregate="month" chart="column" width={200} height={40} />
         </Row>
         <Row code='period={between("2026-06-01","2026-08-31")}'>
-          <PackageTrend package={PKG} period={between("2026-06-01", "2026-08-31")} aggregate="week" width={200} />
+          <PackageTrend package={PKG} data={sliceTo(year, "2026-06-01", "2026-08-31")} aggregate="week" width={200} />
         </Row>
       </Group>
 
@@ -414,17 +424,8 @@ function Gallery({ data }: { data: DownloadRange }) {
   );
 }
 
-function App() {
-  const [data, setData] = useState<DownloadRange | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchDownloads(PKG, { period: "last-month" }).then(setData).catch((e) => setError(String(e)));
-  }, []);
-
-  if (error) return <main><p className="err">{error}</p></main>;
-  if (!data) return <main><p className="note">Fetching {PKG}…</p></main>;
-  return <Gallery data={data} />;
+/** Narrows a range to a window, for showing what an explicit period looks like. */
+export function sliceTo(range: DownloadRange, from: string, to: string): DownloadRange {
+  const points = range.points.filter((p) => p.day >= from && p.day <= to);
+  return { ...range, start: from, end: to, points: points.length ? points : range.points };
 }
-
-createRoot(document.getElementById("root")!).render(<App />);
