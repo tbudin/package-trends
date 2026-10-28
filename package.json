@@ -52,7 +52,7 @@
     "check": "pnpm typecheck && pnpm test && pnpm build && pnpm lint:package",
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
     "changeset": "changeset",
-    "version": "changeset version",
+    "bump": "changeset version",
     "prepublishOnly": "pnpm build",
     "build:docs": "node scripts/build-docs.mjs",
     "build:shots": "node scripts/build-shots.mjs"
@@ -83,9 +83,6 @@
   "homepage": "https://tbudin.github.io/package-trends/",
   "bugs": {
     "url": "https://github.com/tbudin/package-trends/issues"
-  },
-  "publishConfig": {
-    "provenance": true
   },
   "packageManager": "pnpm@9.15.0"
 }

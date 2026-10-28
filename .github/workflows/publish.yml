@@ -3,13 +3,15 @@ name: Publish
 # Releasing, start to finish:
 #
 #   pnpm changeset            describe the change
-#   pnpm version              apply the changesets: bumps package.json, writes CHANGELOG.md
+#   pnpm run bump             apply the changesets: bumps package.json, writes CHANGELOG.md
+#                             (not `pnpm version` — that is pnpm's own command)
 #   git commit -am "chore: release vX.Y.Z" && git push
 #   git tag vX.Y.Z && git push origin vX.Y.Z
 #
 # The tag is what starts this workflow. It checks the tag against package.json,
 # runs the whole suite, stages the release on npm with trusted publishing (no
-# token: npm trusts this workflow by name), copies it to GitHub Packages, and
+# token: npm trusts this workflow by name, and the registry attaches the
+# provenance attestation itself), copies it to GitHub Packages, and
 # writes the GitHub release from CHANGELOG.md. The npm release goes public once
 # a maintainer approves it on npmjs.com, under Staged Packages.
 on:
