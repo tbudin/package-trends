@@ -1,0 +1,83 @@
+name: Publish
+
+# Releasing, start to finish:
+#
+#   pnpm changeset            describe the change
+#   pnpm version              apply the changesets: bumps package.json, writes CHANGELOG.md
+#   git commit -am "chore: release vX.Y.Z" && git push
+#   git tag vX.Y.Z && git push origin vX.Y.Z
+#
+# The tag is what starts this workflow. It checks the tag against package.json,
+# runs the whole suite, stages the release on npm with trusted publishing (no
+# token: npm trusts this workflow by name), copies it to GitHub Packages, and
+# writes the GitHub release from CHANGELOG.md. The npm release goes public once
+# a maintainer approves it on npmjs.com, under Staged Packages.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # the GitHub release
+      id-token: write   # npm trusted publishing
+      packages: write   # the copy on GitHub Packages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      # trusted publishing needs npm 11.5.1 or later, and npm stage needs 11.15
+      - run: npm install -g npm@11.21.0
+      - run: pnpm install --frozen-lockfile
+
+      - name: The tag matches package.json
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm lint:package
+
+      # docs/assets is build output, but Pages serves it from the repository,
+      # so a stale commit would ship a site that does not match the source.
+      - name: The committed site bundles match the source
+        run: |
+          pnpm build:docs
+          git diff --exit-code -- docs/assets
+
+      - name: Stage on npm (approve it on npmjs.com, Staged Packages)
+        run: npm stage publish
+
+      - name: Release notes from CHANGELOG.md
+        run: |
+          node -e '
+            const v = process.env.GITHUB_REF_NAME.slice(1), s = require("fs").readFileSync("CHANGELOG.md", "utf8");
+            const m = s.match(new RegExp("^## " + v.replace(/\./g, "\\.") + "(?: - [0-9-]+)?\\n([\\s\\S]*?)(?=^## |$(?![\\s\\S]))", "m"));
+            if (!m) { console.error("No section for " + v + " in CHANGELOG.md"); process.exit(1); }
+            require("fs").writeFileSync("notes.md", m[1].trim() + "\n\nnpm: `npm i package-trends@" + v + "` · [full changelog](https://github.com/" + process.env.GITHUB_REPOSITORY + "/blob/main/CHANGELOG.md)\n");
+          '
+      - name: GitHub release
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # GitHub only lists packages from its own registry on the repository page, under a scoped name
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: '@tbudin'
+      - name: Copy to GitHub Packages as @tbudin/package-trends
+        run: |
+          npm pkg set name=@tbudin/package-trends
+          npm publish --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}

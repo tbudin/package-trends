@@ -1,6 +1,6 @@
 {
   "name": "package-trends",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "npm download trends as a sparkline, a line of text, or a KPI block. Zero dependencies, works without a proxy.",
   "keywords": [
     "npm",
@@ -53,7 +53,6 @@
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish",
     "prepublishOnly": "pnpm build",
     "build:docs": "node scripts/build-docs.mjs",
     "build:shots": "node scripts/build-shots.mjs"
