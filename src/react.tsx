@@ -22,6 +22,8 @@ import {
   type SparklineOptions,
 } from "./sparkline.js";
 import { toBands, type Band } from "./bands.js";
+import { patternId, patternMarkup, type FillPattern } from "./pattern.js";
+import type { Curve } from "./curve.js";
 import {
   changeDirection,
   describeTrend,
@@ -111,6 +113,10 @@ export interface ChartProps extends SparklineOptions {
   strokeWidth?: number;
   /** A fill for the area under the line, or for the bars. */
   fill?: string;
+  /** Fills with a pattern rather than flat colour. Needs `fill`. */
+  fillPattern?: FillPattern;
+  /** A dash pattern for the line, as SVG's `stroke-dasharray`. */
+  strokeDasharray?: string | number;
   /** Draws a dot on the most recent point. Shorthand for `mark={["last"]}`. */
   dot?: boolean;
   /** Points to call out. */
@@ -137,6 +143,8 @@ export interface ChartProps extends SparklineOptions {
    * component sets.
    */
   svgProps?: SVGProps<SVGSVGElement>;
+  /** Anything else for the line itself: a filter, a marker, a dash. */
+  pathProps?: SVGProps<SVGPathElement>;
   className?: string;
 }
 
@@ -156,6 +164,8 @@ export function Sparkline({
   stroke = "currentColor",
   strokeWidth = 1.5,
   fill,
+  fillPattern = "solid",
+  strokeDasharray,
   dot = false,
   mark,
   markColor = {},
@@ -166,6 +176,7 @@ export function Sparkline({
   onActive,
   style,
   svgProps,
+  pathProps,
   className,
   ...geometry
 }: SparklineProps) {
@@ -180,13 +191,25 @@ export function Sparkline({
     [onActive],
   );
 
+  // identical patterns share one defs entry, and the id is stable for SSR
+  const patterned = fillPattern !== "solid" && fill !== undefined;
+  const patternRef = patterned ? patternId(fillPattern, fill) : null;
+  const paintFill = patternRef ? `url(#${patternRef})` : fill;
+
   const kinds: MarkKind[] = mark ? [...mark] : dot ? ["last"] : [];
   const body =
     chart === "band"
-      ? renderBands(bands ?? [], geometry, { stroke, strokeWidth, fill })
+      ? renderBands(bands ?? [], geometry, { stroke, strokeWidth, fill: paintFill })
       : chart === "column"
-        ? renderColumns(values, geometry, kinds, { stroke, fill, markColor, axis, axisColor })
-        : renderLine(values, geometry, kinds, { stroke, strokeWidth, fill, markColor });
+        ? renderColumns(values, geometry, kinds, { stroke, fill: paintFill, markColor, axis, axisColor })
+        : renderLine(values, geometry, kinds, {
+            stroke,
+            strokeWidth,
+            strokeDasharray,
+            fill: paintFill,
+            markColor,
+            pathProps,
+          });
 
   // a band chart steps through buckets, not days
   const steps = chart === "band" ? (bands?.length ?? 0) : values.length;
@@ -244,6 +267,13 @@ export function Sparkline({
       {...svgProps}
     >
       {label ? <title>{label}</title> : null}
+      {patternRef ? (
+        <defs
+          dangerouslySetInnerHTML={{
+            __html: patternMarkup({ kind: fillPattern, color: fill!, id: patternRef }),
+          }}
+        />
+      ) : null}
       {body.nodes}
       {guide}
     </svg>
@@ -289,7 +319,14 @@ function renderLine(
   values: readonly number[],
   geometry: SparklineOptions,
   kinds: readonly MarkKind[],
-  paint: { stroke: string; strokeWidth: number; fill?: string; markColor: Partial<Record<MarkKind, string>> },
+  paint: {
+    stroke: string;
+    strokeWidth: number;
+    strokeDasharray?: string | number;
+    fill?: string;
+    markColor: Partial<Record<MarkKind, string>>;
+    pathProps?: SVGProps<SVGPathElement>;
+  },
 ) {
   const line = sparkline(values, geometry);
   const nodes: ReactNode[] = [];
@@ -304,8 +341,10 @@ function renderLine(
       fill="none"
       stroke={paint.stroke}
       strokeWidth={paint.strokeWidth}
+      strokeDasharray={paint.strokeDasharray}
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...paint.pathProps}
     />,
   );
   for (const m of marksFor(values, kinds)) {
@@ -477,6 +516,8 @@ export function PackageTrend({
   stroke,
   strokeWidth,
   fill,
+  fillPattern,
+  strokeDasharray,
   dot,
   mark,
   markColor,
@@ -487,6 +528,7 @@ export function PackageTrend({
   onActive,
   onActivePoint,
   svgProps,
+  pathProps,
   label: labelProp,
   className,
   fallback,
@@ -595,6 +637,8 @@ export function PackageTrend({
       stroke={stroke}
       strokeWidth={strokeWidth}
       fill={fill}
+      fillPattern={fillPattern}
+      strokeDasharray={strokeDasharray}
       dot={dot}
       mark={mark}
       markColor={markColor}
@@ -605,6 +649,7 @@ export function PackageTrend({
       onActive={handleActive}
       style={styles?.chart}
       svgProps={svgProps}
+      pathProps={pathProps}
       {...geometry}
     />
   );
@@ -714,4 +759,4 @@ function join(...names: (string | undefined)[]): string {
   return names.filter(Boolean).join(" ");
 }
 
-export type { Band, Domain, MarkKind, NumberFormat };
+export type { Band, Curve, Domain, FillPattern, MarkKind, NumberFormat };

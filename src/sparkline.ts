@@ -1,3 +1,6 @@
+import { pathFrom, type Curve } from "./curve.js";
+import { patternId, patternMarkup, type FillPattern } from "./pattern.js";
+
 export type Domain = readonly [number, number] | "auto" | "zero";
 
 export interface SparklineOptions {
@@ -10,6 +13,13 @@ export interface SparklineOptions {
    */
   width?: number | string;
   height?: number | string;
+  /**
+   * How the line joins its points. `"linear"` (default) is straight segments;
+   * `"smooth"` is monotone cubic, which cannot overshoot a local extreme the
+   * way a cardinal spline does; `"step"` and `"step-before"` hold each value
+   * until the next.
+   */
+  curve?: Curve;
   /** Room left for the stroke so it is not clipped at the edges. Default 2. */
   padding?: number;
   /**
@@ -113,11 +123,10 @@ export function sparkline(values: readonly number[], options: SparklineOptions =
   const points = values.map((value, index) => [x(index), scale.y(value)] as [number, number]);
 
   if (points.length === 1) {
-    const [px, py] = points[0]!;
     // A one-point series has no line; a tiny horizontal stub renders as a dot
     // under a round linecap.
     return {
-      path: `M${round(px)} ${round(py)}h0`,
+      path: pathFrom(points, options.curve),
       area: "",
       points,
       last: points[0]!,
@@ -127,9 +136,7 @@ export function sparkline(values: readonly number[], options: SparklineOptions =
     };
   }
 
-  const path = points
-    .map(([px, py], index) => `${index === 0 ? "M" : "L"}${round(px)} ${round(py)}`)
-    .join(" ");
+  const path = pathFrom(points, options.curve);
   const area = `${path} L${round(points[points.length - 1]![0])} ${height} L${round(points[0]![0])} ${height} Z`;
 
   return { path, area, points, last: points[points.length - 1]!, scale, width, height };
@@ -302,6 +309,10 @@ export interface SparklineSvgOptions extends SparklineOptions {
   bands?: readonly { low: number; mean: number; high: number }[];
   /** Extra attributes set on the `<svg>`: `id`, `data-*`, anything. */
   attrs?: Record<string, string | number>;
+  /** A dash pattern for the line, as SVG's `stroke-dasharray`. */
+  strokeDasharray?: string | number;
+  /** Fills the area, or the bars, with a pattern rather than flat colour. */
+  fillPattern?: FillPattern;
   /** Default `"currentColor"`, so the chart inherits the surrounding text colour. */
   stroke?: string;
   strokeWidth?: number;
@@ -337,7 +348,9 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
     attrs,
     stroke = "currentColor",
     strokeWidth = 1.5,
+    strokeDasharray,
     fill,
+    fillPattern = "solid",
     dot = false,
     mark,
     markColor = {},
@@ -352,6 +365,14 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
   const parts: string[] = [];
   let box: { width: number; height: number };
 
+  // a patterned fill is painted through a <defs> entry shared by identical fills
+  const patterned = fillPattern !== "solid" && fill !== undefined;
+  const patternRef = patterned ? patternId(fillPattern, fill!) : null;
+  const paintFill = patternRef ? `url(#${patternRef})` : fill;
+  if (patternRef) {
+    parts.push(`<defs>${patternMarkup({ kind: fillPattern, color: fill!, id: patternRef })}</defs>`);
+  }
+
   if (chart === "band") {
     const laid = bandGeometry(bands ?? [], geometry);
     box = { width: laid.width, height: laid.height };
@@ -360,7 +381,7 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
         `<path d="M${band.x} ${band.highY}V${band.lowY}" stroke="${escapeXml(stroke)}" stroke-width="${strokeWidth}" stroke-linecap="round" opacity="0.4"/>`,
       );
       parts.push(
-        `<circle cx="${band.x}" cy="${band.y}" r="${strokeWidth * 1.5}" fill="${escapeXml(fill ?? stroke)}"/>`,
+        `<circle cx="${band.x}" cy="${band.y}" r="${strokeWidth * 1.5}" fill="${escapeXml(paintFill ?? stroke)}"/>`,
       );
     }
   } else if (chart === "column") {
@@ -375,7 +396,7 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
     }
     for (const column of laid.columns) {
       const kind = marks.get(column.index);
-      const colour = (kind && markColor[kind]) ?? fill ?? stroke;
+      const colour = (kind && markColor[kind]) ?? paintFill ?? stroke;
       parts.push(
         `<rect x="${column.x}" y="${column.y}" width="${column.width}" height="${column.height}" fill="${escapeXml(colour)}"${kind ? "" : ' opacity="0.85"'}/>`,
       );
@@ -384,11 +405,12 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
     const line = sparkline(values, geometry);
     box = { width: line.width, height: line.height };
 
-    if (fill && line.area) {
-      parts.push(`<path d="${line.area}" fill="${escapeXml(fill)}" stroke="none"/>`);
+    if (paintFill && line.area) {
+      parts.push(`<path d="${line.area}" fill="${escapeXml(paintFill)}" stroke="none"/>`);
     }
+    const dash = strokeDasharray === undefined ? "" : ` stroke-dasharray="${escapeXml(String(strokeDasharray))}"`;
     parts.push(
-      `<path d="${line.path}" fill="none" stroke="${escapeXml(stroke)}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>`,
+      `<path d="${line.path}" fill="none" stroke="${escapeXml(stroke)}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"${dash}/>`,
     );
     for (const m of marksFor(values, kinds)) {
       const [cx, cy] = line.points[m.index] ?? line.last;

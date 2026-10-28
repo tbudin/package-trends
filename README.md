@@ -235,6 +235,49 @@ The chart can do the same. A number is a width in px; a CSS length leaves the
 Outside React, `sparklineSvg(values, { attrs: { id: "pulse" } })` does the same
 and escapes the values.
 
+## Curves
+
+`curve` sets how the line joins its points:
+
+| | |
+| --- | --- |
+| `"linear"` | straight segments (the default) |
+| `"smooth"` | monotone cubic |
+| `"step"` | holds each value until the next |
+| `"step-before"` | steps up first, then across |
+
+`"smooth"` is **monotone cubic, not a cardinal spline**, and the difference is
+not cosmetic. A cardinal spline overshoots a local extreme: given a sharp dip,
+it draws a curve that passes below the lowest value in the data — a download
+count that never happened, and below zero where the low is near it. Monotone
+cubic cannot. Between any two points the curve stays within their values, which
+is the only kind of smoothing that is safe to apply to counts without
+annotation. There is a test that samples the rendered curve and asserts it.
+
+Stepped lines suit weekly or monthly buckets, where the value really did hold
+flat for the period rather than sliding between readings.
+
+## Patterns
+
+The line takes a dash, and anything else through `pathProps`:
+
+```tsx
+<PackageTrend package="react" strokeDasharray="3 2" />
+<PackageTrend package="react" pathProps={{ strokeLinecap: "butt", opacity: 0.4 }} />
+```
+
+The area and the bars take a fill pattern — `"hatch"`, `"cross"`, `"dots"` —
+which is how you tell two series apart in print, in monochrome, or for a reader
+who cannot rely on colour:
+
+```tsx
+<PackageTrend package="react" fill="#999" fillPattern="hatch" />
+```
+
+Identical patterns share one `<defs>` entry under a stable id derived from the
+pattern and the colour, so a page full of charts does not accumulate
+definitions and a server render matches the client.
+
 ## Bands, and why not candlesticks
 
 `chart="band"` buckets the days and draws each period as a whisker from its low

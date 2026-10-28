@@ -283,6 +283,54 @@ function Gallery({ data }: { data: DownloadRange }) {
         </Row>
       </Group>
 
+      <Group title="curve" note="How the line joins its points. Smooth is monotone cubic, which cannot overshoot.">
+        <Row code='(default) curve="linear"'>
+          <PackageTrend package={PKG} data={data} width={260} height={46} />
+        </Row>
+        <Row code='curve="smooth"'>
+          <PackageTrend package={PKG} data={data} curve="smooth" width={260} height={46} />
+        </Row>
+        <Row code='curve="step"'>
+          <PackageTrend package={PKG} data={data} curve="step" width={260} height={46} />
+        </Row>
+        <Row code='curve="step-before"'>
+          <PackageTrend package={PKG} data={data} curve="step-before" width={260} height={46} />
+        </Row>
+        <Row code='smooth + raw daily — the weekend cycle, rounded'>
+          <PackageTrend package={PKG} data={data} curve="smooth" smooth={1} width={260} height={46} />
+        </Row>
+      </Group>
+
+      <Group title="strokeDasharray · pathProps" note="The line itself takes attributes too.">
+        <Row code='strokeDasharray="3 2"'>
+          <PackageTrend package={PKG} data={data} strokeDasharray="3 2" width={200} />
+        </Row>
+        <Row code='strokeDasharray="1 3" strokeWidth={2}'>
+          <PackageTrend package={PKG} data={data} strokeDasharray="1 3" strokeWidth={2} width={200} />
+        </Row>
+        <Row code='pathProps={{ strokeLinecap:"butt", opacity:.4 }}'>
+          <PackageTrend package={PKG} data={data} pathProps={{ strokeLinecap: "butt", opacity: 0.4 }} width={200} />
+        </Row>
+      </Group>
+
+      <Group title="fillPattern" note="For monochrome, print, or telling two series apart without colour.">
+        <Row code='fill="#999"  (solid)'>
+          <PackageTrend package={PKG} data={data} fill="#999" width={200} height={40} />
+        </Row>
+        <Row code='fill="#999" fillPattern="hatch"'>
+          <PackageTrend package={PKG} data={data} fill="#999" fillPattern="hatch" width={200} height={40} />
+        </Row>
+        <Row code='fill="#999" fillPattern="cross"'>
+          <PackageTrend package={PKG} data={data} fill="#999" fillPattern="cross" width={200} height={40} />
+        </Row>
+        <Row code='fill="#999" fillPattern="dots"'>
+          <PackageTrend package={PKG} data={data} fill="#999" fillPattern="dots" width={200} height={40} />
+        </Row>
+        <Row code='chart="column" fill="#777" fillPattern="hatch"'>
+          <PackageTrend package={PKG} data={data} chart="column" aggregate="week" fill="#777" fillPattern="hatch" width={200} height={40} />
+        </Row>
+      </Group>
+
       <Group title="band" note="Low, mean and high per week. The honest half of a candlestick.">
         <Row code='chart="band"'>
           <PackageTrend package={PKG} data={data} chart="band" width={170} height={44} />

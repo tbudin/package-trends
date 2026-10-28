@@ -27,6 +27,12 @@ export type {
 export { analyse } from "./analyse.js";
 export type { Analysis, AnalyseOptions, Fit, Spike, Streak, WeekdayProfile } from "./analyse.js";
 
+export { pathFrom } from "./curve.js";
+export type { Curve } from "./curve.js";
+
+export { patternId, patternMarkup } from "./pattern.js";
+export type { FillPattern, PatternSpec } from "./pattern.js";
+
 export { toBands } from "./bands.js";
 export type { Band } from "./bands.js";
 
