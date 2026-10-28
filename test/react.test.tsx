@@ -58,11 +58,50 @@ describe("PackageTrend on the server", () => {
   });
 });
 
+describe("PackageTrend labelling", () => {
+  it("builds an accessible name from the trend by default", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} locale="en-US" />,
+    );
+    expect(html).toContain("740,000 downloads for demo");
+  });
+
+  it("takes a label of its own", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} label="Weekly pulls" />,
+    );
+    expect(html).toContain('aria-label="Weekly pulls"');
+    expect(html).not.toContain("740,000 downloads for demo");
+  });
+
+  it("takes a label built from the trend", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend
+        package="demo"
+        data={data}
+        fetch={noNetwork()}
+        label={(trend) => `${trend.points.length} days`}
+      />,
+    );
+    expect(html).toContain('aria-label="30 days"');
+  });
+});
+
 describe("Sparkline", () => {
   it("hides itself from a screen reader without a label", () => {
     const html = renderToStaticMarkup(<Sparkline values={[1, 2, 3]} />);
     expect(html).toContain('aria-hidden="true"');
     expect(html).not.toContain("<title>");
+  });
+
+  it("stays inside a narrow container by default", () => {
+    const html = renderToStaticMarkup(<Sparkline values={[1, 2, 3]} width={120} />);
+    expect(html).toContain("max-width:100%");
+  });
+
+  it("fills the container when fluid", () => {
+    const html = renderToStaticMarkup(<Sparkline values={[1, 2, 3]} width={120} fluid />);
+    expect(html).toContain("width:100%");
   });
 
   it("draws the area only when filled", () => {

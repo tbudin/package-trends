@@ -66,6 +66,18 @@ describe("sparklineSvg", () => {
     expect(svg).not.toContain("<script>");
   });
 
+  it("never overflows a container narrower than the chart", () => {
+    const svg = sparklineSvg([1, 2, 3], { width: 120 });
+    expect(svg).toContain("max-width:100%");
+    expect(svg).toContain("height:auto");
+  });
+
+  it("fills the container when fluid", () => {
+    const svg = sparklineSvg([1, 2, 3], { width: 120, fluid: true });
+    expect(svg).toContain("width:100%");
+    expect(svg).not.toContain("max-width");
+  });
+
   it("omits the area unless a fill is given", () => {
     expect(sparklineSvg([1, 2])).not.toContain('fill="none" stroke="none"');
     expect(sparklineSvg([1, 2], { fill: "#eee" })).toContain('fill="#eee"');

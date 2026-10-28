@@ -66,6 +66,12 @@ export function sparkline(values: readonly number[], options: SparklineOptions =
 }
 
 export interface SparklineSvgOptions extends SparklineOptions {
+  /**
+   * `true` makes the chart fill its container's width instead of sitting at
+   * its natural size. It never grows past the container either way: a chart
+   * wider than the box scales down with its aspect ratio kept.
+   */
+  fluid?: boolean;
   /** Default `"currentColor"`, so the line inherits the surrounding text colour. */
   stroke?: string;
   strokeWidth?: number;
@@ -88,6 +94,7 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
     fill,
     dot = false,
     label,
+    fluid = false,
     ...geometry
   } = options;
 
@@ -111,7 +118,18 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
     ? ` role="img" aria-label="${escapeXml(label)}"`
     : ` aria-hidden="true"`;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${line.width} ${line.height}" width="${line.width}" height="${line.height}"${accessibility}>${parts.join("")}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${line.width} ${line.height}" width="${line.width}" height="${line.height}" style="${svgStyle(fluid)}"${accessibility}>${parts.join("")}</svg>`;
+}
+
+/**
+ * `max-width` keeps the chart inside a container narrower than its natural
+ * width, and `height: auto` makes it scale down with its aspect ratio rather
+ * than being squashed. Without this a 120px chart overflows an 80px column.
+ */
+export function svgStyle(fluid: boolean): string {
+  return fluid
+    ? "display:block;width:100%;height:auto"
+    : "display:block;max-width:100%;height:auto";
 }
 
 function round(value: number): number {

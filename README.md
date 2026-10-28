@@ -95,6 +95,18 @@ points. **Only the drawn line is shaped.** Every figure — `total`, `average`,
 `latest`, `peak`, `trough`, `change` — is computed from the raw daily series, so
 a smoothed chart never changes the numbers beside it.
 
+## Size
+
+The chart renders at its natural size and **never overflows its container**: a
+120px chart inside an 80px column scales down with its aspect ratio kept, rather
+than pushing the page sideways. Pass `fluid` to fill the container's width
+instead:
+
+```tsx
+<PackageTrend package="react" fluid />        // takes the width it is given
+<PackageTrend package="react" width={420} height={56} />
+```
+
 ## Styling
 
 Nothing ships a stylesheet. The chart strokes in `currentColor`, so it takes the
@@ -113,6 +125,14 @@ A sparkline carries nothing a screen reader can use, so the component puts a
 sentence there instead: *"624,912,345 downloads for react between 2026-09-27 and
 2026-10-26, up 4% against the half before."* A `Sparkline` with no `label` is
 marked `aria-hidden`, on the basis that an unlabelled chart is decoration.
+
+Set `label` to replace that sentence. A function receives the trend, so your own
+wording can still carry the numbers:
+
+```tsx
+<PackageTrend package="react" label="Weekly pulls from npm" />
+<PackageTrend package="react" label={(t) => `${t.total.toLocaleString()} downloads this month`} />
+```
 
 ## API
 

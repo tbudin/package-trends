@@ -78,6 +78,8 @@ export function usePackageTrend(name: string, options: UsePackageTrendOptions = 
 
 export interface SparklineProps extends SparklineOptions {
   values: readonly number[];
+  /** Fill the container's width instead of sitting at the natural size. */
+  fluid?: boolean;
   /** Read by a screen reader. Without one the chart is hidden from them. */
   label?: string;
   stroke?: string;
@@ -97,6 +99,7 @@ export function Sparkline({
   strokeWidth = 1.5,
   fill,
   dot = false,
+  fluid = false,
   className,
   ...geometry
 }: SparklineProps) {
@@ -111,7 +114,11 @@ export function Sparkline({
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      style={{ display: "block", overflow: "visible" }}
+      style={
+        fluid
+          ? { display: "block", width: "100%", height: "auto" }
+          : { display: "block", maxWidth: "100%", height: "auto" }
+      }
     >
       {label ? <title>{label}</title> : null}
       {fill && line.area ? <path d={line.area} fill={fill} stroke="none" /> : null}
@@ -142,6 +149,14 @@ export interface PackageTrendProps extends UsePackageTrendOptions, SparklineOpti
   strokeWidth?: number;
   fill?: string;
   dot?: boolean;
+  /** Fill the container's width instead of sitting at the natural size. */
+  fluid?: boolean;
+  /**
+   * The accessible name for the chart, replacing the sentence built from the
+   * trend. A function receives the trend, so the name can still carry the
+   * numbers.
+   */
+  label?: string | ((trend: Trend) => string);
   className?: string;
   /** Shown while fetching. Default a muted dash. */
   fallback?: ReactNode;
@@ -164,6 +179,8 @@ export function PackageTrend({
   strokeWidth,
   fill,
   dot,
+  fluid,
+  label: labelProp,
   className,
   fallback,
   renderError,
@@ -198,7 +215,10 @@ export function PackageTrend({
   }
 
   const trend = state.trend;
-  const label = describeTrend(trend, locale);
+  const label =
+    typeof labelProp === "function"
+      ? labelProp(trend)
+      : (labelProp ?? describeTrend(trend, locale));
   const chart = (
     <Sparkline
       values={trend.values}
@@ -207,6 +227,7 @@ export function PackageTrend({
       strokeWidth={strokeWidth}
       fill={fill}
       dot={dot}
+      fluid={fluid}
       {...geometry}
     />
   );
@@ -269,8 +290,12 @@ export function PackageTrend({
           position: "absolute",
           width: 1,
           height: 1,
+          margin: -1,
+          padding: 0,
+          border: 0,
           overflow: "hidden",
           clip: "rect(0 0 0 0)",
+          clipPath: "inset(50%)",
           whiteSpace: "nowrap",
         }}
       >
