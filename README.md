@@ -107,6 +107,53 @@ instead:
 <PackageTrend package="react" width={420} height={56} />
 ```
 
+## Gaps in npm's data
+
+npm's API answers `0` for a day it has no data for, and does not distinguish
+that from a day nobody installed the package. For anything with real traffic
+those zeros are plainly missing data — a sample of `react` carried **seven of
+them in thirty days** — and taken literally they are not a small error:
+
+| | zeros taken literally | gaps repaired |
+|---|---|---|
+| mean per day | 23,820,776 | **31,817,723** |
+| trend | falling | **flat** |
+| weekend ÷ weekday | 0.90 | **0.61** |
+| quietest day | Tuesday | **Sunday** |
+
+Interior gaps are interpolated from the days either side, which keeps the array
+length and the day alignment so weekly buckets and weekday profiles stay
+correct. Leading and trailing gaps are dropped. A series that is zero
+throughout is left alone — that is a package nobody installs, not a gap.
+
+`gapDays` on the trend and the analysis lists the days that were missing, so you
+can say so. Pass `gaps: "zero"` to take the API at its word.
+
+## Reading the data
+
+`analyse(range)` returns the figures you would need to write about a package
+without looking at the chart:
+
+```ts
+const a = analyse(await fetchDownloads("react", { period: "last-year" }));
+
+a.direction;          // "rising" | "falling" | "flat"
+a.confidence;         // "strong" | "moderate" | "weak" — from the r² of a line fit
+a.fit.rSquared;       // gate your sentence on this; below ~0.3 it is noise
+a.weeklyGrowth;       // compound growth per week, from whole weeks
+a.annualisedGrowth;   // that compounded over 52 weeks. An extrapolation, not a forecast
+a.weekendRatio;       // weekend mean ÷ weekday mean; low means weekday-driven use
+a.busiestWeekday;     // { weekday: 4, mean, share } — formatWeekday(4) is "Thursday"
+a.volatility;         // spread around the trend, with the weekly cycle removed
+a.spikes;             // days more than 2σ off the fitted line
+a.streak;             // { direction: "rising", weeks: 3 }
+a.gapDays;            // days npm had no data for
+```
+
+The field to build on is `confidence`. A slope on its own will happily tell you
+`react` is falling by 390,000 a day; the r² of 0.05 behind it is what says the
+month was flat and the slope is noise.
+
 ## Styling
 
 Nothing ships a stylesheet. The chart strokes in `currentColor`, so it takes the

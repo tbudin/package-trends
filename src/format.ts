@@ -32,6 +32,13 @@ export function changeDirection(trend: Pick<Trend, "change">): "up" | "down" | "
   return trend.change > 0 ? "up" : "down";
 }
 
+/** `0` becomes `Sunday`, in whatever locale you pass. */
+export function formatWeekday(weekday: number, locale?: string, style: "long" | "short" = "long"): string {
+  // 2026-11-01 was a Sunday, so adding the index lands on the right day.
+  const date = new Date(Date.UTC(2026, 10, 1 + weekday));
+  return new Intl.DateTimeFormat(locale, { weekday: style, timeZone: "UTC" }).format(date);
+}
+
 /**
  * A sentence a screen reader can read in place of the chart, since a sparkline
  * carries nothing a non-sighted reader can use.

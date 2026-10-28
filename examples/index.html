@@ -47,6 +47,12 @@
   <h2>KPI</h2>
   <div class="grid" id="kpis"></div>
 
+  <h2>Columns, domain and marks</h2>
+  <div id="cols"></div>
+
+  <h2>What analyse() reads off the same data</h2>
+  <pre id="analysis" style="font-size:12px;line-height:1.6;white-space:pre-wrap;color:var(--muted);margin:0"></pre>
+
   <h2>Why daily series get smoothed</h2>
   <p class="lede">Same 30 days of <code>react</code>, raw against a 7-day mean.</p>
   <div id="cmp"></div>
@@ -54,8 +60,8 @@
 
 <script type="module">
 import {
-  fetchDownloads, computeTrend, sparklineSvg,
-  formatCount, formatExact, formatChange, changeDirection, describeTrend,
+  fetchDownloads, computeTrend, sparklineSvg, analyse,
+  formatCount, formatExact, formatChange, changeDirection, describeTrend, formatWeekday,
 } from "../dist/index.js";
 
 const NAMES = ["react", "vue", "svelte", "@tanstack/react-table"];
@@ -101,7 +107,36 @@ for (const f of failed) {
     `<div class="row"><code>${f.name}</code><span class="err">${f.error.message}</span></div>`);
 }
 
+// columns, marks and a shared domain
+for (const range of ok) {
+  const weekly = computeTrend(range, { aggregate: "week" });
+  document.querySelector("#cols").insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <code>${range.package}</code>
+      ${sparklineSvg(weekly.values, { chart: "column", width: 120, height: 34, mark: ["high"], markColor: { high: "#c2410c" } })}
+      ${sparklineSvg(weekly.values, { width: 150, height: 34, mark: ["high", "low", "last"] })}
+      <span style="font-size:12px;color:var(--muted)">shared domain →</span>
+      ${sparklineSvg(computeTrend(range).values, { width: 150, height: 34, domain: [0, 25_000_000] })}
+    </div>`);
+}
+
 const reactRange = ok.find((r) => r.package === "react");
+
+if (reactRange) {
+  const a = analyse(reactRange);
+  const pct = (x) => x === null ? "n/a" : (x * 100).toFixed(1) + "%";
+  document.querySelector("#analysis").textContent = [
+    `package            ${a.package}  (${a.days} days, ${a.start} → ${a.end})`,
+    `total / mean       ${a.total.toLocaleString()}  /  ${Math.round(a.mean).toLocaleString()} a day`,
+    `direction          ${a.direction}, ${a.confidence} (r² ${a.fit.rSquared.toFixed(3)}, ${Math.round(a.fit.slope).toLocaleString()}/day)`,
+    `weekly growth      ${pct(a.weeklyGrowth)}   annualised ${pct(a.annualisedGrowth)}`,
+    `weekday vs weekend ${Math.round(a.weekday.mean).toLocaleString()} vs ${Math.round(a.weekend.mean).toLocaleString()}  (ratio ${a.weekendRatio.toFixed(2)})`,
+    `busiest / quietest ${formatWeekday(a.busiestWeekday.weekday, "en-GB")} / ${formatWeekday(a.quietestWeekday.weekday, "en-GB")}`,
+    `volatility         ${(a.volatility * 100).toFixed(1)}% around the trend`,
+    `streak             ${a.streak ? a.streak.weeks + " weeks " + a.streak.direction : "none"}`,
+    `spikes             ${a.spikes.length ? a.spikes.map((s) => s.day + " (" + s.sigma.toFixed(1) + "σ)").join(", ") : "none"}`,
+  ].join("\n");
+}
 if (reactRange) {
   const raw = computeTrend(reactRange, { smooth: 1 });
   const smooth = computeTrend(reactRange, { smooth: 7 });

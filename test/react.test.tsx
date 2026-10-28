@@ -4,6 +4,7 @@ import { PackageTrend, Sparkline } from "../src/react.js";
 import { days, range } from "./helpers.js";
 
 const data = range(days(30, (i) => (i % 7 < 5 ? 30_000 : 10_000)), "demo");
+const rising = range(days(30, (i) => (i % 7 < 5 ? 30_000 : 10_000) * (1 + i * 0.05)), "demo");
 
 /** Fails the test if anything reaches the network during a render. */
 function noNetwork() {
@@ -55,6 +56,69 @@ describe("PackageTrend on the server", () => {
       <PackageTrend package="demo" fetch={noNetwork()} fallback="loading" />,
     );
     expect(html).toContain("loading");
+  });
+});
+
+describe("PackageTrend colours", () => {
+  it("inherits the surrounding text when no colours are given", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" variant="text" data={rising} fetch={noNetwork()} locale="en-US" />,
+    );
+    expect(html).toContain('data-direction="up"');
+    // no colour is written, so the change takes the host's text colour
+    expect(html).not.toMatch(/class="pt-change"[^>]*style="[^"]*color:/);
+  });
+
+  it("takes the colours it is given", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend
+        package="demo"
+        variant="text"
+        data={rising}
+        fetch={noNetwork()}
+        colors={{ up: "#0a7", down: "#c33" }}
+        locale="en-US"
+      />,
+    );
+    expect(html).toContain("color:#0a7");
+  });
+
+  it("keeps data-direction either way, so CSS can style it instead", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" variant="kpi" data={rising} fetch={noNetwork()} locale="en-US" />,
+    );
+    expect(html).toContain('data-direction="up"');
+  });
+});
+
+describe("PackageTrend chart types", () => {
+  it("draws a line by default", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} />,
+    );
+    expect(html).toContain("<path");
+    expect(html).not.toContain("<rect");
+  });
+
+  it("draws columns when asked", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} chart="column" />,
+    );
+    expect(html).toContain("<rect");
+  });
+
+  it("marks the points it is told to", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend
+        package="demo"
+        data={data}
+        fetch={noNetwork()}
+        mark={["high", "last"]}
+        markColor={{ high: "#f0f" }}
+      />,
+    );
+    expect(html).toContain("#f0f");
+    expect(html.match(/<circle/g)).toHaveLength(2);
   });
 });
 

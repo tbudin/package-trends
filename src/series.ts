@@ -1,3 +1,4 @@
+import { applyGaps, type GapPolicy } from "./gaps.js";
 import type { DownloadPoint, DownloadRange } from "./types.js";
 
 /**
@@ -62,6 +63,11 @@ export function toWeekly(points: readonly DownloadPoint[]): DownloadPoint[] {
 export type Aggregate = "day" | "week";
 
 export interface ShapeOptions {
+  /**
+   * What to do with the zeros npm reports for days it has no data for.
+   * `"fill"` (the default) interpolates them; `"zero"` takes them literally.
+   */
+  gaps?: GapPolicy;
   /** `"week"` sums into 7-day buckets. Default `"day"`. */
   aggregate?: Aggregate;
   /**
@@ -74,17 +80,18 @@ export interface ShapeOptions {
 
 /** Applies `aggregate` and `smooth` to a range's points. */
 export function shapeSeries(range: DownloadRange, options: ShapeOptions = {}): DownloadPoint[] {
-  const { aggregate = "day", smooth } = options;
+  const { aggregate = "day", smooth, gaps } = options;
+  const points = applyGaps(range.points, gaps).points;
 
   if (aggregate === "week") {
-    const weekly = toWeekly(range.points);
+    const weekly = toWeekly(points);
     // Too short to make even one whole week: fall back to the daily series
     // rather than rendering nothing.
-    return weekly.length > 0 ? weekly : range.points.slice();
+    return weekly.length > 0 ? weekly : points.slice();
   }
 
   const window = smooth ?? 7;
-  const smoothed = movingAverage(range.points, Math.max(1, window));
+  const smoothed = movingAverage(points, Math.max(1, window));
   // A window wider than the series leaves nothing; the raw points beat an empty chart.
-  return smoothed.length > 0 ? smoothed : range.points.slice();
+  return smoothed.length > 0 ? smoothed : points.slice();
 }

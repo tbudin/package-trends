@@ -49,6 +49,11 @@ export interface Trend {
    * rather than counts. Never sum it; the figures above are the real ones.
    */
   values: number[];
-  /** The raw daily series every figure above is computed from. */
+  /** The daily series every figure above is computed from, gaps repaired. */
   points: DownloadPoint[];
+  /**
+   * Days npm reported no data for. Non-empty means the period was incomplete
+   * and the figures rest on interpolation for those days.
+   */
+  gapDays: string[];
 }

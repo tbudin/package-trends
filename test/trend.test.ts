@@ -33,7 +33,8 @@ describe("computeTrend", () => {
   });
 
   it("gives no ratio when the earlier half had no downloads", () => {
-    const trend = computeTrend(range(days(10, (i) => (i < 5 ? 0 : 50))));
+    // gaps: "zero" so the leading zeros stay, rather than reading as missing days
+    const trend = computeTrend(range(days(10, (i) => (i < 5 ? 0 : 50))), { gaps: "zero" });
     expect(trend.change).toBe(250);
     expect(trend.changeRatio).toBeNull();
   });

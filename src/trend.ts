@@ -1,3 +1,4 @@
+import { applyGaps } from "./gaps.js";
 import { shapeSeries, type ShapeOptions } from "./series.js";
 import type { DownloadPoint, DownloadRange, Trend } from "./types.js";
 
@@ -15,7 +16,8 @@ import type { DownloadPoint, DownloadRange, Trend } from "./types.js";
  * point and a bias to match.
  */
 export function computeTrend(range: DownloadRange, options: ShapeOptions = {}): Trend {
-  const points = range.points;
+  const repaired = applyGaps(range.points, options.gaps);
+  const points = repaired.points;
 
   let total = 0;
   let peak = points[0]!;
@@ -41,6 +43,7 @@ export function computeTrend(range: DownloadRange, options: ShapeOptions = {}): 
     changeRatio,
     values: shapeSeries(range, options).map((point) => point.downloads),
     points,
+    gapDays: repaired.gapDays,
   };
 }
 

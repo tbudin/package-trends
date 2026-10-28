@@ -8,8 +8,25 @@ export type { Aggregate, ShapeOptions } from "./series.js";
 
 export { computeTrend } from "./trend.js";
 
-export { sparkline, sparklineSvg } from "./sparkline.js";
-export type { Sparkline, SparklineOptions, SparklineSvgOptions } from "./sparkline.js";
+export { sparkline, sparklineSvg, columns, marksFor, scaleFor } from "./sparkline.js";
+export type {
+  Column,
+  Columns,
+  ColumnsOptions,
+  Domain,
+  Mark,
+  MarkKind,
+  Scale,
+  Sparkline,
+  SparklineOptions,
+  SparklineSvgOptions,
+} from "./sparkline.js";
+
+export { analyse } from "./analyse.js";
+export type { Analysis, AnalyseOptions, Fit, Spike, Streak, WeekdayProfile } from "./analyse.js";
+
+export { fillGaps, applyGaps } from "./gaps.js";
+export type { GapPolicy, GapReport } from "./gaps.js";
 
 export {
   formatCount,
@@ -17,6 +34,7 @@ export {
   formatChange,
   changeDirection,
   describeTrend,
+  formatWeekday,
 } from "./format.js";
 
 export type { DownloadPoint, DownloadRange, Period, Trend } from "./types.js";
