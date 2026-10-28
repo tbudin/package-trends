@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tbudin.github.io/package-trends/sitemap.xml

@@ -20,8 +20,8 @@ npm install package-trends
 ```
 
 **[tbudin.github.io/package-trends](https://tbudin.github.io/package-trends/)** —
-the site, live against npm, with [every option on one
-page](https://tbudin.github.io/package-trends/reference.html).
+the site: every option on its own page with a live playground, fetching from npm
+as you change it. Put any package name in the header and the whole site follows.
 
 ## React
 

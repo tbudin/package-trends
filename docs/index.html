@@ -4,218 +4,908 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>package-trends</title>
-<meta name="description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, framework-agnostic core, React components, and figures you can write a sentence from.">
+<meta name="description" content="package-trends: npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components, each with a live playground.">
+<link rel="canonical" href="https://tbudin.github.io/package-trends/">
+<meta name="author" content="Thomas Budin">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16161a" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="package-trends">
-<meta property="og:description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, 10.5 kB, and it repairs the zeros npm reports for days it has no data for.">
+<meta property="og:site_name" content="package-trends">
+<meta property="og:title" content="package-trends: download trends small enough for a footer">
+<meta property="og:description" content="A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — 10.5 kB with the React components.">
 <meta property="og:url" content="https://tbudin.github.io/package-trends/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://tbudin.github.io/package-trends/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="package-trends: a sparkline, the line 954.5M downloads +3.8%, and a KPI tile, drawn on warm paper">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="package-trends">
+<meta name="twitter:description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies.">
+<meta name="twitter:image" content="https://tbudin.github.io/package-trends/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a1a17'/%3E%3Cpath d='M5 23 L11 19 L15 21 L20 12 L27 8' fill='none' stroke='%23e09b6a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='27' cy='8' r='2.6' fill='%23e09b6a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;650&display=swap">
-<link rel="stylesheet" href="site.css">
+<link rel="preconnect" href="https://api.npmjs.org">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600;650&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "package-trends",
+  "description": "npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components.",
+  "url": "https://tbudin.github.io/package-trends/",
+  "codeRepository": "https://github.com/tbudin/package-trends",
+  "programmingLanguage": "TypeScript",
+  "runtimePlatform": "Node.js",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": "Thomas Budin" },
+  "copyrightHolder": { "@type": "Organization", "name": "Plain Matter Pte Ltd" }
+}
+</script>
+<style>
+/* Site chrome. Layout: header, sidebar of pages, and a page with a live
+   preview, a controls column and the code for whatever is on screen. */
+:root {
+  color-scheme: light;
+  --bg: #fbfaf7;
+  --fg: #1a1a17;
+  --muted: #6a6a62;
+  --line: #e2e0d8;
+  --panel: #f2f0e9;
+  --code: #f3f1ea;
+  --accent: #9a4a1e;
+  --mark: #f0d9a8;
+  --up: #15803d;
+  --down: #b3261e;
+  --f-ui: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --f-head: "Newsreader", Georgia, serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16161a; --fg: #eceae4; --muted: #9b9b93; --line: #2e2e34;
+    --panel: #1d1d22; --code: #1c1c21; --accent: #e09b6a; --mark: #4a3c22;
+    --up: #4ac98a; --down: #e2766c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #16161a; --fg: #eceae4; --muted: #9b9b93; --line: #2e2e34;
+  --panel: #1d1d22; --code: #1c1c21; --accent: #e09b6a; --mark: #4a3c22;
+  --up: #4ac98a; --down: #e2766c; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 15px/24px var(--f-ui); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-underline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--mark) 80%, transparent); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+
+/* header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap;
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--fg); }
+.brand b { font: 500 21px/32px var(--f-mono); letter-spacing: -.02em; color: var(--accent); }
+.brand span { font-size: 12px; font-family: var(--f-mono); color: var(--muted); }
+.top-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-left: auto; font-size: 13px; }
+.top-ctl label { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+select, input[type="text"], input[type="search"] {
+  font: 13px/18px var(--f-ui); color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 4px; padding: 5px 7px;
+}
+select:focus-visible, input:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* navigation */
+.menu-btn { display: none; align-items: center; gap: 6px; font: inherit; font-size: 14px; color: var(--fg); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px 4px 8px; cursor: pointer; }
+.here { display: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.wrap { display: grid; grid-template-columns: 248px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+.side { position: sticky; top: 57px; align-self: start; max-height: calc(100vh - 57px); overflow-y: auto;
+  padding: 16px 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--line); }
+.side-head, .side-settings:empty { display: none; }
+.find { position: relative; display: block; margin-bottom: 14px; }
+.find input { width: 100%; padding-right: 30px; }
+.find kbd { position: absolute; right: 7px; top: 6px; font: 11px var(--f-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; }
+.side h4 { margin: 16px 0 2px; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.side a { display: block; padding: 2px 8px; margin: 0 -8px; color: var(--fg); text-decoration: none; font-size: 14px; line-height: 26px; border-radius: 3px; }
+.side a:hover { background: var(--panel); }
+.side a[aria-current] { background: var(--mark); }
+.nothing { font-size: 13px; color: var(--muted); }
+.scrim { position: fixed; inset: 0; z-index: 19; background: rgba(20, 18, 14, .4); }
+main#page { min-width: 0; padding: 28px 32px 80px; padding-right: max(32px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 860px) {
+  .menu-btn { display: inline-flex; }
+  .brand span { display: none; }
+  .here { display: block; min-width: 0; flex: 1; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+  .top { flex-wrap: nowrap; gap: 12px; }
+  .top > .top-ctl { display: none; }
+  .wrap { grid-template-columns: minmax(0, 1fr); }
+  .side {
+    position: fixed; z-index: 20; top: 0; bottom: 0; left: 0; max-height: none;
+    width: min(320px, 86vw); padding: 0 18px 32px; padding-left: max(18px, env(safe-area-inset-left, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    background: var(--bg); border-right: 1px solid var(--line); box-shadow: 8px 0 30px rgba(0,0,0,.18);
+    transform: translateX(-105%); transition: transform .25s ease; visibility: hidden;
+  }
+  .side.open { transform: none; visibility: visible; }
+  .side-head { display: flex; justify-content: space-between; align-items: center; height: 52px; position: sticky; top: 0; background: var(--bg); z-index: 1; }
+  .side-head b { font: 500 17px var(--f-mono); color: var(--accent); }
+  .side-head button { font: 13px var(--f-ui); color: var(--fg); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; cursor: pointer; }
+  .side-settings:not(:empty) { display: block; padding: 4px 0 14px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .side-settings .top-ctl { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0; }
+  .side-settings label { justify-content: space-between; }
+  .find kbd { display: none; }
+  .side a { line-height: 36px; font-size: 15px; }
+  main#page { padding: 20px 16px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .pager a { flex: 1; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .side { transition: none; } }
+
+/* page */
+.crumb { font: 500 11px/18px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+h1.title { margin: 2px 0 6px; font: 400 34px/42px var(--f-head); letter-spacing: -.015em; text-wrap: balance; }
+.lead { margin: 0 0 24px; max-width: 64ch; color: color-mix(in srgb, var(--fg) 82%, var(--bg)); text-wrap: pretty; }
+.page h2 { margin: 36px 0 10px; font: 400 22px/30px var(--f-head); }
+.page p { max-width: 68ch; }
+.page ul { max-width: 68ch; padding-left: 20px; }
+.page li { margin-bottom: 6px; }
+.play { display: grid; grid-template-columns: minmax(0, 1fr) 272px; border: 1px solid var(--line); border-radius: 8px; overflow: clip; }
+.play.solo { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 1100px) { .play { grid-template-columns: minmax(0, 1fr); } }
+.stage { position: relative; min-width: 0; background: var(--panel); padding: 28px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 190px; }
+.stage > * { max-width: 100%; }
+@media (max-width: 600px) { .stage { padding: 14px; } }
+.play-tabs { display: none; }
+@media (max-width: 860px) {
+  .play-tabs { display: flex; margin-bottom: 10px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; width: max-content; }
+  .play-tabs button { font: 14px var(--f-ui); color: var(--muted); background: none; border: 0; padding: 7px 18px; cursor: pointer; }
+  .play-tabs button[aria-selected="true"] { color: var(--fg); background: var(--mark); }
+  .play[data-view="preview"] > .ctls, .play[data-view="settings"] > .stage { display: none; }
+  .play[data-view="settings"] > .ctls { border-top: 0; }
+}
+.ctls { display: flex; flex-direction: column; gap: 14px; padding: 18px; background: var(--bg); border-left: 1px solid var(--line); min-width: 0; }
+@media (max-width: 1100px) { .ctls { border-left: 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+.ctls h3 { margin: 0; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.ctl { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 18px; }
+.ctl > label > span, .ctl > span { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); }
+.ctl output { color: var(--fg); font-variant-numeric: tabular-nums; }
+.ctl input[type="range"] { width: 100%; accent-color: var(--accent); }
+.ctl.check { flex-direction: row; align-items: center; gap: 8px; }
+.code { position: relative; margin-top: 16px; background: var(--code); border: 1px solid var(--line); border-radius: 8px; }
+.code pre { margin: 0; padding: 14px 16px; padding-right: 72px; overflow-x: auto; font: 13px/21px var(--f-mono); color: var(--fg); white-space: pre; tab-size: 2; }
+.code .c { color: var(--muted); }
+.code .copy { position: absolute; top: 8px; right: 8px; font: 12px var(--f-ui); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 10px; cursor: pointer; }
+.code-label { margin: 22px 0 0; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.ref-wrap { overflow-x: auto; }
+table.ref { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13px; line-height: 20px; }
+.ref th, .ref td { text-align: left; vertical-align: top; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); }
+.ref th { font-weight: 500; font-size: 11px; font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.ref td:first-child { white-space: nowrap; }
+.ref code, .page p code, .page li code, .lead code { font: 12.5px var(--f-mono); background: var(--code); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; }
+.grid-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
+.grid-links a { display: block; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; color: var(--fg); }
+.grid-links a:hover { background: var(--panel); }
+.grid-links b { display: block; font: 400 17px/24px var(--f-head); }
+.grid-links span { font-size: 13px; color: var(--muted); }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); }
+.pager a { text-decoration: none; font-size: 14px; }
+.pager small { display: block; font: 500 11px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+
+/* preview helpers */
+.col-stack { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; width: 100%; }
+.cap { font: 500 10.5px/16px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.figs { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0; max-width: none; }
+.figs b { color: var(--fg); font-weight: 500; }
+.kpi-n { font: 650 30px/1 var(--f-ui); letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+.up { color: var(--up); } .down { color: var(--down); }
+.note { color: var(--muted); font-size: 13.5px; }
+.err { color: var(--down); font-size: 13px; }
+.loading { color: var(--muted); font-size: 13px; }
+dl.facts { display: grid; grid-template-columns: auto 1fr; gap: 2px 18px; margin: 0; font-size: 13.5px; }
+dl.facts dt { color: var(--muted); font-family: var(--f-mono); font-size: 12px; line-height: 22px; }
+dl.facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* footer */
+.colophon { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 26px; align-items: baseline; }
+.colophon b { font-weight: 500; color: var(--fg); }
+.colophon .spacer { margin-left: auto; }
+</style>
 </head>
 <body>
 
-<div class="band masthead">
-  <div>
-    <nav>
-      <a href="./" aria-current="page">package-trends</a>
-      <a href="reference.html">Every option</a>
-      <a href="https://github.com/tbudin/package-trends">GitHub</a>
-      <span class="sep">v0.1.0 · unpublished</span>
-    </nav>
-    <h1>Download trends, <em>small enough for a footer</em></h1>
-    <p class="lede">
-      A package's npm downloads as a sparkline, a line of text, or a KPI block.
-      No dependencies, no stylesheet, and no chart library — 10.5 kB with the
-      React components.
-    </p>
+<header class="top">
+  <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="side">
+    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Menu</span>
+  </button>
+  <a class="brand" href="#intro"><b>package-trends</b><span id="version"></span></a>
+  <span class="here" id="here"></span>
+  <div class="top-ctl" id="settings" role="group" aria-label="Site settings">
+    <label for="g-pkg">Package <input type="text" id="g-pkg" value="react" size="12" autocomplete="off" spellcheck="false"></label>
+    <label for="g-period">Period <select id="g-period">
+      <option value="last-week">last week</option>
+      <option value="last-month" selected>last month</option>
+      <option value="last-year">last year</option>
+    </select></label>
   </div>
+</header>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="wrap">
+  <nav class="side" id="side" aria-label="Pages">
+    <div class="side-head"><b>package-trends</b><button type="button" id="side-close">Close</button></div>
+    <div class="side-settings" id="side-settings"></div>
+    <label class="find" for="find"><span class="sr">Find a page</span><input type="search" id="find" placeholder="Find a page" autocomplete="off"><kbd>/</kbd></label>
+    <div id="nav-list"></div>
+    <p class="nothing" id="nothing" hidden>Nothing matches. Try “gaps” or “compare”.</p>
+  </nav>
+  <main id="page" class="page"></main>
 </div>
-
-<main>
-
-  <div class="hero-chart">
-    <div id="hero" class="figure"><span class="note">Fetching react from npm…</span></div>
-    <div id="hero-sub" class="sub"></div>
-    <div id="hero-chart"></div>
-  </div>
-  <p class="note">Live from <code>api.npmjs.org</code>, fetched by this page as you loaded it.</p>
-
-  <h2>Install</h2>
-  <pre><code>npm install package-trends</code></pre>
-  <pre><code>import { PackageTrend } from "package-trends/react";
-
-&lt;PackageTrend package="react" /&gt;                 <span class="note">// sparkline</span>
-&lt;PackageTrend package="react" variant="text" /&gt;  <span class="note">// 954.5M downloads +3.8%</span>
-&lt;PackageTrend package="react" variant="kpi" /&gt;   <span class="note">// the number, the change, the chart</span></code></pre>
-
-  <h2>Three variants</h2>
-  <div class="specimens" id="variants"></div>
-
-  <h2>Render on the server</h2>
-  <p>
-    Fetch once where the page is built and pass it down. No visitor costs a
-    request, and the chart is in the first paint rather than appearing a moment
-    later.
-  </p>
-  <pre><code>import { fetchDownloads } from "package-trends";
-
-const data = await fetchDownloads("react", { period: "last-month" });
-return &lt;PackageTrend package="react" data={data} variant="kpi" /&gt;;</code></pre>
-
-  <h2>What it gets right</h2>
-  <div class="points">
-    <div class="point">
-      <h3>It repairs the days npm has no data for</h3>
-      <p>
-        The API answers <code>0</code> for a day it has not aggregated, and gives
-        you no way to tell that from a day nobody installed the package. A
-        sample of react carried seven of them in thirty. Taken literally they
-        understate the mean by a quarter, invert the weekday profile, and turn a
-        flat month into a fall. Interior gaps are interpolated and listed in
-        <code>gapDays</code>.
-      </p>
-    </div>
-    <div class="point">
-      <h3>Smoothing never touches the numbers</h3>
-      <p>
-        Daily counts swing threefold across the week, so the drawn line is a
-        7-day mean by default. Every figure beside it — total, average, peak,
-        change — comes from the raw series, so a smoothed chart cannot quietly
-        restate the total.
-      </p>
-    </div>
-    <div class="point">
-      <h3>The smooth curve cannot invent a value</h3>
-      <p>
-        <code>curve="smooth"</code> is monotone cubic, not a cardinal spline. A
-        cardinal spline overshoots a local extreme and draws a count below the
-        real low — below zero, where the low is near it. Between any two points
-        this curve stays within their values.
-      </p>
-    </div>
-    <div class="point">
-      <h3>It takes the colour and size of whatever surrounds it</h3>
-      <p>
-        The chart strokes in <code>currentColor</code> and the type is set in
-        <code>em</code>, so it inherits rather than imposing. Nothing ships a
-        stylesheet. The only two colours it would choose for itself — the rise
-        and the fall — are unset by default and inherit too.
-      </p>
-    </div>
-  </div>
-
-  <h2>Comparing packages</h2>
-  <p>
-    Four packages on one shared scale, and the same four each measured against
-    their own start. The first is literally true and close to useless.
-  </p>
-  <div class="two">
-    <figure>
-      <div id="cmp-abs"></div>
-      <figcaption><code>scale="absolute"</code> — react takes the top and the rest collapse onto the floor.</figcaption>
-    </figure>
-    <figure>
-      <div id="cmp-idx"></div>
-      <figcaption><code>scale="indexed"</code> — every line starts at 100, so the chart compares growth.</figcaption>
-    </figure>
-  </div>
-  <div id="cmp-legend" class="note"></div>
-
-  <h2>Reading the data</h2>
-  <p>
-    <code>analyse()</code> returns the figures you would need to write about a
-    package without looking at the chart: a least-squares fit with its r², compound
-    weekly growth, the weekday and weekend split, volatility with the weekly
-    cycle removed, spikes past two standard deviations, and a rising or falling
-    week streak.
-  </p>
-  <pre><code>const a = analyse(await fetchDownloads("react", { period: "last-year" }));
-
-a.direction;    <span class="note">// "rising" | "falling" | "flat"</span>
-a.confidence;   <span class="note">// "strong" | "moderate" | "weak", from the r²</span>
-a.weekendRatio; <span class="note">// 0.61 for react — weekday-driven use</span></code></pre>
-  <p class="note">
-    The field to build a sentence on is <code>confidence</code>. A slope alone
-    will cheerfully report that react is falling by 390,000 a day; the r² of
-    0.05 behind it is what says the month was flat and the slope is noise.
-  </p>
-
-  <h2>Everything else</h2>
-  <p>
-    Column and band charts, point marks, a fixed domain, dashes and fill
-    patterns, hover with keyboard support, monthly buckets, explicit date
-    ranges, number formatting through <code>Intl</code>.
-    <a href="reference.html">Every option, rendered against live data →</a>
-  </p>
-
-  <footer>
-    MIT, © Plain Matter Pte Ltd. Written by Thomas Budin.
-    <a href="https://github.com/tbudin/package-trends">Source on GitHub</a>.
-  </footer>
-
-</main>
 
 <script type="module">
 import {
-  fetchDownloads, computeTrend, compare, sparklineSvg,
-  formatCount, formatChange, describeTrend,
+  fetchDownloads, fetchMany, computeTrend, analyse, compare,
+  sparklineSvg, toBands, formatCount, formatChange, formatExact,
+  formatWeekday, describeTrend,
 } from "./assets/package-trends.js";
 
-const say = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+const VERSION = "0.1.0";
+const L = "en-US";
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-try {
-  const range = await fetchDownloads("react", { period: "last-month" });
-  const trend = computeTrend(range);
+/* ---------- global settings: which package, over what period ---------- */
 
-  say("hero", `<span class="n">${formatCount(trend.total, "en-US")}</span>` +
-    `<span class="chg">${formatChange(trend.changeRatio, "en-US")}</span>`);
-  say("hero-sub", `react · ${trend.start} to ${trend.end}` +
-    (trend.gapDays.length ? ` · ${trend.gapDays.length} days npm had no data for, repaired` : ""));
-  say("hero-chart", sparklineSvg(trend.values, {
-    width: 800, height: 90, fluid: true, dot: true, strokeWidth: 2,
-    fill: "color-mix(in oklab, currentColor 10%, transparent)",
-    label: describeTrend(trend, "en-US"),
+const G = { pkg: "react", period: "last-month" };
+const cache = new Map();
+const load = () => {
+  const key = `${G.pkg}|${G.period}`;
+  if (!cache.has(key)) cache.set(key, fetchDownloads(G.pkg, { period: G.period }));
+  return cache.get(key);
+};
+
+const RIVALS = ["react", "vue", "svelte", "preact"];
+let rivalsPromise = null;
+const loadRivals = () => (rivalsPromise ??= fetchMany(RIVALS, (n) => fetchDownloads(n, { period: "last-month" })));
+
+/* A fixed series for the pages that illustrate layout rather than data. */
+const SAMPLE = [41, 44, 43, 47, 52, 49, 55, 58, 56, 61, 64, 62, 68, 71, 74];
+
+/* ---------- the pages ---------- */
+
+/* A fluid chart keeps the viewBox it is given and stretches to the container,
+   so the width here is really an aspect ratio against the height: leave it at
+   the default 300 and a wide box scales the stroke up with it. */
+const chart = (values, options) => sparklineSvg(values, { width: 760, fluid: true, ...options });
+
+const figs = (t) => `<p class="figs"><b>${formatCount(t.total, L)}</b> downloads ·
+  <span class="${t.changeRatio >= 0 ? "up" : "down"}">${formatChange(t.changeRatio, L)}</span> ·
+  ${t.start} to ${t.end}${t.gapDays.length ? ` · ${t.gapDays.length} day${t.gapDays.length === 1 ? "" : "s"} repaired` : ""}</p>`;
+
+const PAGES = [
+  {
+    id: "intro", group: "Start", title: "Download trends, small enough for a footer",
+    keywords: "install start hello intro",
+    lead: `A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — <code>9.1 kB</code> for the core and <code>10.5 kB</code> with the React components, gzipped as a bundler ships them.`,
+    render: (s, d) => {
+      const t = computeTrend(d);
+      return `<div class="col-stack">
+        <div style="width:100%">${chart(t.values, { height: 90, dot: true, strokeWidth: 2, fill: "color-mix(in oklab, currentColor 10%, transparent)", label: describeTrend(t, L) })}</div>
+        ${figs(t)}</div>`;
+    },
+    code: () => `npm install package-trends`,
+    after: () => `<h2>Three shapes, one component</h2>
+      <div class="grid-links">
+        <a href="#sparkline"><b>Sparkline</b><span>Shape only, for a nav or a table cell.</span></a>
+        <a href="#text"><b>Text</b><span>One line, inside a sentence.</span></a>
+        <a href="#kpi"><b>KPI</b><span>The number leads, the chart confirms.</span></a>
+      </div>
+      <h2>The npm API needs no key</h2>
+      <p>It sends <code>access-control-allow-origin: *</code>, so this works straight from a browser
+      with no proxy of your own. Every chart on this site was fetched by your browser as you loaded
+      it — change the package in the header and watch them all follow.</p>`,
+  },
+  {
+    id: "sparkline", group: "Variants", title: "Sparkline", keywords: "chart line default shape",
+    lead: `The default. Shape only — no axes, no labels, nothing but the line — for a nav, a list row or a table cell.`,
+    state: { w: 210, h: 44, sw: 1.5, dot: true, fill: false },
+    controls: [
+      { k: "w", type: "range", label: "Width", min: 60, max: 420, step: 10, unit: "px" },
+      { k: "h", type: "range", label: "Height", min: 14, max: 120, step: 2, unit: "px" },
+      { k: "sw", type: "range", label: "Stroke", min: 0.5, max: 4, step: 0.25 },
+      { k: "dot", type: "toggle", label: "Dot on the last point" },
+      { k: "fill", type: "toggle", label: "Fill the area" },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d);
+      return sparklineSvg(t.values, {
+        width: s.w, height: s.h, dot: s.dot, strokeWidth: s.sw,
+        fill: s.fill ? "color-mix(in oklab, currentColor 12%, transparent)" : undefined,
+        label: describeTrend(t, L),
+      });
+    },
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  width={${s.w}} height={${s.h}}${s.sw !== 1.5 ? `\n  strokeWidth={${s.sw}}` : ""}${s.dot ? "\n  dot" : ""}${s.fill ? `\n  fill="color-mix(in oklab, currentColor 12%, transparent)"` : ""}\n/>`,
+  },
+  {
+    id: "text", group: "Variants", title: "Text", keywords: "inline sentence count change footer",
+    lead: `One line: the count, the word, the change. It sets no colour of its own unless you ask, so it reads as part of the sentence around it.`,
+    state: { colour: true, word: true, weight: "500" },
+    controls: [
+      { k: "colour", type: "toggle", label: "Colour the change" },
+      { k: "word", type: "toggle", label: "Show “downloads”" },
+      { k: "weight", type: "select", label: "Change weight", options: [["400", "regular"], ["500", "medium"], ["650", "bold"]] },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d);
+      const cls = s.colour ? ` class="${t.changeRatio >= 0 ? "up" : "down"}"` : "";
+      return `<p style="font-size:18px;margin:0;max-width:none">
+        <strong style="font-variant-numeric:tabular-nums">${formatCount(t.total, L)}</strong>${s.word ? " downloads" : ""}
+        <span${cls} style="font-weight:${s.weight};font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span></p>`;
+    },
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  variant="text"${s.colour ? `\n  colors={{ up: "#15803d", down: "#b3261e" }}` : ""}${s.weight !== "500" ? `\n  styles={{ change: { fontWeight: ${s.weight} } }}` : ""}\n/>`,
+    after: () => `<p class="note">Unset, the change inherits the surrounding colour — which is what keeps the
+      component out of a host's palette. The <code>data-direction</code> attribute is on the element
+      either way, so a stylesheet can colour it instead of a prop.</p>`,
+  },
+  {
+    id: "kpi", group: "Variants", title: "KPI", keywords: "tile dashboard card number block",
+    lead: `A tile. The number leads, the change qualifies it, and the chart is there to show the number is not a fluke.`,
+    state: { h: 40, fill: true, name: true },
+    controls: [
+      { k: "h", type: "range", label: "Chart height", min: 20, max: 96, step: 2, unit: "px" },
+      { k: "fill", type: "toggle", label: "Fill the area" },
+      { k: "name", type: "toggle", label: "Show the package name" },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d);
+      return `<div style="width:min(300px,100%)">
+        <div style="display:flex;align-items:baseline;gap:9px">
+          <span class="kpi-n">${formatCount(t.total, L)}</span>
+          <span class="${t.changeRatio >= 0 ? "up" : "down"}" style="font-size:13px;font-weight:500;font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span>
+        </div>
+        ${s.name ? `<div class="cap" style="margin:7px 0 11px">${esc(G.pkg)}</div>` : `<div style="height:11px"></div>`}
+        ${chart(t.values, { height: s.h, fill: s.fill ? "color-mix(in oklab, currentColor 10%, transparent)" : undefined, label: describeTrend(t, L) })}
+      </div>`;
+    },
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  variant="kpi"\n  height={${s.h}}${s.fill ? `\n  fill="color-mix(in oklab, currentColor 10%, transparent)"` : ""}\n/>`,
+  },
+  {
+    id: "curves", group: "Charts", title: "Curves", keywords: "smooth step linear monotone cubic line",
+    lead: `How the line joins its points. <code>smooth</code> is monotone cubic, not a cardinal spline: between any two points it stays within their values, so it can never draw a count that never happened.`,
+    state: { curve: "linear", sw: 1.75, dash: "" },
+    controls: [
+      { k: "curve", type: "select", label: "Curve", options: ["linear", "smooth", "step", "step-before"] },
+      { k: "sw", type: "range", label: "Stroke", min: 0.5, max: 4, step: 0.25 },
+      { k: "dash", type: "select", label: "Dash", options: [["", "solid"], ["5 3", "5 3"], ["2 2", "2 2"], ["7 2 2 2", "7 2 2 2"]] },
+    ],
+    render: (s, d) => chart(computeTrend(d).values, {
+      height: 110, curve: s.curve, strokeWidth: s.sw, dot: true,
+      strokeDasharray: s.dash || undefined,
+      fill: "color-mix(in oklab, currentColor 8%, transparent)",
+    }),
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  curve="${s.curve}"${s.dash ? `\n  strokeDasharray="${s.dash}"` : ""}\n/>`,
+    after: () => `<h2>Why not a cardinal spline</h2>
+      <p>A cardinal spline overshoots a local extreme to keep its curvature smooth. On a download count
+      that means drawing a dip below the real low — and near zero, below zero. A reader cannot tell an
+      invented value from a real one, so the curve has to be one that cannot invent them.</p>`,
+  },
+  {
+    id: "column", group: "Charts", title: "Columns", keywords: "bar chart discrete days aggregate",
+    lead: `Discrete days rather than a continuous line. Columns are anchored at zero, which is the honest baseline for a count.`,
+    state: { h: 90, aggregate: "day" },
+    controls: [
+      { k: "h", type: "range", label: "Height", min: 30, max: 160, step: 5, unit: "px" },
+      { k: "aggregate", type: "select", label: "Bucket", options: [["day", "day"], ["week", "week"], ["month", "month"]] },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d, s.aggregate === "day" ? {} : { aggregate: s.aggregate });
+      return chart(t.values, { chart: "column", height: s.h, fill: "currentColor" });
+    },
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  chart="column"${s.aggregate !== "day" ? `\n  aggregate="${s.aggregate}"` : ""}\n/>`,
+    after: () => `<p class="note">Thirty days of a busy package, anchored at zero, draws thirty nearly identical
+      bars. <code>aggregate="week"</code> gives four or five that actually differ — columns want fewer,
+      fatter bars than a line does.</p>`,
+  },
+  {
+    id: "band", group: "Charts", title: "Bands", keywords: "range high low spread candlestick ohlc",
+    lead: `Each bucket's low, mean and high, drawn as a range with the mean marked.`,
+    state: { size: 7, h: 110 },
+    controls: [
+      { k: "size", type: "range", label: "Days per band", min: 2, max: 14, step: 1 },
+      { k: "h", type: "range", label: "Height", min: 50, max: 180, step: 5, unit: "px" },
+    ],
+    render: (s, d) => {
+      const bands = toBands(computeTrend(d).points, s.size);
+      return chart(bands.map((b) => b.mean), { chart: "band", bands, height: s.h });
+    },
+    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  chart="band"\n  bandSize={${s.size}}\n/>`,
+    after: () => `<h2>Why not candlesticks</h2>
+      <p>A candlestick needs an open and a close — a price at the start of the period and a price at the
+      end. A day's downloads is one number. Borrowing the shape would mean inventing two of its four
+      values, so the band shows what the data has: the spread, and the middle.</p>`,
+  },
+  {
+    id: "marks", group: "Charts", title: "Marks and axis", keywords: "dot peak trough annotate point zero",
+    lead: `Points worth calling out, and a rule at zero where zero is inside the range.`,
+    state: { last: true, peak: true, trough: false, axis: false },
+    controls: [
+      { k: "last", type: "toggle", label: "Last point" },
+      { k: "peak", type: "toggle", label: "Peak" },
+      { k: "trough", type: "toggle", label: "Trough" },
+      { k: "axis", type: "toggle", label: "Zero rule (forces domain)" },
+    ],
+    render: (s, d) => {
+      const mark = [s.last && "last", s.peak && "peak", s.trough && "trough"].filter(Boolean);
+      return chart(computeTrend(d).values, {
+        height: 110, mark, axis: s.axis, domain: s.axis ? "zero" : "auto",
+        markColor: { peak: "var(--up)", trough: "var(--down)" },
+        fill: "color-mix(in oklab, currentColor 8%, transparent)",
+      });
+    },
+    code: (s) => {
+      const mark = [s.last && '"last"', s.peak && '"peak"', s.trough && '"trough"'].filter(Boolean);
+      return `<PackageTrend\n  package="${G.pkg}"${mark.length ? `\n  mark={[${mark.join(", ")}]}` : ""}${s.axis ? `\n  axis domain="zero"` : ""}\n/>`;
+    },
+    after: () => `<p class="note"><code>axis</code> only shows for data that crosses zero, which downloads never
+      do — against <code>domain="auto"</code> the rule lands on the bottom edge and is invisible. It is
+      there for a derived series, such as a day-over-day change, where zero sits in the middle.</p>`,
+  },
+  {
+    id: "size", group: "Scale", title: "Size", keywords: "width height em fluid responsive scale inline",
+    lead: `A number is pixels. A CSS length leaves the <code>viewBox</code> alone and renders at that size instead, so a chart set in <code>em</code> scales with the text it sits in.`,
+    state: { mode: "em", px: 200, em: 8, text: 15 },
+    controls: [
+      { k: "mode", type: "select", label: "Width given as", options: [["px", "pixels"], ["em", "em"], ["pc", "100%"]] },
+      { k: "px", type: "range", label: "Pixels", min: 60, max: 420, step: 10, unit: "px" },
+      { k: "em", type: "range", label: "Em", min: 3, max: 20, step: 0.5, unit: "em" },
+      { k: "text", type: "range", label: "Surrounding text", min: 11, max: 30, step: 1, unit: "px" },
+    ],
+    render: (s) => {
+      const width = s.mode === "px" ? s.px : s.mode === "em" ? `${s.em}em` : "100%";
+      const height = s.mode === "px" ? 40 : s.mode === "em" ? "1.6em" : 40;
+      return `<div style="font-size:${s.text}px;width:100%;text-align:center;line-height:1.7">
+        Downloads have been moving
+        ${sparklineSvg(SAMPLE, { width, height, dot: true, attrs: { style: "display:inline-block;vertical-align:-.2em" } })}
+        all month.</div>`;
+    },
+    code: (s) => s.mode === "px"
+      ? `<PackageTrend package="${G.pkg}" width={${s.px}} height={40} />`
+      : s.mode === "em"
+        ? `<PackageTrend package="${G.pkg}" width="${s.em}em" height="1.6em" />`
+        : `<PackageTrend package="${G.pkg}" fluid height={40} />`,
+    after: () => `<p class="note">A chart never grows past its container either way: one wider than its box
+      scales down with its aspect ratio kept, so it cannot give the page a horizontal scrollbar.</p>`,
+  },
+  {
+    id: "domain", group: "Scale", title: "Domain", keywords: "scale compare y-range zero auto fixed",
+    lead: `The y-range the values are laid out across. <code>auto</code> runs from the series' own low to its own high — the sparkline convention. A fixed pair is the only way two charts side by side can be compared.`,
+    state: { domain: "auto" },
+    controls: [{ k: "domain", type: "select", label: "Domain", options: [["auto", "auto"], ["zero", "zero"], ["fixed", "fixed pair"]] }],
+    render: (s, d) => {
+      const t = computeTrend(d);
+      const dom = s.domain === "fixed" ? [0, Math.max(...t.values) * 1.35] : s.domain;
+      return `<div class="col-stack">
+        <div style="width:100%">${chart(t.values, { height: 100, domain: dom, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>
+        <p class="figs">low <b>${formatCount(t.trough.downloads, L)}</b> · high <b>${formatCount(t.peak.downloads, L)}</b></p></div>`;
+    },
+    code: (s) => s.domain === "fixed"
+      ? `<PackageTrend package="${G.pkg}" domain={[0, 40_000_000]} />`
+      : `<PackageTrend package="${G.pkg}" domain="${s.domain}" />`,
+    after: () => `<p class="note">Without a fixed domain a package with a thousand downloads draws exactly the
+      same picture as one with a million. That is fine alone and misleading in a row.</p>`,
+  },
+  {
+    id: "periods", group: "Data", title: "Periods and smoothing", keywords: "week month year range between aggregate smooth",
+    lead: `A named period, or an explicit pair of dates. Long periods bucket into whole weeks or months, measured back from the latest day.`,
+    state: { aggregate: "day", smooth: 7 },
+    controls: [
+      { k: "aggregate", type: "select", label: "Bucket", options: [["day", "day"], ["week", "week"], ["month", "month"]] },
+      { k: "smooth", type: "range", label: "Smoothing window", min: 1, max: 14, step: 1, unit: " d" },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d, { ...(s.aggregate === "day" ? {} : { aggregate: s.aggregate }), smooth: s.smooth });
+      return `<div class="col-stack"><div style="width:100%">${chart(t.values, { height: 110, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>${figs(t)}</div>`;
+    },
+    code: (s) => `import { between } from "package-trends";\n\n<PackageTrend package="${G.pkg}" period="${G.period}"${s.aggregate !== "day" ? ` aggregate="${s.aggregate}"` : ""}${s.smooth !== 7 ? ` smooth={${s.smooth}}` : ""} />\n<PackageTrend package="${G.pkg}" period={between("2026-06-01", "2026-08-31")} />`,
+    after: () => `<h2>Smoothing never touches the numbers</h2>
+      <p>Daily counts swing threefold across the week, so the drawn line is a 7-day mean by default. Every
+      figure beside it — total, average, peak, change — comes from the raw series, so a smoothed chart
+      cannot quietly restate the total. Never sum <code>trend.values</code>: it is the drawing, not the
+      data.</p>`,
+  },
+  {
+    id: "gaps", group: "Data", title: "Gaps in npm's data", keywords: "zero missing repair interpolate npm holes",
+    lead: `npm answers <code>0</code> for a day it has not aggregated, and gives you no way to tell that from a day nobody installed the package. Taken literally those zeros are not a small error.`,
+    state: { gaps: "fill" },
+    controls: [{ k: "gaps", type: "select", label: "Policy", options: [["fill", "fill — the default"], ["zero", "zero — take them literally"]] }],
+    render: (s, d) => {
+      const a = analyse(d, { gaps: s.gaps });
+      const t = computeTrend(d, { gaps: s.gaps });
+      return `<div class="col-stack">
+        <div style="width:100%">${chart(t.values, { height: 110, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>
+        <dl class="facts">
+          <dt>mean/day</dt><dd>${formatExact(Math.round(a.mean), L)}</dd>
+          <dt>direction</dt><dd>${a.direction}</dd>
+          <dt>quietest</dt><dd>${formatWeekday(a.quietestWeekday.weekday, L)}</dd>
+          <dt>weekend ratio</dt><dd>${a.weekendRatio.toFixed(2)}</dd>
+          <dt>days npm missed</dt><dd>${computeTrend(d).gapDays.length} of ${t.points.length}</dd>
+        </dl></div>`;
+    },
+    code: (s) => `<PackageTrend package="${G.pkg}" gaps="${s.gaps}" />\n\n// the days npm had no data for\nconst { gapDays } = computeTrend(await fetchDownloads("${G.pkg}"));`,
+    after: () => `<p>Switch the policy above and watch every figure move. On a sample of <code>react</code> seven
+      of thirty days came back zero: the mean fell by a quarter, the weekday profile inverted, and a flat
+      month read as a falling one. Interior zeros are interpolated from their neighbours and listed in
+      <code>gapDays</code>, so you can say so where it matters.</p>`,
+  },
+  {
+    id: "analyse", group: "Data", title: "analyse()", keywords: "statistics growth fit r2 volatility weekday streak",
+    lead: `The figures you would need to write about a package without looking at the chart.`,
+    render: (s, d) => {
+      const a = analyse(d);
+      return `<dl class="facts" style="font-size:14px">
+        <dt>direction</dt><dd>${a.direction} <span class="note">(${a.confidence}, r² ${a.fit.rSquared.toFixed(2)})</span></dd>
+        <dt>weekly growth</dt><dd>${(a.weeklyGrowth * 100).toFixed(2)}%</dd>
+        <dt>annualised</dt><dd>${(a.annualisedGrowth * 100).toFixed(1)}%</dd>
+        <dt>mean</dt><dd>${formatExact(Math.round(a.mean), L)}</dd>
+        <dt>median</dt><dd>${formatExact(Math.round(a.median), L)}</dd>
+        <dt>busiest day</dt><dd>${formatWeekday(a.busiestWeekday.weekday, L)}</dd>
+        <dt>quietest day</dt><dd>${formatWeekday(a.quietestWeekday.weekday, L)}</dd>
+        <dt>weekend ratio</dt><dd>${a.weekendRatio.toFixed(2)}</dd>
+        <dt>volatility</dt><dd>${(a.volatility * 100).toFixed(1)}%</dd>
+        <dt>spikes</dt><dd>${a.spikes.length}</dd>
+        <dt>streak</dt><dd>${a.streak.weeks} ${a.streak.direction} week${a.streak.weeks === 1 ? "" : "s"}</dd>
+      </dl>`;
+    },
+    code: () => `import { analyse, fetchDownloads } from "package-trends";\n\nconst a = analyse(await fetchDownloads("${G.pkg}", { period: "${G.period}" }));\n\na.direction;    // "rising" | "falling" | "flat"\na.confidence;   // "strong" | "moderate" | "weak", from the r²\na.weekendRatio; // weekday-driven use sits near 0.6`,
+    after: () => `<p>The field to build a sentence on is <code>confidence</code>. A slope alone will cheerfully
+      report that react is falling by 390,000 a day; the r² behind it is what says the month was flat and
+      the slope is noise.</p>`,
+  },
+  {
+    id: "compare", group: "Compare", title: "Comparing packages", keywords: "versus rivals indexed absolute multi spread",
+    lead: `Several packages on one chart. An absolute scale only reads when the packages are of a like size — and they rarely are.`,
+    state: { scale: "indexed" }, needs: "rivals",
+    controls: [{ k: "scale", type: "select", label: "Scale", options: [["absolute", "absolute"], ["indexed", "indexed"]] }],
+    render: (s, d, extra) => {
+      if (!extra) return `<p class="loading">Fetching ${RIVALS.join(", ")}…</p>`;
+      const c = compare(extra, { scale: s.scale });
+      const colours = ["#3b82f6", "#f97316", "#14b8a6", "#a855f7"];
+      const dashes = ["", "5 3", "2 2", "7 2 2 2"];
+      const lines = c.series.map((series, i) => sparklineSvg(series.values, {
+        width: 760, height: 150, domain: c.domain, stroke: colours[i],
+        strokeDasharray: dashes[i] || undefined, strokeWidth: 1.75,
+      }).replace(/^<svg[^>]*>|<\/svg>$/g, "")).join("");
+      return `<div style="width:100%">
+        <svg viewBox="0 0 760 150" role="img" aria-label="${esc(RIVALS.join(", "))} compared, ${s.scale}" style="display:block;width:100%;height:auto">${lines}</svg>
+        <p class="figs" style="margin-top:14px">${c.series.map((series, i) =>
+          `<span style="display:inline-flex;align-items:center;gap:.4em;margin-right:1.3em">
+            <svg width="20" height="8" aria-hidden="true"><path d="M0 4H20" stroke="${colours[i]}" stroke-width="1.75"${dashes[i] ? ` stroke-dasharray="${dashes[i]}"` : ""} stroke-linecap="round"/></svg>${esc(series.package)}</span>`).join("")}
+        <br style="line-height:2.4">spread <b>${c.spread.toFixed(1)}×</b> · largest <b>${esc(c.leader)}</b></p></div>`;
+    },
+    code: (s) => `import { PackageComparison } from "package-trends/compare";\n\n<PackageComparison\n  packages={["react", "vue", "svelte", "preact"]}\n  scale="${s.scale}"\n/>`,
+    after: () => `<p>On <code>absolute</code> react takes the top and the rest collapse onto the floor: the chart
+      is literally true and tells you nothing. <code>indexed</code> restates each series against its own
+      start, so every line begins at 100 and the chart compares growth instead of size. The
+      <code>spread</code> on the comparison is what tells you which one to use.</p>`,
+  },
+  {
+    id: "server", group: "Using it", title: "On the server", keywords: "ssr next prefetch data prop static core",
+    lead: `Fetch once where the page is built and pass it down. No visitor costs a request, and the chart is in the first paint rather than appearing a moment later.`,
+    render: (s, d) => {
+      const t = computeTrend(d);
+      return `<div class="col-stack"><div style="width:100%">${chart(t.values, { height: 80, dot: true })}</div>
+        <p class="note">This one was fetched by your browser. On a server-rendered page it would have
+        arrived with the HTML.</p></div>`;
+    },
+    code: () => `import { fetchDownloads } from "package-trends";\nimport { PackageTrend } from "package-trends/react";\n\nconst data = await fetchDownloads("${G.pkg}", { period: "${G.period}" });\n\nreturn <PackageTrend package="${G.pkg}" data={data} variant="kpi" />;`,
+    after: () => `<h2>Or without React at all</h2>
+      <div class="code"><pre>import { fetchDownloads, computeTrend, sparklineSvg } from "package-trends";
+
+const trend = computeTrend(await fetchDownloads("react"));
+const svg = sparklineSvg(trend.values, { width: 200, height: 40, dot: true });</pre></div>
+      <p class="note">The core is the whole library and the React entry is a wrapper over it. Every chart on
+      this site is drawn by <code>sparklineSvg</code>, which is the same geometry the components use — this
+      page loads no framework at all.</p>`,
+  },
+  {
+    id: "styling", group: "Using it", title: "Styling", keywords: "colour font theme css inherit dark currentcolor",
+    lead: `Nothing ships a stylesheet. The chart strokes in <code>currentColor</code> and the type is set in <code>em</code>, so it inherits rather than imposes.`,
+    state: { bg: "paper", size: 15 },
+    controls: [
+      { k: "bg", type: "select", label: "Surface", options: [["paper", "the page"], ["dark", "dark panel"], ["accent", "accent"]] },
+      { k: "size", type: "range", label: "Text size", min: 11, max: 28, step: 1, unit: "px" },
+    ],
+    render: (s, d) => {
+      const t = computeTrend(d);
+      const skin = s.bg === "dark" ? "background:#15151a;color:#ececef"
+        : s.bg === "accent" ? "background:var(--accent);color:#fff"
+        : "background:var(--bg);color:var(--fg)";
+      return `<div style="${skin};padding:24px 28px;border-radius:10px;font-size:${s.size}px;width:min(420px,100%)">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <strong style="font-size:1.7em;font-variant-numeric:tabular-nums">${formatCount(t.total, L)}</strong>
+          <span style="opacity:.75;font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span>
+        </div>
+        <div style="margin-top:.7em">${chart(t.values, { height: "2.6em", dot: true })}</div></div>`;
+    },
+    code: () => `/* the only two colours it would choose for itself */\n.pt-change[data-direction="up"]   { color: #15803d; }\n.pt-change[data-direction="down"] { color: #b3261e; }`,
+    after: () => `<p class="note">The same markup on three surfaces, with nothing changed but the surrounding text
+      colour. A component that ships its own palette fights every site it lands on.</p>`,
+  },
+  {
+    id: "accessibility", group: "Using it", title: "Accessibility", keywords: "a11y screen reader label aria keyboard colour",
+    lead: `A sparkline carries nothing a non-sighted reader can use, so every chart gets a sentence instead.`,
+    render: (s, d) => {
+      const t = computeTrend(d);
+      return `<div class="col-stack">
+        <div style="width:100%">${chart(t.values, { height: 70, dot: true, label: describeTrend(t, L) })}</div>
+        <div><div class="cap">what a screen reader reads</div>
+        <p style="margin:7px 0 0">${esc(describeTrend(t, L))}</p></div></div>`;
+    },
+    code: () => `<PackageTrend package="${G.pkg}" label="Weekly pulls from npm" />\n<PackageTrend package="${G.pkg}" label={(t) => \`\${t.total.toLocaleString()} downloads\`} />`,
+    after: () => `<ul>
+      <li>The sentence is the SVG's <code>&lt;title&gt;</code>, and <code>label</code> replaces it.</li>
+      <li>Red and green never carry the meaning alone — the sign is always there, which is what a reader
+      with a colour deficiency goes by.</li>
+      <li><code>interactive</code> makes the chart focusable and arrow-key navigable, and announces the day
+      under the cursor through a live region.</li>
+      <li>A failed fetch renders nothing by default. A download count is never worth breaking a footer
+      over.</li></ul>`,
+  },
+  {
+    id: "reference", group: "Reference", title: "Every option", keywords: "api props reference table exports size",
+    lead: `The full surface. Three entry points, and your bundler drops whatever you do not import.`,
+    hidePlay: true,
+    code: () => `import { … } from "package-trends";          // 9.1 kB gzipped\nimport { … } from "package-trends/react";    // 10.5 kB\nimport { … } from "package-trends/compare";  // 12.4 kB`,
+    after: () => `<h2>Props</h2><div class="ref-wrap"><table class="ref">
+      <tr><th>Prop</th><th>Type</th><th>What it does</th></tr>${[
+        ["package", "string", "The package name, scoped names included."],
+        ["data", "DownloadRange", "A range already fetched. When set, nothing is requested."],
+        ["period", "Period | between()", '"last-week", "last-month", "last-year", or an explicit pair.'],
+        ["variant", '"sparkline" | "text" | "kpi"', "Default sparkline."],
+        ["chart", '"line" | "column" | "band"', "The chart form."],
+        ["curve", '"linear" | "smooth" | "step" | "step-before"', "How the line joins its points."],
+        ["domain", '[number, number] | "auto" | "zero"', "The y-range the values are laid out across."],
+        ["aggregate", '"week" | "month"', "Buckets whole weeks or months back from the latest day."],
+        ["smooth", "number", "Moving-average window for the drawn line. Default 7."],
+        ["gaps", '"fill" | "zero"', "What to do with the days npm has no data for. Default fill."],
+        ["width / height", "number | string", "Pixels, or a CSS length that scales with the text."],
+        ["fluid", "boolean", "Fill the container's width rather than sit at a natural size."],
+        ["mark / markColor", "MarkKind[] / record", "Points to call out: last, peak, trough."],
+        ["axis / axisColor", "boolean / string", "A rule at zero where zero is inside the domain."],
+        ["fill / fillPattern", "string / FillPattern", "Area or bar fill, flat or patterned."],
+        ["stroke / strokeWidth / strokeDasharray", "string / number / string", "The line itself."],
+        ["colors", "{ up, down }", "The rise and fall figures. Unset, they inherit."],
+        ["styles", "record", "Inline styles per part: weight, display, spacing."],
+        ["numberFormat / percentFormat", "Intl.NumberFormatOptions", "Merged over the defaults."],
+        ["locale", "string", "Passed to Intl."],
+        ["label", "string | (trend) => string", "The accessible name for the chart."],
+        ["interactive / onActivePoint", "boolean / fn", "Pointer and keyboard inspection."],
+        ["fallback / renderError", "ReactNode / fn", "While loading, and when it fails."],
+        ["svgProps / pathProps", "record", "Anything else the elements should carry."],
+        ["children", "(state) => ReactNode", "Replaces the built-in markup entirely."],
+      ].map(([a, b, c]) => `<tr><td><code>${esc(a)}</code></td><td><code>${esc(b)}</code></td><td>${esc(c)}</td></tr>`).join("")}
+      </table></div>
+      <h2>Core exports</h2><div class="ref-wrap"><table class="ref">
+      <tr><th>Export</th><th>What it does</th></tr>${[
+        ["fetchDownloads(name, options)", "One package's range from the npm API."],
+        ["fetchMany(names, fetchOne)", "Several at once, asking for each distinct name only once."],
+        ["computeTrend(range, options)", "Totals, peak, trough and change from the raw series, plus the shaped values to draw."],
+        ["analyse(range, options)", "Growth, fit and r², weekday profile, volatility, spikes, streak."],
+        ["compare(ranges, options)", "Several ranges on one scale, absolute or indexed."],
+        ["sparklineSvg(values, options)", "A standalone SVG string, for anywhere outside React."],
+        ["toWeekly / toMonthly / toBands", "Bucketing."],
+        ["fillGaps / applyGaps", "The zero repair, on its own."],
+        ["formatCount / formatChange / formatExact / formatWeekday", "Intl-backed formatting."],
+        ["describeTrend(trend, locale)", "The sentence a screen reader gets."],
+        ["between(from, to)", "An explicit date range."],
+      ].map(([a, b]) => `<tr><td><code>${esc(a)}</code></td><td>${esc(b)}</td></tr>`).join("")}
+      </table></div>`,
+  },
+];
+
+/* ---------- navigation ---------- */
+
+const GROUPS = [...new Set(PAGES.map((p) => p.group))];
+const list = document.getElementById("nav-list");
+list.innerHTML = GROUPS.map((g) =>
+  `<div class="nav-group"><h4>${esc(g)}</h4>` +
+  PAGES.filter((p) => p.group === g).map((p) =>
+    `<a href="#${p.id}" data-id="${p.id}" data-words="${esc((p.title + " " + p.group + " " + (p.keywords || "")).toLowerCase())}">${esc(p.title)}</a>`).join("") +
+  `</div>`).join("");
+
+const find = document.getElementById("find");
+const nothing = document.getElementById("nothing");
+find.addEventListener("input", () => {
+  const q = find.value.trim().toLowerCase();
+  let hits = 0;
+  for (const a of list.querySelectorAll("a")) {
+    const on = !q || a.dataset.words.includes(q);
+    a.hidden = !on;
+    if (on) hits++;
+  }
+  for (const g of list.querySelectorAll(".nav-group")) {
+    g.hidden = ![...g.querySelectorAll("a")].some((a) => !a.hidden);
+  }
+  nothing.hidden = hits > 0;
+});
+addEventListener("keydown", (e) => {
+  if (e.key === "/" && e.target === document.body) { e.preventDefault(); find.focus(); }
+});
+
+const side = document.getElementById("side");
+const scrim = document.getElementById("scrim");
+const menuBtn = document.getElementById("menu-btn");
+const setMenu = (open) => {
+  side.classList.toggle("open", open);
+  scrim.hidden = !open;
+  menuBtn.setAttribute("aria-expanded", String(open));
+};
+menuBtn.addEventListener("click", () => setMenu(!side.classList.contains("open")));
+scrim.addEventListener("click", () => setMenu(false));
+document.getElementById("side-close").addEventListener("click", () => setMenu(false));
+
+/* On a phone the settings move into the drawer, where there is room for them. */
+const settings = document.getElementById("settings");
+const sideSettings = document.getElementById("side-settings");
+const placeSettings = () => {
+  const narrow = matchMedia("(max-width: 860px)").matches;
+  const home = narrow ? sideSettings : document.querySelector(".top");
+  if (settings.parentElement !== home) home.appendChild(settings);
+};
+placeSettings();
+addEventListener("resize", placeSettings);
+
+document.getElementById("version").textContent = `v${VERSION}`;
+
+/* ---------- controls ---------- */
+
+function controlHtml(c, v) {
+  const id = `c-${c.k}`;
+  if (c.type === "select") {
+    const opts = c.options.map((o) => (Array.isArray(o) ? o : [o, o]));
+    return `<div class="ctl"><label for="${id}"><span>${esc(c.label)}</span></label><select id="${id}" data-k="${c.k}">${
+      opts.map(([val, lab]) => `<option value="${esc(val)}"${String(val) === String(v) ? " selected" : ""}>${esc(lab)}</option>`).join("")}</select></div>`;
+  }
+  if (c.type === "range") {
+    return `<div class="ctl"><label for="${id}"><span>${esc(c.label)}<output id="${id}-o">${v}${esc(c.unit || "")}</output></span></label>
+      <input type="range" id="${id}" data-k="${c.k}" min="${c.min}" max="${c.max}" step="${c.step}" value="${v}"></div>`;
+  }
+  return `<label class="ctl check" for="${id}"><input type="checkbox" id="${id}" data-k="${c.k}"${v ? " checked" : ""}><span>${esc(c.label)}</span></label>`;
+}
+
+/* ---------- rendering a page ---------- */
+
+const page = document.getElementById("page");
+const here = document.getElementById("here");
+const state = new Map();
+let current = null;
+
+/* A code box takes plain text. It has to: the samples are JSX, and an
+   unescaped <PackageTrend> is parsed as an unknown element and renders as
+   nothing at all. Comments are picked out after escaping, never before. */
+const renderCode = (text) => esc(text)
+  .replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)/g, '<span class="c">$1</span>');
+const codeBox = (text) => `<div class="code"><pre>${renderCode(text)}</pre><button class="copy" type="button">Copy</button></div>`;
+
+function paint(p, data, extra) {
+  const s = state.get(p.id);
+  const controls = p.controls || [];
+  const stageInner = data
+    ? p.render(s, data, extra)
+    : `<p class="loading">Fetching ${esc(G.pkg)} from npm…</p>`;
+
+  const play = p.hidePlay ? "" : `
+    ${controls.length ? `<div class="play-tabs" role="tablist">
+      <button type="button" role="tab" data-view="preview" aria-selected="true">Preview</button>
+      <button type="button" role="tab" data-view="settings" aria-selected="false">Settings</button>
+    </div>` : ""}
+    <div class="play${controls.length ? "" : " solo"}" data-view="preview">
+      <div class="stage" id="stage">${stageInner}</div>
+      ${controls.length ? `<div class="ctls"><h3>Settings</h3>${controls.map((c) => controlHtml(c, s[c.k])).join("")}</div>` : ""}
+    </div>`;
+
+  const i = PAGES.indexOf(p);
+  const prev = PAGES[i - 1], next = PAGES[i + 1];
+
+  page.innerHTML = `
+    <p class="crumb">${esc(p.group)}</p>
+    <h1 class="title">${esc(p.title)}</h1>
+    <p class="lead">${p.lead}</p>
+    ${play}
+    ${p.code ? `<p class="code-label">The code for what is on screen</p>${codeBox(p.code(s))}` : ""}
+    ${p.after ? p.after(s) : ""}
+    <nav class="pager" aria-label="Pages">
+      ${prev ? `<a href="#${prev.id}"><small>Previous</small>${esc(prev.title)}</a>` : "<span></span>"}
+      ${next ? `<a href="#${next.id}" style="text-align:right"><small>Next</small>${esc(next.title)}</a>` : ""}
+    </nav>
+    <footer class="colophon">
+      <span>MIT · © Plain Matter Pte Ltd</span>
+      <span>Built by <b>Thomas Budin</b></span>
+      <span class="spacer"><a href="https://github.com/tbudin/package-trends">GitHub</a></span>
+      <span><a href="https://www.npmjs.com/package/package-trends">npm</a></span>
+    </footer>`;
+
+  page.querySelectorAll("[data-k]").forEach((el) => {
+    const c = controls.find((x) => x.k === el.dataset.k);
+    el.addEventListener(el.type === "range" ? "input" : "change", () => {
+      s[c.k] = el.type === "checkbox" ? el.checked : el.type === "range" ? Number(el.value) : el.value;
+      if (el.type === "range") page.querySelector(`#c-${c.k}-o`).textContent = `${s[c.k]}${c.unit || ""}`;
+      redraw(p, extra);
+    });
+  });
+
+  page.querySelectorAll(".play-tabs button").forEach((b) => b.addEventListener("click", () => {
+    page.querySelector(".play").dataset.view = b.dataset.view;
+    page.querySelectorAll(".play-tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
   }));
 
-  const variants = [
-    ["sparkline", sparklineSvg(trend.values, { width: 200, height: 40, dot: true, label: describeTrend(trend, "en-US") }),
-      "Shape only. For a nav, a list row, a table cell."],
-    ["text", `<span style="font-size:17px;font-variant-numeric:tabular-nums">` +
-      `<strong>${formatCount(trend.total, "en-US")}</strong> downloads ` +
-      `<span style="color:var(--up)">${formatChange(trend.changeRatio, "en-US")}</span></span>`,
-      "One line, inside a sentence or a footer."],
-    ["kpi", `<div style="font:650 28px/1 var(--body);letter-spacing:-.025em;font-variant-numeric:tabular-nums">` +
-      `${formatCount(trend.total, "en-US")}</div>` +
-      `<div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin:5px 0 10px">react</div>` +
-      sparklineSvg(trend.values, { width: 200, height: 34, fill: "color-mix(in oklab, currentColor 10%, transparent)" }),
-      "A tile. The number leads, the chart confirms."],
-  ];
-  say("variants", variants.map(([k, body, why]) =>
-    `<div class="spec"><div class="k">${k}</div>${body}<p class="why">${why}</p></div>`).join(""));
-
-  const names = ["react", "vue", "svelte", "preact"];
-  const ranges = await Promise.all(names.map((n) => fetchDownloads(n, { period: "last-month" })));
-  const colours = ["#3b82f6", "#f97316", "#14b8a6", "#a855f7"];
-  const dashes = ["", "5 3", "2 2", "7 2 2 2"];
-
-  for (const [id, scale] of [["cmp-abs", "absolute"], ["cmp-idx", "indexed"]]) {
-    const c = compare(ranges, { scale });
-    const lines = c.series.map((s, i) => sparklineSvg(s.values, {
-      width: 380, height: 90, domain: c.domain, stroke: colours[i], strokeDasharray: dashes[i] || undefined,
-    }).replace(/^<svg[^>]*>|<\/svg>$/g, ""));
-    say(id, `<svg viewBox="0 0 380 90" width="380" height="90" role="img" aria-label="${names.join(", ")} compared, ${scale}" style="display:block;max-width:100%;height:auto">${lines.join("")}</svg>`);
-  }
-  say("cmp-legend", names.map((n, i) =>
-    `<span style="display:inline-flex;align-items:center;gap:.4em;margin-right:1.1em">` +
-    `<svg width="18" height="8" aria-hidden="true"><path d="M0 4H18" stroke="${colours[i]}" stroke-width="1.75"` +
-    `${dashes[i] ? ` stroke-dasharray="${dashes[i]}"` : ""} stroke-linecap="round"/></svg>${n}</span>`).join(""));
-} catch (error) {
-  say("hero", `<span class="err">Could not reach the npm downloads API: ${error.message}</span>`);
+  page.querySelectorAll(".code .copy").forEach((b) => b.addEventListener("click", async () => {
+    const pre = b.previousElementSibling;
+    try { await navigator.clipboard.writeText(pre.textContent); b.textContent = "Copied"; }
+    catch { getSelection().selectAllChildren(pre); b.textContent = "Select it"; }
+    setTimeout(() => (b.textContent = "Copy"), 1400);
+  }));
 }
+
+/* Redraws the stage and the code box without rebuilding the whole page. */
+function redraw(p, extra) {
+  const s = state.get(p.id);
+  const data = ready.get(p.id);
+  const stage = page.querySelector("#stage");
+  if (stage && data) stage.innerHTML = p.render(s, data, extra);
+  const pre = page.querySelector(".code pre");
+  if (pre && p.code) pre.innerHTML = renderCode(p.code(s));
+}
+
+const ready = new Map();
+
+async function show(id) {
+  const p = PAGES.find((x) => x.id === id) || PAGES[0];
+  current = p;
+  if (!state.has(p.id)) state.set(p.id, { ...(p.state || {}) });
+
+  here.textContent = p.title;
+  for (const a of list.querySelectorAll("a")) {
+    if (a.dataset.id === p.id) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  }
+  setMenu(false);
+  scrollTo(0, 0);
+  paint(p, null, null);
+
+  try {
+    const data = await load();
+    if (current !== p) return;
+    ready.set(p.id, data);
+    const extra = p.needs === "rivals" ? await loadRivals() : null;
+    if (current !== p) return;
+    paint(p, data, extra);
+  } catch (error) {
+    const stage = page.querySelector("#stage");
+    if (stage) stage.innerHTML = `<p class="err">Could not reach the npm downloads API: ${esc(error.message)}</p>`;
+  }
+}
+
+/* Changing the package or the period redraws whatever is open. */
+document.getElementById("g-pkg").addEventListener("change", (e) => {
+  const v = e.target.value.trim();
+  if (v) { G.pkg = v; ready.clear(); show(current.id); }
+});
+document.getElementById("g-period").addEventListener("change", (e) => {
+  G.period = e.target.value; ready.clear(); show(current.id);
+});
+
+/* ---------- routing ---------- */
+const route = () => show(location.hash.slice(1) || "intro");
+addEventListener("hashchange", route);
+route();
 </script>
 
 </body>

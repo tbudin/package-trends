@@ -1,6 +1,6 @@
-// Builds the GitHub Pages site into docs/. The landing page uses the core
-// entry only — no framework — so it loads fast and demonstrates that path;
-// the reference page mounts the React gallery. Both fetch live from npm.
+// Builds the GitHub Pages site into docs/. The site is one hash-routed page
+// over the core entry — no framework, which is both the fast choice and a
+// demonstration of that path — and it fetches live from npm as you use it.
 import { rm, mkdir } from "node:fs/promises";
 import * as esbuild from "esbuild";
 
@@ -23,10 +23,4 @@ await esbuild.build({
   ...common,
   entryPoints: [`${root}src/index.ts`],
   outfile: `${root}docs/assets/package-trends.js`,
-});
-
-await esbuild.build({
-  ...common,
-  entryPoints: [`${root}examples/live.tsx`],
-  outfile: `${root}docs/assets/reference.js`,
 });

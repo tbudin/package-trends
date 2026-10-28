@@ -197,7 +197,32 @@ function compare({ rivals }) {
   </div>`;
 }
 
+function og({ month }) {
+  const t = computeTrend(month);
+  return `<div style="height:570px;display:flex;flex-direction:column;justify-content:space-between;padding:16px 10px">
+    <div>
+      <div style="font:500 26px var(--mono);color:var(--accent);letter-spacing:-.02em">package-trends</div>
+      <div style="font:400 62px/1.08 Georgia,serif;letter-spacing:-.02em;margin:26px 0 18px;max-width:17ch">Download trends, small enough for a footer</div>
+      <div style="font-size:23px;color:var(--muted);max-width:40ch;line-height:1.5">A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library.</div>
+    </div>
+    <div>
+      ${renderToStaticMarkup(
+        el(PackageTrend, {
+          package: SUBJECT, data: month, width: 1120, height: 118, fluid: true,
+          dot: true, strokeWidth: 3,
+          fill: "color-mix(in oklab, currentColor 10%, transparent)",
+        }),
+      )}
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;font-size:20px;color:var(--muted)">
+        <span><b style="color:var(--ink);font-weight:600">${formatCount(t.total, "en-US")}</b> downloads · ${SUBJECT}</span>
+        <span style="font-family:var(--mono);font-size:17px">npm i package-trends</span>
+      </div>
+    </div>
+  </div>`;
+}
+
 const SHOTS = [
+  { id: "og", width: 1200, height: 630, scale: 1, themes: ["light"], build: og },
   { id: "variants", width: 940, build: variants },
   { id: "charts", width: 940, build: charts },
   { id: "gaps", width: 940, build: gaps },
@@ -212,25 +237,27 @@ async function main() {
   const data = await load();
 
   for (const shot of SHOTS) {
-    for (const theme of Object.keys(THEMES)) {
+    for (const theme of shot.themes || Object.keys(THEMES)) {
       const file = path.join(work, `${shot.id}-${theme}.html`);
       await writeFile(file, page(theme, shot.width, shot.build(data)));
 
       // Chrome pads a screenshot out to the window height, so measure the
       // page first and open the window at exactly that size.
-      const height = await measure(file, shot.width);
-      const png = path.join(out, `${shot.id}-${theme}.png`);
+      const height = shot.height ?? (await measure(file, shot.width));
+      const png = shot.id === "og"
+        ? path.join(root, "docs", "og.png")
+        : path.join(out, `${shot.id}-${theme}.png`);
       await run(CHROME, [
         "--headless=new",
         "--disable-gpu",
         "--hide-scrollbars",
-        "--force-device-scale-factor=2",
+        `--force-device-scale-factor=${shot.scale ?? 2}`,
         "--virtual-time-budget=8000",
         `--window-size=${shot.width},${height}`,
         `--screenshot=${png}`,
         `file://${file}`,
       ]);
-      console.log(`${shot.id}-${theme}.png  ${shot.width}×${height} @2x`);
+      console.log(`${path.basename(png)}  ${shot.width}×${height} @${shot.scale ?? 2}x`);
     }
   }
 }
