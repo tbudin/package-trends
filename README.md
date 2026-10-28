@@ -14,6 +14,10 @@ so this works straight from a browser with no proxy of your own.
 npm install @plainmatter/package-trends
 ```
 
+**[tbudin.github.io/package-trends](https://tbudin.github.io/package-trends/)** —
+the site, live against npm, with [every option on one
+page](https://tbudin.github.io/package-trends/reference.html).
+
 ## React
 
 ```tsx

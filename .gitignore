@@ -9,6 +9,7 @@ types/
 # built example bundles, rebuilt by scripts/build-examples.mjs
 examples/*.js
 !examples/sample.json
+# docs/assets is built too, but Pages serves it, so it is committed
 
 # local editor/agent config
 .claude/

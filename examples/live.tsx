@@ -6,6 +6,7 @@ import { fetchDownloads } from "../src/index.js";
 import { Gallery, type Datasets } from "./options.tsx";
 
 const PKG = "react";
+const RIVALS = ["react", "vue", "svelte", "preact"];
 
 function App() {
   const [sets, setSets] = useState<Datasets | null>(null);
@@ -16,8 +17,9 @@ function App() {
       fetchDownloads(PKG, { period: "last-month" }),
       fetchDownloads(PKG, { period: "last-week" }),
       fetchDownloads(PKG, { period: "last-year" }),
+      Promise.all(RIVALS.map((name) => fetchDownloads(name, { period: "last-month" }))),
     ])
-      .then(([month, week, year]) => setSets({ month, week, year }))
+      .then(([month, week, year, compare]) => setSets({ month, week, year, compare }))
       .catch((e) => setError(String(e)));
   }, []);
 

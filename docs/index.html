@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>package-trends</title>
+<meta name="description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, framework-agnostic core, React components, and figures you can write a sentence from.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="package-trends">
+<meta property="og:description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, 10.5 kB, and it repairs the zeros npm reports for days it has no data for.">
+<meta property="og:url" content="https://tbudin.github.io/package-trends/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a1a17'/%3E%3Cpath d='M5 23 L11 19 L15 21 L20 12 L27 8' fill='none' stroke='%23e09b6a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='27' cy='8' r='2.6' fill='%23e09b6a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;650&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<div class="band masthead">
+  <div>
+    <nav>
+      <a href="./" aria-current="page">package-trends</a>
+      <a href="reference.html">Every option</a>
+      <a href="https://github.com/tbudin/package-trends">GitHub</a>
+      <span class="sep">v0.1.0 · unpublished</span>
+    </nav>
+    <h1>Download trends, <em>small enough for a footer</em></h1>
+    <p class="lede">
+      A package's npm downloads as a sparkline, a line of text, or a KPI block.
+      No dependencies, no stylesheet, and no chart library — 10.5 kB with the
+      React components.
+    </p>
+  </div>
+</div>
+
+<main>
+
+  <div class="hero-chart">
+    <div id="hero" class="figure"><span class="note">Fetching react from npm…</span></div>
+    <div id="hero-sub" class="sub"></div>
+    <div id="hero-chart"></div>
+  </div>
+  <p class="note">Live from <code>api.npmjs.org</code>, fetched by this page as you loaded it.</p>
+
+  <h2>Install</h2>
+  <pre><code>npm install @plainmatter/package-trends</code></pre>
+  <pre><code>import { PackageTrend } from "@plainmatter/package-trends/react";
+
+&lt;PackageTrend package="react" /&gt;                 <span class="note">// sparkline</span>
+&lt;PackageTrend package="react" variant="text" /&gt;  <span class="note">// 624.9M downloads +4.2%</span>
+&lt;PackageTrend package="react" variant="kpi" /&gt;   <span class="note">// the number, the change, the chart</span></code></pre>
+
+  <h2>Three variants</h2>
+  <div class="specimens" id="variants"></div>
+
+  <h2>Render on the server</h2>
+  <p>
+    Fetch once where the page is built and pass it down. No visitor costs a
+    request, and the chart is in the first paint rather than appearing a moment
+    later.
+  </p>
+  <pre><code>import { fetchDownloads } from "@plainmatter/package-trends";
+
+const data = await fetchDownloads("react", { period: "last-month" });
+return &lt;PackageTrend package="react" data={data} variant="kpi" /&gt;;</code></pre>
+
+  <h2>What it gets right</h2>
+  <div class="points">
+    <div class="point">
+      <h3>It repairs the days npm has no data for</h3>
+      <p>
+        The API answers <code>0</code> for a day it has not aggregated, and gives
+        you no way to tell that from a day nobody installed the package. A
+        sample of react carried seven of them in thirty. Taken literally they
+        understate the mean by a quarter, invert the weekday profile, and turn a
+        flat month into a fall. Interior gaps are interpolated and listed in
+        <code>gapDays</code>.
+      </p>
+    </div>
+    <div class="point">
+      <h3>Smoothing never touches the numbers</h3>
+      <p>
+        Daily counts swing threefold across the week, so the drawn line is a
+        7-day mean by default. Every figure beside it — total, average, peak,
+        change — comes from the raw series, so a smoothed chart cannot quietly
+        restate the total.
+      </p>
+    </div>
+    <div class="point">
+      <h3>The smooth curve cannot invent a value</h3>
+      <p>
+        <code>curve="smooth"</code> is monotone cubic, not a cardinal spline. A
+        cardinal spline overshoots a local extreme and draws a count below the
+        real low — below zero, where the low is near it. Between any two points
+        this curve stays within their values.
+      </p>
+    </div>
+    <div class="point">
+      <h3>It takes the colour and size of whatever surrounds it</h3>
+      <p>
+        The chart strokes in <code>currentColor</code> and the type is set in
+        <code>em</code>, so it inherits rather than imposing. Nothing ships a
+        stylesheet. The only two colours it would choose for itself — the rise
+        and the fall — are unset by default and inherit too.
+      </p>
+    </div>
+  </div>
+
+  <h2>Comparing packages</h2>
+  <p>
+    Four packages on one shared scale, and the same four each measured against
+    their own start. The first is literally true and close to useless.
+  </p>
+  <div class="two">
+    <figure>
+      <div id="cmp-abs"></div>
+      <figcaption><code>scale="absolute"</code> — react takes the top and the rest collapse onto the floor.</figcaption>
+    </figure>
+    <figure>
+      <div id="cmp-idx"></div>
+      <figcaption><code>scale="indexed"</code> — every line starts at 100, so the chart compares growth.</figcaption>
+    </figure>
+  </div>
+  <div id="cmp-legend" class="note"></div>
+
+  <h2>Reading the data</h2>
+  <p>
+    <code>analyse()</code> returns the figures you would need to write about a
+    package without looking at the chart: a least-squares fit with its r², compound
+    weekly growth, the weekday and weekend split, volatility with the weekly
+    cycle removed, spikes past two standard deviations, and a rising or falling
+    week streak.
+  </p>
+  <pre><code>const a = analyse(await fetchDownloads("react", { period: "last-year" }));
+
+a.direction;    <span class="note">// "rising" | "falling" | "flat"</span>
+a.confidence;   <span class="note">// "strong" | "moderate" | "weak", from the r²</span>
+a.weekendRatio; <span class="note">// 0.61 for react — weekday-driven use</span></code></pre>
+  <p class="note">
+    The field to build a sentence on is <code>confidence</code>. A slope alone
+    will cheerfully report that react is falling by 390,000 a day; the r² of
+    0.05 behind it is what says the month was flat and the slope is noise.
+  </p>
+
+  <h2>Everything else</h2>
+  <p>
+    Column and band charts, point marks, a fixed domain, dashes and fill
+    patterns, hover with keyboard support, monthly buckets, explicit date
+    ranges, number formatting through <code>Intl</code>.
+    <a href="reference.html">Every option, rendered against live data →</a>
+  </p>
+
+  <footer>
+    MIT, © Plain Matter Pte Ltd. Written by Thomas Budin.
+    <a href="https://github.com/tbudin/package-trends">Source on GitHub</a>.
+  </footer>
+
+</main>
+
+<script type="module">
+import {
+  fetchDownloads, computeTrend, compare, sparklineSvg,
+  formatCount, formatChange, describeTrend,
+} from "./assets/package-trends.js";
+
+const say = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+try {
+  const range = await fetchDownloads("react", { period: "last-month" });
+  const trend = computeTrend(range);
+
+  say("hero", `<span class="n">${formatCount(trend.total, "en-US")}</span>` +
+    `<span class="chg">${formatChange(trend.changeRatio, "en-US")}</span>`);
+  say("hero-sub", `react · ${trend.start} to ${trend.end}` +
+    (trend.gapDays.length ? ` · ${trend.gapDays.length} days npm had no data for, repaired` : ""));
+  say("hero-chart", sparklineSvg(trend.values, {
+    width: 800, height: 90, fluid: true, dot: true, strokeWidth: 2,
+    fill: "color-mix(in oklab, currentColor 10%, transparent)",
+    label: describeTrend(trend, "en-US"),
+  }));
+
+  const variants = [
+    ["sparkline", sparklineSvg(trend.values, { width: 200, height: 40, dot: true, label: describeTrend(trend, "en-US") }),
+      "Shape only. For a nav, a list row, a table cell."],
+    ["text", `<span style="font-size:17px;font-variant-numeric:tabular-nums">` +
+      `<strong>${formatCount(trend.total, "en-US")}</strong> downloads ` +
+      `<span style="color:var(--up)">${formatChange(trend.changeRatio, "en-US")}</span></span>`,
+      "One line, inside a sentence or a footer."],
+    ["kpi", `<div style="font:650 28px/1 var(--body);letter-spacing:-.025em;font-variant-numeric:tabular-nums">` +
+      `${formatCount(trend.total, "en-US")}</div>` +
+      `<div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin:5px 0 10px">react</div>` +
+      sparklineSvg(trend.values, { width: 200, height: 34, fill: "color-mix(in oklab, currentColor 10%, transparent)" }),
+      "A tile. The number leads, the chart confirms."],
+  ];
+  say("variants", variants.map(([k, body, why]) =>
+    `<div class="spec"><div class="k">${k}</div>${body}<p class="why">${why}</p></div>`).join(""));
+
+  const names = ["react", "vue", "svelte", "preact"];
+  const ranges = await Promise.all(names.map((n) => fetchDownloads(n, { period: "last-month" })));
+  const colours = ["#3b82f6", "#f97316", "#14b8a6", "#a855f7"];
+  const dashes = ["", "5 3", "2 2", "7 2 2 2"];
+
+  for (const [id, scale] of [["cmp-abs", "absolute"], ["cmp-idx", "indexed"]]) {
+    const c = compare(ranges, { scale });
+    const lines = c.series.map((s, i) => sparklineSvg(s.values, {
+      width: 380, height: 90, domain: c.domain, stroke: colours[i], strokeDasharray: dashes[i] || undefined,
+    }).replace(/^<svg[^>]*>|<\/svg>$/g, ""));
+    say(id, `<svg viewBox="0 0 380 90" width="380" height="90" role="img" aria-label="${names.join(", ")} compared, ${scale}" style="display:block;max-width:100%;height:auto">${lines.join("")}</svg>`);
+  }
+  say("cmp-legend", names.map((n, i) =>
+    `<span style="display:inline-flex;align-items:center;gap:.4em;margin-right:1.1em">` +
+    `<svg width="18" height="8" aria-hidden="true"><path d="M0 4H18" stroke="${colours[i]}" stroke-width="1.75"` +
+    `${dashes[i] ? ` stroke-dasharray="${dashes[i]}"` : ""} stroke-linecap="round"/></svg>${n}</span>`).join(""));
+} catch (error) {
+  say("hero", `<span class="err">Could not reach the npm downloads API: ${error.message}</span>`);
+}
+</script>
+
+</body>
+</html>

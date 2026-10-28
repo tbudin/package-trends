@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>package-trends — every option</title>
+<meta name="description" content="Every prop package-trends takes, rendered live against the npm downloads API: variants, chart types, marks, domains, curves, patterns, bands, comparison and analyse().">
+<meta property="og:type" content="website">
+<meta property="og:title" content="package-trends — every option">
+<meta property="og:description" content="Every prop the component takes, rendered live against npm.">
+<meta property="og:url" content="https://tbudin.github.io/package-trends/reference.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a1a17'/%3E%3Cpath d='M5 23 L11 19 L15 21 L20 12 L27 8' fill='none' stroke='%23e09b6a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='27' cy='8' r='2.6' fill='%23e09b6a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;650&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* the gallery's own rows */
+  #root main { padding-block: 0 110px; }
+  #root header { margin-bottom: 8px; }
+  .masthead-ref { border-bottom: 2px solid var(--ink); padding-block: 44px 18px; margin-bottom: 30px; }
+  .row { display: flex; align-items: center; gap: 14px 22px; padding: 12px 0;
+         border-top: 1px solid var(--rule); flex-wrap: wrap; }
+  .demo { flex: 1 1 300px; min-width: 0; max-width: 100%; display: flex;
+          align-items: center; gap: 12px; flex-wrap: wrap; }
+  .demo > * { max-width: 100%; }
+  .row code { flex: 1 1 190px; text-align: right; min-width: 0; font-size: 11.5px;
+              color: var(--muted); overflow-wrap: anywhere; }
+  .pair { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; max-width: 100%; }
+  .box { display: block; width: 240px; max-width: 100%; border: 1px dashed var(--rule); padding: 5px; }
+  .box.small { width: 80px; }
+  .dark { background: #15151a; color: #ececef; padding: 22px; border-radius: 10px;
+          display: flex; gap: 34px; align-items: flex-end; flex-wrap: wrap; }
+  #root table { border-collapse: collapse; font-size: 13px; width: 100%; table-layout: fixed; }
+  #root td { padding: 6px 0; border-top: 1px solid var(--rule); vertical-align: top; overflow-wrap: anywhere; }
+  #root td:first-child { font-family: var(--mono); font-size: 11.5px; color: var(--muted); width: 42%; }
+  #root h1 { font-size: clamp(28px, 6vw, 38px); }
+  #root h2 { margin-top: 42px; }
+  #root .note { margin-bottom: 10px; }
+  #root footer { font-size: 12.5px; }
+  .stamp { font: 500 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .1em;
+           color: var(--muted); margin-left: auto; }
+  .pt-change { font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="band masthead">
+  <div>
+    <nav>
+      <a href="./">package-trends</a>
+      <a href="reference.html" aria-current="page">Every option</a>
+      <a href="https://github.com/tbudin/package-trends">GitHub</a>
+      <span class="sep">live from npm</span>
+    </nav>
+  </div>
+</div>
+
+<div id="root"><main><p class="note">Fetching react from npm…</p></main></div>
+<script type="module" src="./assets/reference.js"></script>
+
+</body>
+</html>
