@@ -33,6 +33,9 @@ export type { Curve } from "./curve.js";
 export { patternId, patternMarkup, patternTile } from "./pattern.js";
 export type { FillPattern, PatternSpec, PatternTile } from "./pattern.js";
 
+export { compare, indexSeries, fetchMany, commonDays } from "./compare.js";
+export type { Comparison, CompareOptions, CompareScale, Series } from "./compare.js";
+
 export { toBands } from "./bands.js";
 export type { Band } from "./bands.js";
 

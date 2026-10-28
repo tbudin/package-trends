@@ -2,10 +2,13 @@
 
 npm download trends as a sparkline, a line of text, or a KPI block.
 
-Zero dependencies. The core is framework-agnostic and 3.1 kB gzipped; the React
-entry adds 4.1 kB. The npm downloads API needs no key and sends
-`access-control-allow-origin: *`, so this works straight from a browser with no
-proxy of your own.
+Zero dependencies. Measured as a bundler ships it, gzipped: **9.1 kB** for the
+framework-agnostic core, **10.5 kB** with the React components, **12.4 kB** with
+comparison as well — the three entries share their modules, so nothing is
+counted twice, and your bundler drops whatever you do not import.
+
+The npm downloads API needs no key and sends `access-control-allow-origin: *`,
+so this works straight from a browser with no proxy of your own.
 
 ```bash
 npm install @plainmatter/package-trends
@@ -234,6 +237,43 @@ The chart can do the same. A number is a width in px; a CSS length leaves the
 
 Outside React, `sparklineSvg(values, { attrs: { id: "pulse" } })` does the same
 and escapes the values.
+
+## Comparing packages
+
+```tsx
+import { PackageComparison } from "@plainmatter/package-trends/compare";
+
+<PackageComparison packages={["react", "vue", "svelte", "preact"]} />
+<PackageComparison packages={[...]} variant="table" />
+```
+
+**Read `scale` before you ship one.** Those four packages span 28×, and on one
+shared y-range react takes the top of the chart while the other three collapse
+into a single band along the floor — true, and useless. `scale="indexed"`
+restates each series as a percentage of its own first value, so every line
+starts at 100 and the chart compares *growth* instead of size:
+
+```tsx
+<PackageComparison packages={[...]} scale="indexed" />
+```
+
+The comparison reports `spread` (largest total over smallest) so you can
+decide: above about 10, absolute will flatten the smaller packages. Every
+figure on each series is computed from its real numbers either way — indexing
+only changes what is drawn.
+
+The table variant scales **each row to itself**, because the totals column
+already carries the magnitude and a shared scale would leave every row but the
+largest a flat line. Pass `sharedDomain` to override. The chart variant always
+shares, since overlaying is the point.
+
+Series are told apart by **dash as well as colour** — six hues of near-equal
+lightness, each with its own stroke pattern — so they survive print, monochrome
+and a reader who cannot rely on hue. Pass `colors`, or `dashes={[]}` for solid
+lines.
+
+`fetchMany` asks for each distinct name only once, so a page comparing the same
+five packages in three places makes five requests rather than fifteen.
 
 ## Curves
 

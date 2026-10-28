@@ -1,4 +1,5 @@
 import { PackageTrend, Sparkline } from "../src/react.js";
+import { PackageComparison } from "../src/compare-react.js";
 import { analyse, computeTrend, formatWeekday } from "../src/index.js";
 import type { DownloadRange } from "../src/types.js";
 
@@ -27,9 +28,16 @@ export interface Datasets {
   month: DownloadRange;
   week: DownloadRange;
   year: DownloadRange;
+  compare: DownloadRange[];
 }
 
-export function Gallery({ month: data, week, year, source = "live" }: Datasets & { source?: "live" | "snapshot" }) {
+export function Gallery({
+  month: data,
+  week,
+  year,
+  compare: rivals,
+  source = "live",
+}: Datasets & { source?: "live" | "snapshot" }) {
   const trend = computeTrend(data);
   const weekly = computeTrend(data, { aggregate: "week" });
   const a = analyse(data);
@@ -388,6 +396,39 @@ export function Gallery({ month: data, week, year, source = "live" }: Datasets &
               onClick: () => window.open(`https://www.npmjs.com/package/${PKG}`, "_blank"),
               style: { cursor: "pointer" },
             }}
+          />
+        </Row>
+      </Group>
+
+      <Group
+        title="comparison"
+        note="Several packages at once, from /compare. These four span 28×, which is the whole problem."
+      >
+        <Row code='<PackageComparison packages={[...]} />  — absolute'>
+          <PackageComparison packages={rivals.map((r) => r.package)} data={rivals} width={300} height={64} />
+        </Row>
+        <Row code='scale="indexed"  — each against its own start'>
+          <PackageComparison
+            packages={rivals.map((r) => r.package)} data={rivals}
+            scale="indexed" width={300} height={64}
+          />
+        </Row>
+        <Row code='variant="table"'>
+          <PackageComparison
+            packages={rivals.map((r) => r.package)} data={rivals}
+            variant="table" locale="en-GB" width={110} height={26}
+          />
+        </Row>
+        <Row code='scale="indexed" aggregate="week" curve="smooth"'>
+          <PackageComparison
+            packages={rivals.map((r) => r.package)} data={rivals}
+            scale="indexed" aggregate="week" curve="smooth" width={300} height={64}
+          />
+        </Row>
+        <Row code='legend={false} dashes={[]}'>
+          <PackageComparison
+            packages={rivals.map((r) => r.package)} data={rivals}
+            scale="indexed" legend={false} dashes={[]} width={300} height={64}
           />
         </Row>
       </Group>

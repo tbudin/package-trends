@@ -28,6 +28,10 @@
       "types": "./types/react.d.ts",
       "default": "./dist/react.js"
     },
+    "./compare": {
+      "types": "./types/compare-react.d.ts",
+      "default": "./dist/compare-react.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
