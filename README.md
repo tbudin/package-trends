@@ -107,6 +107,21 @@ instead:
 <PackageTrend package="react" width={420} height={56} />
 ```
 
+## Choosing a chart
+
+Two things are worth knowing before you pick `chart="column"`:
+
+- **Columns want fewer, fatter bars.** Thirty days of a busy package, anchored
+  at zero, draws thirty nearly identical bars. `aggregate="week"` gives four or
+  five that actually differ.
+- **`axis` only shows for data that crosses zero**, which downloads never do —
+  the rule lands on the bottom edge and is invisible. It is there for a derived
+  series, such as a day-over-day change, where zero sits in the middle.
+
+A note on locales: `en-GB` renders compact millions as a lowercase `m`
+(`954.5m`), where `en-US` gives `954.5M`. That is CLDR's own data for British
+English, not a bug here. Pass `locale="en-US"` if the capital reads better.
+
 ## Gaps in npm's data
 
 npm's API answers `0` for a day it has no data for, and does not distinguish

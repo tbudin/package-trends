@@ -3,8 +3,8 @@ import * as esbuild from "esbuild";
 const root = new URL("..", import.meta.url).pathname;
 
 await esbuild.build({
-  entryPoints: [`${root}examples/react.tsx`],
-  outfile: `${root}examples/react.js`,
+  entryPoints: [`${root}examples/react.tsx`, `${root}examples/options.tsx`],
+  outdir: `${root}examples`,
   bundle: true,
   format: "esm",
   jsx: "automatic",

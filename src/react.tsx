@@ -38,7 +38,7 @@ export interface PackageTrendState {
  * fresh object literal on every render cannot loop.
  */
 export function usePackageTrend(name: string, options: UsePackageTrendOptions = {}): PackageTrendState {
-  const { data, period = "last-month", aggregate, smooth, endpoint, fetch: fetchImpl } = options;
+  const { data, period = "last-month", aggregate, smooth, gaps, endpoint, fetch: fetchImpl } = options;
   const [fetched, setFetched] = useState<DownloadRange | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
@@ -70,8 +70,8 @@ export function usePackageTrend(name: string, options: UsePackageTrendOptions = 
 
   const range = data ?? fetched;
   const trend = useMemo(
-    () => (range ? computeTrend(range, { aggregate, smooth }) : null),
-    [range, aggregate, smooth],
+    () => (range ? computeTrend(range, { aggregate, smooth, gaps }) : null),
+    [range, aggregate, smooth, gaps],
   );
 
   return { trend, loading: range === null && error === null, error };
@@ -297,11 +297,20 @@ export function PackageTrend({
   period,
   aggregate,
   smooth,
+  gaps,
   endpoint,
   fetch: fetchImpl,
   ...geometry
 }: PackageTrendProps) {
-  const state = usePackageTrend(name, { data, period, aggregate, smooth, endpoint, fetch: fetchImpl });
+  const state = usePackageTrend(name, {
+    data,
+    period,
+    aggregate,
+    smooth,
+    gaps,
+    endpoint,
+    fetch: fetchImpl,
+  });
 
   if (children) return <>{children(state)}</>;
   if (state.error) return <>{renderError ? renderError(state.error) : null}</>;

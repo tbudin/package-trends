@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>package-trends · every option</title>
+<style>
+  :root { --ink:#18181b; --paper:#fbfbf9; --muted:#64646e; --rule:#e4e4e7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font:14px/1.5 ui-sans-serif, system-ui, sans-serif; }
+  main { max-width:900px; margin:0 auto; padding:40px 20px 80px; }
+  h1 { font-size:19px; margin:0 0 4px; letter-spacing:-.01em; }
+  h2 { font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
+       margin:36px 0 2px; font-weight:600; }
+  header { margin-bottom:8px; }
+  .note { color:var(--muted); font-size:12.5px; margin:0 0 10px; }
+  .row { display:flex; align-items:center; gap:14px 20px; padding:11px 0;
+         border-top:1px solid var(--rule); flex-wrap:wrap; }
+  .demo { flex:1 1 300px; display:flex; align-items:center; gap:12px; min-width:0;
+          flex-wrap:wrap; max-width:100%; }
+  .row code, code { font-family:ui-monospace, "JetBrains Mono", monospace; font-size:11px;
+                    color:var(--muted); overflow-wrap:anywhere; }
+  .row code { flex:1 1 180px; text-align:right; min-width:0; }
+  .demo > * { max-width:100%; }
+  .pair { display:flex; gap:16px; align-items:center; flex-wrap:wrap; max-width:100%; }
+  .box { display:block; width:220px; outline:1px dashed #c8c8cc; padding:4px; }
+  .box.small { width:80px; }
+  .dark { background:#15151a; color:#ececef; padding:20px; border-radius:10px;
+          display:flex; gap:32px; align-items:flex-end; flex-wrap:wrap; }
+  table { border-collapse:collapse; font-size:12.5px; width:100%; table-layout:fixed; }
+  td { overflow-wrap:anywhere; }
+  td { padding:5px 0; border-top:1px solid var(--rule); vertical-align:top; }
+  td:first-child { font-family:ui-monospace, monospace; color:var(--muted); width:170px; }
+  .err { color:#b91c1c; font-size:12px; font-style:normal; }
+  footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--rule);
+           color:var(--muted); font-size:12px; }
+  .pt-change[data-direction="up"] { font-weight:500; }
+</style>
+</head>
+<body><div id="root"></div><script type="module" src="./options.js"></script></body>
+</html>

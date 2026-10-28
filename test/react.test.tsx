@@ -122,6 +122,42 @@ describe("PackageTrend chart types", () => {
   });
 });
 
+describe("PackageTrend passes shaping options through", () => {
+  // `gaps` once fell into the geometry rest-prop and was silently dropped,
+  // so the option appeared to do nothing
+  const holey = range(
+    days(28, (i) => ([6, 13, 20].includes(i) ? 0 : 30_000)),
+    "demo",
+  );
+
+  it("repairs gaps by default", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={holey} fetch={noNetwork()} variant="text" locale="en-US" smooth={1} />,
+    );
+    expect(html).toContain("840K");
+  });
+
+  it("takes the zeros literally when told to", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend
+        package="demo" data={holey} fetch={noNetwork()} variant="text"
+        locale="en-US" smooth={1} gaps="zero"
+      />,
+    );
+    expect(html).toContain("750K");
+  });
+
+  it("honours aggregate and smooth", () => {
+    const weekly = renderToStaticMarkup(
+      <PackageTrend package="demo" data={holey} fetch={noNetwork()} aggregate="week" />,
+    );
+    const daily = renderToStaticMarkup(
+      <PackageTrend package="demo" data={holey} fetch={noNetwork()} smooth={1} />,
+    );
+    expect(weekly).not.toBe(daily);
+  });
+});
+
 describe("PackageTrend labelling", () => {
   it("builds an accessible name from the trend by default", () => {
     const html = renderToStaticMarkup(
