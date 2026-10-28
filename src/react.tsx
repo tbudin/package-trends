@@ -12,6 +12,8 @@ import {
 import { fetchDownloads, type FetchDownloadsOptions } from "./api.js";
 import { computeTrend } from "./trend.js";
 import {
+  bandGeometry,
+  boxOf,
   columns as layOutColumns,
   marksFor,
   sparkline,
@@ -19,6 +21,7 @@ import {
   type MarkKind,
   type SparklineOptions,
 } from "./sparkline.js";
+import { toBands, type Band } from "./bands.js";
 import {
   changeDirection,
   describeTrend,
@@ -28,6 +31,7 @@ import {
   type NumberFormat,
 } from "./format.js";
 import type { ShapeOptions } from "./series.js";
+import type { SVGProps } from "react";
 import type { DownloadPoint, DownloadRange, Period, Trend } from "./types.js";
 
 export interface UsePackageTrendOptions extends ShapeOptions {
@@ -94,9 +98,13 @@ export function usePackageTrend(name: string, options: UsePackageTrendOptions = 
   return { trend, loading: range === null && error === null, error };
 }
 
+export type ChartKind = "line" | "column" | "band";
+
 export interface ChartProps extends SparklineOptions {
-  /** `"line"` (default) or `"column"`. */
-  chart?: "line" | "column";
+  /** `"line"` (default), `"column"` or `"band"`. */
+  chart?: ChartKind;
+  /** Days per bucket when `chart` is `"band"`. Default 7. */
+  bandSize?: number;
   /** Read by a screen reader. Without one the chart is hidden from them. */
   label?: string;
   stroke?: string;
@@ -123,17 +131,27 @@ export interface ChartProps extends SparklineOptions {
   onActive?: (index: number | null) => void;
   /** Merged over the chart's own inline style. */
   style?: CSSProperties;
+  /**
+   * Anything else to put on the `<svg>`: `id`, `data-*`, `onClick`,
+   * `preserveAspectRatio`, a `ref`. Applied last, so it can override what the
+   * component sets.
+   */
+  svgProps?: SVGProps<SVGSVGElement>;
   className?: string;
 }
 
 export interface SparklineProps extends ChartProps {
   values: readonly number[];
+  /** Low/mean/high buckets, used when `chart` is `"band"`. */
+  bands?: readonly Band[];
 }
 
 /** A chart on its own, for your own markup around it. */
 export function Sparkline({
   values,
+  bands,
   chart = "line",
+  bandSize,
   label,
   stroke = "currentColor",
   strokeWidth = 1.5,
@@ -147,6 +165,7 @@ export function Sparkline({
   interactive = false,
   onActive,
   style,
+  svgProps,
   className,
   ...geometry
 }: SparklineProps) {
@@ -163,30 +182,37 @@ export function Sparkline({
 
   const kinds: MarkKind[] = mark ? [...mark] : dot ? ["last"] : [];
   const body =
-    chart === "column"
-      ? renderColumns(values, geometry, kinds, { stroke, fill, markColor, axis, axisColor })
-      : renderLine(values, geometry, kinds, { stroke, strokeWidth, fill, markColor });
+    chart === "band"
+      ? renderBands(bands ?? [], geometry, { stroke, strokeWidth, fill })
+      : chart === "column"
+        ? renderColumns(values, geometry, kinds, { stroke, fill, markColor, axis, axisColor })
+        : renderLine(values, geometry, kinds, { stroke, strokeWidth, fill, markColor });
+
+  // a band chart steps through buckets, not days
+  const steps = chart === "band" ? (bands?.length ?? 0) : values.length;
 
   const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
     const box = svg.current?.getBoundingClientRect();
-    if (!box || box.width === 0 || values.length === 0) return;
+    if (!box || box.width === 0 || steps === 0) return;
     const ratio = (event.clientX - box.left) / box.width;
-    announce(clamp(Math.round(ratio * (values.length - 1)), 0, values.length - 1));
+    announce(clamp(Math.round(ratio * (steps - 1)), 0, steps - 1));
   };
 
   const onKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
-    if (values.length === 0) return;
+    if (steps === 0) return;
     const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (step === 0) {
       if (event.key === "Escape") announce(null);
       return;
     }
     event.preventDefault();
-    announce(clamp((active ?? values.length - 1) + step, 0, values.length - 1));
+    announce(clamp((active ?? steps - 1) + step, 0, steps - 1));
   };
 
   const guide =
-    interactive && active !== null ? renderGuide(active, values, chart, geometry, body, stroke) : null;
+    interactive && active !== null
+      ? renderGuide(active, steps, values, chart, geometry, body, stroke)
+      : null;
 
   const base: CSSProperties = fluid
     ? { display: "block", width: "100%", height: "auto" }
@@ -197,8 +223,8 @@ export function Sparkline({
       ref={svg}
       className={className}
       viewBox={`0 0 ${body.width} ${body.height}`}
-      width={body.width}
-      height={body.height}
+      width={geometry.width ?? body.width}
+      height={geometry.height ?? body.height}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
@@ -215,6 +241,7 @@ export function Sparkline({
             onBlur: () => announce(null),
           }
         : null)}
+      {...svgProps}
     >
       {label ? <title>{label}</title> : null}
       {body.nodes}
@@ -229,20 +256,21 @@ function clamp(value: number, low: number, high: number): number {
 
 function renderGuide(
   index: number,
+  steps: number,
   values: readonly number[],
-  chart: "line" | "column",
+  chart: ChartKind,
   geometry: SparklineOptions,
   body: { width: number; height: number },
   stroke: string,
 ) {
   const x =
-    chart === "column"
-      ? (index + 0.5) * (body.width / values.length)
-      : values.length === 1
+    chart === "line"
+      ? steps === 1
         ? body.width / 2
-        : (index / (values.length - 1)) * body.width;
+        : (index / (steps - 1)) * body.width
+      : (index + 0.5) * (body.width / Math.max(1, steps));
 
-  const laid = chart === "column" ? null : sparkline(values, geometry);
+  const laid = chart === "line" ? sparkline(values, geometry) : null;
   const y = laid?.points[index]?.[1];
 
   return (
@@ -341,6 +369,39 @@ function renderColumns(
   return { nodes, width: laid.width, height: laid.height };
 }
 
+function renderBands(
+  bands: readonly Band[],
+  geometry: SparklineOptions,
+  paint: { stroke: string; strokeWidth: number; fill?: string },
+) {
+  const laid = bandGeometry(bands, geometry);
+  const nodes: ReactNode[] = [];
+
+  for (const band of laid.marks) {
+    nodes.push(
+      <path
+        key={`w${band.index}`}
+        d={`M${band.x} ${band.highY}V${band.lowY}`}
+        stroke={paint.stroke}
+        strokeWidth={paint.strokeWidth}
+        strokeLinecap="round"
+        opacity={0.4}
+      />,
+    );
+    nodes.push(
+      <circle
+        key={`m${band.index}`}
+        cx={band.x}
+        cy={band.y}
+        r={paint.strokeWidth * 1.5}
+        fill={paint.fill ?? paint.stroke}
+      />,
+    );
+  }
+
+  return { nodes, width: laid.width, height: laid.height };
+}
+
 export type PackageTrendVariant = "sparkline" | "text" | "kpi";
 
 /** Colours for the change figure. Anything unset inherits the surrounding text. */
@@ -412,6 +473,7 @@ export function PackageTrend({
   colors,
   styles,
   chart,
+  bandSize,
   stroke,
   strokeWidth,
   fill,
@@ -424,6 +486,7 @@ export function PackageTrend({
   interactive,
   onActive,
   onActivePoint,
+  svgProps,
   label: labelProp,
   className,
   fallback,
@@ -458,9 +521,18 @@ export function PackageTrend({
   );
 
   const trend = state.trend;
+  const bands = useMemo(
+    () => (trend && chart === "band" ? toBands(trend.points, bandSize ?? 7) : undefined),
+    [trend, chart, bandSize],
+  );
+
   // the drawn series is shaped, so the day under the pointer is read off it
   const activePoint =
-    trend && activeIndex !== null ? (trend.shapedPoints[activeIndex] ?? null) : null;
+    trend && activeIndex !== null
+      ? bands
+        ? bandAsPoint(bands[activeIndex])
+        : (trend.shapedPoints[activeIndex] ?? null)
+      : null;
 
   useEffect(() => {
     onActivePoint?.(activePoint);
@@ -481,8 +553,8 @@ export function PackageTrend({
             aria-hidden="true"
             style={{
               display: "block",
-              width: geometry.width ?? 120,
-              height: geometry.height ?? 32,
+              width: geometry.width ?? boxOf(geometry).width,
+              height: geometry.height ?? boxOf(geometry).height,
               maxWidth: "100%",
               borderRadius: 4,
               background: "currentColor",
@@ -516,7 +588,9 @@ export function PackageTrend({
   const chartNode = (
     <Sparkline
       values={trend.values}
+      bands={bands}
       chart={chart}
+      bandSize={bandSize}
       label={variant === "sparkline" ? label : undefined}
       stroke={stroke}
       strokeWidth={strokeWidth}
@@ -530,6 +604,7 @@ export function PackageTrend({
       interactive={interactive}
       onActive={handleActive}
       style={styles?.chart}
+      svgProps={svgProps}
       {...geometry}
     />
   );
@@ -609,6 +684,10 @@ export function PackageTrend({
   );
 }
 
+function bandAsPoint(band: Band | undefined): DownloadPoint | null {
+  return band ? { day: band.day, downloads: Math.round(band.mean) } : null;
+}
+
 /** Announces the day under the pointer, which the chart itself cannot. */
 function LiveRegion({ point, locale }: { point: DownloadPoint | null; locale?: string }) {
   return (
@@ -635,4 +714,4 @@ function join(...names: (string | undefined)[]): string {
   return names.filter(Boolean).join(" ");
 }
 
-export type { Domain, MarkKind, NumberFormat };
+export type { Band, Domain, MarkKind, NumberFormat };

@@ -200,6 +200,56 @@ through rather than learning a second vocabulary:
 />
 ```
 
+## Size
+
+Everything is relative to the surrounding text by default. The text variant
+sets no font size at all, the KPI headline is `1.5em` and its label `0.875em`,
+so the whole thing grows and shrinks with its container. `styles` overrides any
+of it.
+
+The chart can do the same. A number is a width in px; a CSS length leaves the
+`viewBox` alone and renders at that size, so the chart tracks the font:
+
+```tsx
+<PackageTrend package="react" width="8em" height="1.6em" />   // 104px at 13px text, 176px at 22px
+<PackageTrend package="react" width="100%" height={36} />     // fills its box
+<PackageTrend package="react" width={170} />                  // fixed px
+```
+
+## Properties on the `<svg>`
+
+`svgProps` goes straight onto the element, applied last so it wins:
+
+```tsx
+<PackageTrend
+  package="react"
+  svgProps={{
+    id: "pulse",
+    "data-pkg": "react",
+    onClick: () => open("https://www.npmjs.com/package/react"),
+    style: { cursor: "pointer" },
+  }}
+/>
+```
+
+Outside React, `sparklineSvg(values, { attrs: { id: "pulse" } })` does the same
+and escapes the values.
+
+## Bands, and why not candlesticks
+
+`chart="band"` buckets the days and draws each period as a whisker from its low
+to its high with a mark at the mean:
+
+```tsx
+<PackageTrend package="react" chart="band" bandSize={7} />
+```
+
+This is the honest half of a candlestick. Candlesticks need an open and a
+close; downloads give one number a day, so two of the four values would have to
+be invented. What is real is the spread within the period and where the middle
+sat — and on npm data the mark reliably sits high in the whisker, because five
+weekdays outweigh two weekend days.
+
 ## Hover and keyboard
 
 `interactive` makes the chart follow the pointer and take keyboard focus.

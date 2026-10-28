@@ -98,6 +98,62 @@ describe("interactive", () => {
   });
 });
 
+describe("band chart", () => {
+  it("draws a whisker and a mark per bucket", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} chart="band" />,
+    );
+    // 30 days at 7 to a bucket is 4 whole weeks
+    expect(html.match(/<circle/g)).toHaveLength(4);
+    expect(html.match(/<path/g)).toHaveLength(4);
+  });
+
+  it("takes a bucket size", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} chart="band" bandSize={10} />,
+    );
+    expect(html.match(/<circle/g)).toHaveLength(3);
+  });
+});
+
+describe("svg pass-through", () => {
+  it("puts arbitrary props on the svg", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend
+        package="demo" data={data} fetch={noNetwork()}
+        svgProps={{ id: "pulse", "data-pkg": "demo", preserveAspectRatio: "none" }}
+      />,
+    );
+    expect(html).toContain('id="pulse"');
+    expect(html).toContain('data-pkg="demo"');
+    expect(html).toContain('preserveAspectRatio="none"');
+  });
+
+  it("applies last, so it can override", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} svgProps={{ role: "presentation" }} />,
+    );
+    expect(html).toContain('role="presentation"');
+  });
+});
+
+describe("sizing in CSS units", () => {
+  it("renders at an em width while keeping a px viewBox", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" data={data} fetch={noNetwork()} width="10em" height="2em" />,
+    );
+    expect(html).toContain('viewBox="0 0 120 32"');
+    expect(html).toContain('width="10em"');
+  });
+
+  it("sizes the loading block the same way", () => {
+    const html = renderToStaticMarkup(
+      <PackageTrend package="demo" fetch={noNetwork()} width="10em" height="2em" />,
+    );
+    expect(html).toContain("width:10em");
+  });
+});
+
 describe("aggregate month", () => {
   it("sums calendar months and drops the partial ones", () => {
     // 1 Jan to 20 Mar: January and February are whole, March is not

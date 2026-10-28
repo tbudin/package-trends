@@ -283,6 +283,57 @@ function Gallery({ data }: { data: DownloadRange }) {
         </Row>
       </Group>
 
+      <Group title="band" note="Low, mean and high per week. The honest half of a candlestick.">
+        <Row code='chart="band"'>
+          <PackageTrend package={PKG} data={data} chart="band" width={170} height={44} />
+        </Row>
+        <Row code='chart="band" bandSize={3}'>
+          <PackageTrend package={PKG} data={data} chart="band" bandSize={3} width={170} height={44} />
+        </Row>
+        <Row code='chart="band" interactive  — the mark is the mean'>
+          <PackageTrend package={PKG} data={data} chart="band" interactive variant="kpi" width={220} height={48} locale="en-GB" />
+        </Row>
+        <Row code='beside the line it summarises'>
+          <span className="pair">
+            <PackageTrend package={PKG} data={data} width={170} height={44} />
+            <PackageTrend package={PKG} data={data} chart="band" width={170} height={44} />
+          </span>
+        </Row>
+      </Group>
+
+      <Group title="size in CSS units" note="A number is px. A CSS length scales with the surrounding text.">
+        <Row code='width="8em" — inside 13px text'>
+          <span style={{ fontSize: 13 }}>
+            thirteen <PackageTrend package={PKG} data={data} width="8em" height="1.6em" /> px
+          </span>
+        </Row>
+        <Row code='width="8em" — inside 22px text'>
+          <span style={{ fontSize: 22 }}>
+            twenty-two <PackageTrend package={PKG} data={data} width="8em" height="1.6em" /> px
+          </span>
+        </Row>
+        <Row code='width="100%"  — in a 240px box'>
+          <span className="box" style={{ width: 240 }}>
+            <PackageTrend package={PKG} data={data} width="100%" height={36} />
+          </span>
+        </Row>
+      </Group>
+
+      <Group title="svgProps" note="Anything else on the <svg>: id, data-*, handlers, a ref.">
+        <Row code='svgProps={{ id:"pulse", "data-pkg":"react" }}'>
+          <PackageTrend package={PKG} data={data} width={170} svgProps={{ id: "pulse", "data-pkg": "react" }} />
+        </Row>
+        <Row code='svgProps={{ onClick: ... , style:{cursor:"pointer"} }}'>
+          <PackageTrend
+            package={PKG} data={data} width={170}
+            svgProps={{
+              onClick: () => window.open(`https://www.npmjs.com/package/${PKG}`, "_blank"),
+              style: { cursor: "pointer" },
+            }}
+          />
+        </Row>
+      </Group>
+
       <Group title="analyse()" note="Everything you would need to write a sentence, without the chart.">
         <table>
           <tbody>

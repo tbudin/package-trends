@@ -8,8 +8,10 @@ export type { Aggregate, ShapeOptions } from "./series.js";
 
 export { computeTrend } from "./trend.js";
 
-export { sparkline, sparklineSvg, columns, marksFor, scaleFor } from "./sparkline.js";
+export { sparkline, sparklineSvg, columns, bandGeometry, boxOf, marksFor, scaleFor } from "./sparkline.js";
 export type {
+  BandGeometry,
+  BandMark,
   Column,
   Columns,
   ColumnsOptions,
@@ -24,6 +26,9 @@ export type {
 
 export { analyse } from "./analyse.js";
 export type { Analysis, AnalyseOptions, Fit, Spike, Streak, WeekdayProfile } from "./analyse.js";
+
+export { toBands } from "./bands.js";
+export type { Band } from "./bands.js";
 
 export { fillGaps, applyGaps } from "./gaps.js";
 export type { GapPolicy, GapReport } from "./gaps.js";

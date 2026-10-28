@@ -1,8 +1,15 @@
 export type Domain = readonly [number, number] | "auto" | "zero";
 
 export interface SparklineOptions {
-  width?: number;
-  height?: number;
+  /**
+   * A number is the chart's width in px and sets the `viewBox` with it.
+   *
+   * A CSS length — `"10em"`, `"100%"`, `"4rem"` — leaves the `viewBox` at the
+   * default and renders at that size instead, so the chart scales with the
+   * surrounding text rather than sitting at a fixed pixel size.
+   */
+  width?: number | string;
+  height?: number | string;
   /** Room left for the stroke so it is not clipped at the edges. Default 2. */
   padding?: number;
   /**
@@ -73,8 +80,17 @@ export interface Sparkline {
 }
 
 /** Lays a series out as SVG path geometry. */
+/** The px box the geometry is laid out in, ignoring any CSS length. */
+export function boxOf(options: SparklineOptions, fallback = { width: 120, height: 32 }) {
+  return {
+    width: typeof options.width === "number" ? options.width : fallback.width,
+    height: typeof options.height === "number" ? options.height : fallback.height,
+  };
+}
+
 export function sparkline(values: readonly number[], options: SparklineOptions = {}): Sparkline {
-  const { width = 120, height = 32, padding = 2, domain = "auto" } = options;
+  const { width, height } = boxOf(options);
+  const { padding = 2, domain = "auto" } = options;
   const top = padding;
   const bottom = height - padding;
 
@@ -150,7 +166,8 @@ export interface Columns {
  * default the other way, because a line's shape is read, not its area.
  */
 export function columns(values: readonly number[], options: ColumnsOptions = {}): Columns {
-  const { width = 120, height = 32, padding = 1, domain = "zero", barRatio = 0.7 } = options;
+  const { width, height } = boxOf(options);
+  const { padding = 1, domain = "zero", barRatio = 0.7 } = options;
   const top = padding;
   const bottom = height - padding;
 
@@ -184,6 +201,59 @@ export function columns(values: readonly number[], options: ColumnsOptions = {})
     width,
     height,
   };
+}
+
+export interface BandMark {
+  x: number;
+  /** y of the period's mean. */
+  y: number;
+  /** y of the period's low, which is the LOWER value and so the HIGHER y. */
+  lowY: number;
+  highY: number;
+  index: number;
+}
+
+export interface BandGeometry {
+  marks: readonly BandMark[];
+  scale: Scale;
+  width: number;
+  height: number;
+}
+
+/** Lays low/mean/high buckets out as a point with a whisker through it. */
+export function bandGeometry(
+  bands: readonly { low: number; mean: number; high: number }[],
+  options: SparklineOptions = {},
+): BandGeometry {
+  const { width, height } = boxOf(options);
+  const { padding = 3, domain = "auto" } = options;
+  const top = padding;
+  const bottom = height - padding;
+
+  if (bands.length === 0) {
+    return { marks: [], scale: scaleFor([0], "auto", top, bottom), width, height };
+  }
+
+  const spread = bands.flatMap((band) => [band.low, band.high]);
+  const scale = scaleFor(spread, domain, top, bottom);
+  const slot = width / bands.length;
+
+  return {
+    marks: bands.map((band, index) => ({
+      x: roundTo(index * slot + slot / 2),
+      y: roundTo(scale.y(band.mean)),
+      lowY: roundTo(scale.y(band.low)),
+      highY: roundTo(scale.y(band.high)),
+      index,
+    })),
+    scale,
+    width,
+    height,
+  };
+}
+
+function roundTo(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 /** The points a chart can call out. */
@@ -226,8 +296,12 @@ function extremeIndex(values: readonly number[], better: (a: number, b: number) 
 }
 
 export interface SparklineSvgOptions extends SparklineOptions {
-  /** `"line"` (default) or `"column"`. */
-  chart?: "line" | "column";
+  /** `"line"` (default), `"column"` or `"band"`. */
+  chart?: "line" | "column" | "band";
+  /** Low/mean/high buckets, required when `chart` is `"band"`. */
+  bands?: readonly { low: number; mean: number; high: number }[];
+  /** Extra attributes set on the `<svg>`: `id`, `data-*`, anything. */
+  attrs?: Record<string, string | number>;
   /** Default `"currentColor"`, so the chart inherits the surrounding text colour. */
   stroke?: string;
   strokeWidth?: number;
@@ -259,6 +333,8 @@ export interface SparklineSvgOptions extends SparklineOptions {
 export function sparklineSvg(values: readonly number[], options: SparklineSvgOptions = {}): string {
   const {
     chart = "line",
+    bands,
+    attrs,
     stroke = "currentColor",
     strokeWidth = 1.5,
     fill,
@@ -276,7 +352,18 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
   const parts: string[] = [];
   let box: { width: number; height: number };
 
-  if (chart === "column") {
+  if (chart === "band") {
+    const laid = bandGeometry(bands ?? [], geometry);
+    box = { width: laid.width, height: laid.height };
+    for (const band of laid.marks) {
+      parts.push(
+        `<path d="M${band.x} ${band.highY}V${band.lowY}" stroke="${escapeXml(stroke)}" stroke-width="${strokeWidth}" stroke-linecap="round" opacity="0.4"/>`,
+      );
+      parts.push(
+        `<circle cx="${band.x}" cy="${band.y}" r="${strokeWidth * 1.5}" fill="${escapeXml(fill ?? stroke)}"/>`,
+      );
+    }
+  } else if (chart === "column") {
     const laid = columns(values, geometry);
     box = { width: laid.width, height: laid.height };
     const marks = new Map(marksFor(values, kinds).map((m) => [m.index, m.kind]));
@@ -314,7 +401,13 @@ export function sparklineSvg(values: readonly number[], options: SparklineSvgOpt
   if (label) parts.unshift(`<title>${escapeXml(label)}</title>`);
   const accessibility = label ? ` role="img" aria-label="${escapeXml(label)}"` : ` aria-hidden="true"`;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${box.width} ${box.height}" width="${box.width}" height="${box.height}" style="${svgStyle(fluid)}"${accessibility}>${parts.join("")}</svg>`;
+  const extra = Object.entries(attrs ?? {})
+    .map(([key, value]) => ` ${key}="${escapeXml(String(value))}"`)
+    .join("");
+  const w = geometry.width ?? box.width;
+  const h = geometry.height ?? box.height;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${box.width} ${box.height}" width="${escapeXml(String(w))}" height="${escapeXml(String(h))}" style="${svgStyle(fluid)}"${accessibility}${extra}>${parts.join("")}</svg>`;
 }
 
 /**
