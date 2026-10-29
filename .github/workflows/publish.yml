@@ -61,8 +61,14 @@ jobs:
       # source is a site problem; it must not hold back a package release.
       # CI checks it on every push instead — see the `site` job in ci.yml.
 
-      - name: Publish to npm
-        run: npm publish
+      # `npm stage publish`, not `npm publish`: a trusted publisher may stage a
+      # release without any further opt-in, while publishing straight to latest
+      # is a separate permission on npmjs.com. Staging is what papertooth does,
+      # and the release goes public when a maintainer approves it under Staged
+      # Packages. A refused direct publish reports ENEEDAUTH, which reads like a
+      # missing login rather than a permission the token was never granted.
+      - name: Stage on npm (approve it on npmjs.com, Staged Packages)
+        run: npm stage publish
 
       - name: Release notes from CHANGELOG.md
         run: |
