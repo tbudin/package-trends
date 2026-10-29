@@ -13,4 +13,4 @@ The default. Shape only — no axes, no labels, nothing but the line — for a n
 ```
 
 ---
-https://tbudin.github.io/package-trends/sparkline/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/sparkline/ · package-trends 0.2.1 · MIT

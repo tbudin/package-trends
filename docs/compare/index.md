@@ -19,4 +19,4 @@ start, so every line begins at 100 and the chart compares growth instead of size
 `spread` on the comparison is what tells you which one to use.
 
 ---
-https://tbudin.github.io/package-trends/compare/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/compare/ · package-trends 0.2.1 · MIT

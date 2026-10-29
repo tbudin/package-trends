@@ -85,7 +85,7 @@
     "@types/react-dom": "19.0.2",
     "esbuild": "0.24.2",
     "oxlint": "1.90.0",
-    "package-site": "github:tbudin/package-site#v0.1.0",
+    "package-site": "github:tbudin/package-site#v0.1.1",
     "publint": "0.2.12",
     "react": "19.0.0",
     "react-dom": "19.0.0",

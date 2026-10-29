@@ -21,4 +21,4 @@ under the cursor through a live region.
 over.
 
 ---
-https://tbudin.github.io/package-trends/accessibility/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/accessibility/ · package-trends 0.2.1 · MIT

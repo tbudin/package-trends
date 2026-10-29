@@ -5,8 +5,16 @@
   <link rel="self" href="https://tbudin.github.io/package-trends/feed.xml"/>
   <link href="https://tbudin.github.io/package-trends/changelog/"/>
   <id>https://tbudin.github.io/package-trends/changelog/</id>
-  <updated>2026-10-29T15:54:32+08:00</updated>
+  <updated>2026-10-29T17:29:16+08:00</updated>
   <author><name>Thomas Budin</name></author>
+  <entry>
+    <title>package-trends 0.2.1</title>
+    <link href="https://tbudin.github.io/package-trends/changelog/#v0-2-1"/>
+    <id>https://tbudin.github.io/package-trends/changelog/#v0-2-1</id>
+    <updated>2026-10-29T17:29:16+08:00</updated>
+    <content type="html"><![CDATA[<h3>Patch Changes</h3>
+<ul class="release-changes"><li><p>The README stated three bundle sizes and all three had drifted, the React one by 2 kB in the flattering direction, because nothing measured them. They are corrected — 8.3 kB for the core, 12.5 kB with the React components, 14.8 kB with comparison, 17.1 kB with the heatmap as well — and <code>pnpm check</code> now fails on a figure the package no longer has, or on an entry point the README never mentions.</p><p>Accessibility covers the heatmap too: it always carries <code>role=&quot;img&quot;</code> and a generated <code>aria-label</code>, where an unlabelled sparkline marks itself <code>aria-hidden</code>, and <code>cellTitles</code> is explained along with why it is on in the component and off in <code>heatmapSvg</code>.</p><p>No runtime code changed, so the published bundles are identical to 0.2.0.</p></li></ul>]]></content>
+  </entry>
   <entry>
     <title>package-trends 0.2.0</title>
     <link href="https://tbudin.github.io/package-trends/changelog/#v0-2-0"/>

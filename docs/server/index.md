@@ -27,4 +27,4 @@ this site is drawn by `sparklineSvg`, which is the same geometry the components 
 page loads no framework at all.
 
 ---
-https://tbudin.github.io/package-trends/server/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/server/ · package-trends 0.2.1 · MIT

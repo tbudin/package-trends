@@ -24,4 +24,4 @@ invented value from a real one, so the curve has to be one that cannot invent th
 A cardinal spline overshoots local extremes, which on a download count draws values that never happened — below the real low, and near zero, below zero. Monotone cubic stays within the two points it joins.
 
 ---
-https://tbudin.github.io/package-trends/curves/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/curves/ · package-trends 0.2.1 · MIT

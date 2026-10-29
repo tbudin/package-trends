@@ -27,8 +27,8 @@ importers:
         specifier: 1.90.0
         version: 1.90.0
       package-site:
-        specifier: github:tbudin/package-site#v0.1.0
-        version: https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff
+        specifier: github:tbudin/package-site#v0.1.1
+        version: https://codeload.github.com/tbudin/package-site/tar.gz/093a42cfa0426d8cd0b2803108e99fa7e21a2e3f
       publint:
         specifier: 0.2.12
         version: 0.2.12
@@ -1164,10 +1164,10 @@ packages:
   package-manager-detector@0.2.11:
     resolution: {integrity: sha512-BEnLolu+yuz22S56CU1SUKq3XC3PkwD5wv4ikR4MfGvnRVcmzXR9DwSlW2fEamyTPyXHomBJRzgapeuBvRNzJQ==}
 
-  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff:
-    resolution: {tarball: https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff}
-    version: 0.1.0
-    engines: {node: '>=18'}
+  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/093a42cfa0426d8cd0b2803108e99fa7e21a2e3f:
+    resolution: {tarball: https://codeload.github.com/tbudin/package-site/tar.gz/093a42cfa0426d8cd0b2803108e99fa7e21a2e3f}
+    version: 0.1.1
+    engines: {node: '>=20'}
     hasBin: true
 
   parse5-htmlparser2-tree-adapter@6.0.1:
@@ -2477,7 +2477,7 @@ snapshots:
     dependencies:
       quansync: 0.2.11
 
-  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff: {}
+  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/093a42cfa0426d8cd0b2803108e99fa7e21a2e3f: {}
 
   parse5-htmlparser2-tree-adapter@6.0.1:
     dependencies:

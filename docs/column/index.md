@@ -16,4 +16,4 @@ bars. `aggregate="week"` gives four or five that actually differ — columns wan
 fatter bars than a line does.
 
 ---
-https://tbudin.github.io/package-trends/column/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/column/ · package-trends 0.2.1 · MIT

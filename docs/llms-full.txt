@@ -1,4 +1,4 @@
-# package-trends 0.2.0 — complete documentation
+# package-trends 0.2.1 — complete documentation
 
 > npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.
 
@@ -45,7 +45,7 @@ No. The npm downloads API is public and sends `access-control-allow-origin: *`, 
 Yes. `sparklineSvg` returns an SVG string and the core has no framework in it. This site uses that path and loads no framework at all.
 
 ---
-https://tbudin.github.io/package-trends/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -65,7 +65,7 @@ The default. Shape only — no axes, no labels, nothing but the line — for a n
 ```
 
 ---
-https://tbudin.github.io/package-trends/sparkline/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/sparkline/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -89,7 +89,7 @@ component out of a host's palette. The `data-direction` attribute is on the elem
 either way, so a stylesheet can colour it instead of a prop.
 
 ---
-https://tbudin.github.io/package-trends/text/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/text/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -110,7 +110,7 @@ A tile. The number leads, the change qualifies it, and the chart is there to sho
 ```
 
 ---
-https://tbudin.github.io/package-trends/kpi/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/kpi/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -141,7 +141,7 @@ invented value from a real one, so the curve has to be one that cannot invent th
 A cardinal spline overshoots local extremes, which on a download count draws values that never happened — below the real low, and near zero, below zero. Monotone cubic stays within the two points it joins.
 
 ---
-https://tbudin.github.io/package-trends/curves/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/curves/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -164,7 +164,7 @@ bars. `aggregate="week"` gives four or five that actually differ — columns wan
 fatter bars than a line does.
 
 ---
-https://tbudin.github.io/package-trends/column/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/column/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -190,7 +190,7 @@ end. A day's downloads is one number. Borrowing the shape would mean inventing t
 values, so the band shows what the data has: the spread, and the middle.
 
 ---
-https://tbudin.github.io/package-trends/band/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/band/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -213,7 +213,7 @@ do — against `domain="auto"` the rule lands on the bottom edge and is invisibl
 there for a derived series, such as a day-over-day change, where zero sits in the middle.
 
 ---
-https://tbudin.github.io/package-trends/marks/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/marks/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -232,7 +232,7 @@ A chart never grows past its container either way: one wider than its box
 scales down with its aspect ratio kept, so it cannot give the page a horizontal scrollbar.
 
 ---
-https://tbudin.github.io/package-trends/size/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/size/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -251,7 +251,7 @@ Without a fixed domain a package with a thousand downloads draws exactly the
 same picture as one with a million. That is fine alone and misleading in a row.
 
 ---
-https://tbudin.github.io/package-trends/domain/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/domain/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -283,7 +283,7 @@ data.
 No. `values` is the smoothed series that gets drawn. Every figure — total, mean, peak, change — comes from the raw points, and `trend.total` is the one to use.
 
 ---
-https://tbudin.github.io/package-trends/periods/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/periods/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -313,7 +313,7 @@ month read as a falling one. Interior zeros are interpolated from their neighbou
 Those are days the registry has not aggregated, not days nobody installed the package — and the API gives you no way to tell the two apart. package-trends interpolates interior zeros from their neighbours and lists them in `gapDays`.
 
 ---
-https://tbudin.github.io/package-trends/gaps/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/gaps/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -339,7 +339,7 @@ report that react is falling by 390,000 a day; the r² behind it is what says th
 the slope is noise.
 
 ---
-https://tbudin.github.io/package-trends/analyse/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/analyse/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -365,7 +365,7 @@ start, so every line begins at 100 and the chart compares growth instead of size
 `spread` on the comparison is what tells you which one to use.
 
 ---
-https://tbudin.github.io/package-trends/compare/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/compare/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -399,7 +399,7 @@ this site is drawn by `sparklineSvg`, which is the same geometry the components 
 page loads no framework at all.
 
 ---
-https://tbudin.github.io/package-trends/server/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/server/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -420,7 +420,7 @@ The same markup on three surfaces, with nothing changed but the surrounding text
 colour. A component that ships its own palette fights every site it lands on.
 
 ---
-https://tbudin.github.io/package-trends/styling/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/styling/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -448,7 +448,7 @@ under the cursor through a live region.
 over.
 
 ---
-https://tbudin.github.io/package-trends/accessibility/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/accessibility/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -513,7 +513,7 @@ import { … } from "package-trends/heatmap";  // 3.6 kB
 | `children` | (state) => ReactNode | Replaces the built-in markup entirely. |
 
 ---
-https://tbudin.github.io/package-trends/reference/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/reference/ · package-trends 0.2.1 · MIT
 
 
 ---
@@ -522,5 +522,51 @@ https://tbudin.github.io/package-trends/reference/ · package-trends 0.2.0 · MI
 
 *package-trends · Releases*
 
+Newest first. [Follow by feed](../feed.xml).
+
+## 0.2.1 29 October 2026
+
+### Patch Changes
+
+- The README stated three bundle sizes and all three had drifted, the React one by 2 kB in the flattering direction, because nothing measured them. They are corrected — 8.3 kB for the core, 12.5 kB with the React components, 14.8 kB with comparison, 17.1 kB with the heatmap as well — and `pnpm check` now fails on a figure the package no longer has, or on an entry point the README never mentions.
+
+Accessibility covers the heatmap too: it always carries `role="img"` and a generated `aria-label`, where an unlabelled sparkline marks itself `aria-hidden`, and `cellTitles` is explained along with why it is on in the component and off in `heatmapSvg`.
+
+No runtime code changed, so the published bundles are identical to 0.2.0.
+
+## 0.2.0 29 October 2026
+
+### Minor Changes
+
+- A calendar heatmap: one square per day, one column per week, from a new `/heatmap` entry. `<PackageHeatmap>` in React, `heatmapSvg()` for a string, and `heatmapGeometry()` for the squares as data — all three drawing from one computation, so a server render and the client agree square for square.
+
+It shows the two things a sparkline averages away: where in the year a quiet stretch fell, and the weekday rhythm. Across react's last year Wednesday averages 20.6M against Saturday's 11.3M.
+
+The ramp is opacity over `currentColor`, so lightness alone carries the value: it inherits the surrounding text colour, inverts on a dark ground with no second palette, and survives monochrome. `emptyColor` gives the quietest level a colour of its own for GitHub's two-tone look. `scale` defaults to `"linear"` spanning zero, because `"quantile"` fills the ramp evenly and so draws a year that doubled and a year that never moved identically. Days npm reported nothing for are hatched rather than shaded, since a solid square would state a number nobody measured.
+
+### Patch Changes
+
+- `computeTrend`, `compare` and `analyse` all answered nonsense for a range with no points. The first two threw a raw `TypeError`, and a throw inside a React render takes the whole tree with it — on a server that is the page, not the chart. `analyse` was quieter and worse: NaN for `mean` and `median`, and `undefined` for `peak` and `trough` behind a type promising a `DownloadPoint`.
+
+All three now throw `PackageTrendsError` with the package named, and the hooks route a failed derivation into the `error` state they already had, so `renderError` handles it like any other failure. Renderers are unchanged: `sparkline` and `heatmapGeometry` can honestly draw nothing, and `<PackageHeatmap>` now shows its fallback rather than a zero-sized `<svg>`.
+
+`svgProps` is typed to accept the `data-*` attributes its own documentation promised; the type had been rejecting them.
+
+## 0.1.0 28 October 2026
+
+### Minor Changes
+
+- Column charts, a fixed `domain` so two charts can be compared, point marks, settable up/down colours, and `analyse()` for writing about a series programmatically.
+
+Adds a `styles` object for weight, display and spacing; `numberFormat` and `percentFormat` taking `Intl.NumberFormat` options; `interactive` for pointer and keyboard inspection; `aggregate: "month"`; `between()` for an explicit date range; a `band` chart of each period's low, mean and high; CSS lengths for `width` and `height` so a chart can scale with its text; `curve` for smooth, stepped or straight lines; `strokeDasharray`, `pathProps` and `fillPattern` for patterned charts; and `svgProps` for anything else the `<svg>` should carry.
+
+Also repairs the zeros npm reports for days it has no data for. Taken literally they understate the mean by a quarter and invert the weekday profile; they are now interpolated, and listed in `gapDays`.
+
+- Compare several packages at once, from a new `/compare` entry: `<PackageComparison>` as an overlaid chart or a row each, `compare()` and `indexSeries()` in the core, and `fetchMany` so a page asks for each distinct name only once.
+
+`scale="indexed"` restates each series against its own start, which is the only honest way to put packages of very different sizes on one chart.
+
+- First release. npm download trends as a sparkline, a line of text or a KPI block, with a framework-agnostic core and a React entry. Pass `data` from a server-side `fetchDownloads` to render without a request per visitor.
+
 ---
-https://tbudin.github.io/package-trends/changelog/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/changelog/ · package-trends 0.2.1 · MIT

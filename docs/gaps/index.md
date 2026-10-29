@@ -23,4 +23,4 @@ month read as a falling one. Interior zeros are interpolated from their neighbou
 Those are days the registry has not aggregated, not days nobody installed the package — and the API gives you no way to tell the two apart. package-trends interpolates interior zeros from their neighbours and lists them in `gapDays`.
 
 ---
-https://tbudin.github.io/package-trends/gaps/ · package-trends 0.2.0 · MIT
+https://tbudin.github.io/package-trends/gaps/ · package-trends 0.2.1 · MIT
