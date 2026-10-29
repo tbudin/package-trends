@@ -14,4 +14,4 @@ A tile. The number leads, the change qualifies it, and the chart is there to sho
 ```
 
 ---
-https://tbudin.github.io/package-trends/kpi/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/kpi/ · package-trends 0.2.0 · MIT

@@ -55,11 +55,11 @@ jobs:
       - run: pnpm lint:package
       - run: pnpm lint:types
 
-      # The site is deliberately not checked here. `pnpm build:docs` shells out
-      # to ../package-site, a sibling repository this checkout does not have,
-      # so the step could only ever fail — and the published tarball carries
-      # dist, types, src, README and LICENSE, never docs/. A site that lags its
+      # The site is deliberately not checked here, though it could be now that
+      # the lockfile pins package-site: the published tarball carries dist,
+      # types, src, README and LICENSE, never docs/. A site that lags its
       # source is a site problem; it must not hold back a package release.
+      # CI checks it on every push instead — see the `site` job in ci.yml.
 
       - name: Publish to npm
         run: npm publish

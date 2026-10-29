@@ -19,4 +19,4 @@ end. A day's downloads is one number. Borrowing the shape would mean inventing t
 values, so the band shows what the data has: the spread, and the middle.
 
 ---
-https://tbudin.github.io/package-trends/band/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/band/ · package-trends 0.2.0 · MIT

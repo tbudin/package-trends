@@ -4,7 +4,7 @@
 
 A package's npm downloads as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components. It fetches straight from the npm registry, which needs no key and sends a permissive CORS header, so no proxy is involved.
 
-- Version 0.1.0, MIT, © Plain Matter Pte Ltd.
+- Version 0.2.0, MIT, © Plain Matter Pte Ltd.
 - Install: `npm i package-trends`
 - Source: https://github.com/tbudin/package-trends
 - Every page below is also available as markdown at its URL plus `index.md`.

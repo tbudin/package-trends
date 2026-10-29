@@ -17,4 +17,4 @@ component out of a host's palette. The `data-direction` attribute is on the elem
 either way, so a stylesheet can colour it instead of a prop.
 
 ---
-https://tbudin.github.io/package-trends/text/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/text/ · package-trends 0.2.0 · MIT

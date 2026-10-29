@@ -16,4 +16,4 @@ do — against `domain="auto"` the rule lands on the bottom edge and is invisibl
 there for a derived series, such as a day-over-day change, where zero sits in the middle.
 
 ---
-https://tbudin.github.io/package-trends/marks/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/marks/ · package-trends 0.2.0 · MIT

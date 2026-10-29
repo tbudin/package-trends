@@ -25,4 +25,4 @@ data.
 No. `values` is the smoothed series that gets drawn. Every figure — total, mean, peak, change — comes from the raw points, and `trend.total` is the one to use.
 
 ---
-https://tbudin.github.io/package-trends/periods/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/periods/ · package-trends 0.2.0 · MIT

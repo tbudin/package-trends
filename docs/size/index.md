@@ -12,4 +12,4 @@ A chart never grows past its container either way: one wider than its box
 scales down with its aspect ratio kept, so it cannot give the page a horizontal scrollbar.
 
 ---
-https://tbudin.github.io/package-trends/size/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/size/ · package-trends 0.2.0 · MIT

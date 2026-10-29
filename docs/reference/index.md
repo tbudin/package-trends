@@ -58,4 +58,4 @@ import { … } from "package-trends/heatmap";  // 3.6 kB
 | `children` | (state) => ReactNode | Replaces the built-in markup entirely. |
 
 ---
-https://tbudin.github.io/package-trends/reference/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/reference/ · package-trends 0.2.0 · MIT

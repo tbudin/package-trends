@@ -5,8 +5,18 @@
   <link rel="self" href="https://tbudin.github.io/package-trends/feed.xml"/>
   <link href="https://tbudin.github.io/package-trends/changelog/"/>
   <id>https://tbudin.github.io/package-trends/changelog/</id>
-  <updated>2026-10-28T22:19:48+08:00</updated>
+  <updated>2026-10-29T15:54:32+08:00</updated>
   <author><name>Thomas Budin</name></author>
+  <entry>
+    <title>package-trends 0.2.0</title>
+    <link href="https://tbudin.github.io/package-trends/changelog/#v0-2-0"/>
+    <id>https://tbudin.github.io/package-trends/changelog/#v0-2-0</id>
+    <updated>2026-10-29T15:54:32+08:00</updated>
+    <content type="html"><![CDATA[<h3>Minor Changes</h3>
+<ul class="release-changes"><li><p>A calendar heatmap: one square per day, one column per week, from a new <code>/heatmap</code> entry. <code>&lt;PackageHeatmap&gt;</code> in React, <code>heatmapSvg()</code> for a string, and <code>heatmapGeometry()</code> for the squares as data — all three drawing from one computation, so a server render and the client agree square for square.</p><p>It shows the two things a sparkline averages away: where in the year a quiet stretch fell, and the weekday rhythm. Across react's last year Wednesday averages 20.6M against Saturday's 11.3M.</p><p>The ramp is opacity over <code>currentColor</code>, so lightness alone carries the value: it inherits the surrounding text colour, inverts on a dark ground with no second palette, and survives monochrome. <code>emptyColor</code> gives the quietest level a colour of its own for GitHub's two-tone look. <code>scale</code> defaults to <code>&quot;linear&quot;</code> spanning zero, because <code>&quot;quantile&quot;</code> fills the ramp evenly and so draws a year that doubled and a year that never moved identically. Days npm reported nothing for are hatched rather than shaded, since a solid square would state a number nobody measured.</p></li></ul>
+<h3>Patch Changes</h3>
+<ul class="release-changes"><li><p><code>computeTrend</code>, <code>compare</code> and <code>analyse</code> all answered nonsense for a range with no points. The first two threw a raw <code>TypeError</code>, and a throw inside a React render takes the whole tree with it — on a server that is the page, not the chart. <code>analyse</code> was quieter and worse: NaN for <code>mean</code> and <code>median</code>, and <code>undefined</code> for <code>peak</code> and <code>trough</code> behind a type promising a <code>DownloadPoint</code>.</p><p>All three now throw <code>PackageTrendsError</code> with the package named, and the hooks route a failed derivation into the <code>error</code> state they already had, so <code>renderError</code> handles it like any other failure. Renderers are unchanged: <code>sparkline</code> and <code>heatmapGeometry</code> can honestly draw nothing, and <code>&lt;PackageHeatmap&gt;</code> now shows its fallback rather than a zero-sized <code>&lt;svg&gt;</code>.</p><p><code>svgProps</code> is typed to accept the <code>data-*</code> attributes its own documentation promised; the type had been rejecting them.</p></li></ul>]]></content>
+  </entry>
   <entry>
     <title>package-trends 0.1.0</title>
     <link href="https://tbudin.github.io/package-trends/changelog/#v0-1-0"/>

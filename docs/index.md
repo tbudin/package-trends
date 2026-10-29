@@ -35,4 +35,4 @@ No. The npm downloads API is public and sends `access-control-allow-origin: *`, 
 Yes. `sparklineSvg` returns an SVG string and the core has no framework in it. This site uses that path and loads no framework at all.
 
 ---
-https://tbudin.github.io/package-trends/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/ · package-trends 0.2.0 · MIT

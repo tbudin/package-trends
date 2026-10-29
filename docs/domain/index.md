@@ -12,4 +12,4 @@ Without a fixed domain a package with a thousand downloads draws exactly the
 same picture as one with a million. That is fine alone and misleading in a row.
 
 ---
-https://tbudin.github.io/package-trends/domain/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/domain/ · package-trends 0.2.0 · MIT

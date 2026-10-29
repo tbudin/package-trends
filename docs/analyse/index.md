@@ -19,4 +19,4 @@ report that react is falling by 390,000 a day; the r² behind it is what says th
 the slope is noise.
 
 ---
-https://tbudin.github.io/package-trends/analyse/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/analyse/ · package-trends 0.2.0 · MIT

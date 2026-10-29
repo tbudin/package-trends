@@ -26,6 +26,9 @@ importers:
       oxlint:
         specifier: 1.90.0
         version: 1.90.0
+      package-site:
+        specifier: github:tbudin/package-site#v0.1.0
+        version: https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff
       publint:
         specifier: 0.2.12
         version: 0.2.12
@@ -1160,6 +1163,12 @@ packages:
 
   package-manager-detector@0.2.11:
     resolution: {integrity: sha512-BEnLolu+yuz22S56CU1SUKq3XC3PkwD5wv4ikR4MfGvnRVcmzXR9DwSlW2fEamyTPyXHomBJRzgapeuBvRNzJQ==}
+
+  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff:
+    resolution: {tarball: https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff}
+    version: 0.1.0
+    engines: {node: '>=18'}
+    hasBin: true
 
   parse5-htmlparser2-tree-adapter@6.0.1:
     resolution: {integrity: sha512-qPuWvbLgvDGilKc5BoicRovlT4MtYT6JfJyBOMDsKoiT+GiuP5qyrPCnR9HcPECIJJmZh5jRndyNThnhhb/vlA==}
@@ -2467,6 +2476,8 @@ snapshots:
   package-manager-detector@0.2.11:
     dependencies:
       quansync: 0.2.11
+
+  package-site@https://codeload.github.com/tbudin/package-site/tar.gz/f29356a8c97a0bb2220c568916e59f3e42d40bff: {}
 
   parse5-htmlparser2-tree-adapter@6.0.1:
     dependencies:

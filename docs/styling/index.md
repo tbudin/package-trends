@@ -14,4 +14,4 @@ The same markup on three surfaces, with nothing changed but the surrounding text
 colour. A component that ships its own palette fights every site it lands on.
 
 ---
-https://tbudin.github.io/package-trends/styling/ · package-trends 0.1.0 · MIT
+https://tbudin.github.io/package-trends/styling/ · package-trends 0.2.0 · MIT
