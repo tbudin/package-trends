@@ -1,6 +1,6 @@
 {
   "name": "package-trends",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.",
   "keywords": [
     "npm",
