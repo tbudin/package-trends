@@ -1,26 +1,20 @@
-// Builds the GitHub Pages site into docs/. The site is one hash-routed page
-// over the core entry — no framework, which is both the fast choice and a
-// demonstration of that path — and it fetches live from npm as you use it.
-import { rm, mkdir } from "node:fs/promises";
+// Bundles the core entry into site/, where pages.js imports it. The generator
+// then copies that bundle into docs/assets/ and imports it from there, so the
+// module the browser loads and the module the prerender uses are one file.
+import { mkdir } from "node:fs/promises";
 import * as esbuild from "esbuild";
 
 const root = new URL("..", import.meta.url).pathname;
 
-await rm(`${root}docs/assets`, { recursive: true, force: true });
-await mkdir(`${root}docs/assets`, { recursive: true });
+await mkdir(`${root}site`, { recursive: true });
 
-const common = {
+await esbuild.build({
   bundle: true,
   format: "esm",
-  jsx: "automatic",
   target: ["es2022"],
   minify: true,
   define: { "process.env.NODE_ENV": '"production"' },
   logLevel: "info",
-};
-
-await esbuild.build({
-  ...common,
   entryPoints: [`${root}src/index.ts`],
-  outfile: `${root}docs/assets/package-trends.js`,
+  outfile: `${root}site/package-trends.js`,
 });

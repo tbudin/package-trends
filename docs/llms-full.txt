@@ -1,0 +1,526 @@
+# package-trends 0.1.0 — complete documentation
+
+> npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.
+
+MIT · © Plain Matter Pte Ltd · https://tbudin.github.io/package-trends/
+
+
+
+---
+
+# Download trends, small enough for a footer
+
+A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — `8.3 kB` for the core and `6.8 kB` for the React entry, gzipped as a bundler ships them.
+
+Install
+
+```
+npm install package-trends
+```
+
+## Three shapes, one component
+
+[**Sparkline** Shape only, for a nav or a table cell.](https://tbudin.github.io/package-trends/sparkline/)
+[**Text** One line, inside a sentence.](https://tbudin.github.io/package-trends/text/)
+[**KPI** The number leads, the chart confirms.](https://tbudin.github.io/package-trends/kpi/)
+
+## The npm API needs no key
+
+It sends `access-control-allow-origin: *`, so this works straight from a browser
+with no proxy of your own. Every chart on this site was fetched by your browser as you loaded
+it — change the package in the header and watch them all follow.
+
+## Questions
+
+**Does it need an API key or a proxy?**
+
+No. The npm downloads API is public and sends `access-control-allow-origin: *`, so a browser can call it directly.
+
+**How big is it?**
+
+8.3 kB gzipped for the framework-agnostic core, 6.8 kB for the React entry, 6.9 kB for the comparison chart and 3.6 kB for the heatmap. Each figure is that entry on its own, minified and gzipped, measured on every build. There are no dependencies, and react is a peer you already have.
+
+**Does it work without React?**
+
+Yes. `sparklineSvg` returns an SVG string and the core has no framework in it. This site uses that path and loads no framework at all.
+
+---
+https://tbudin.github.io/package-trends/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Sparkline
+
+*package-trends · Variants*
+
+The default. Shape only — no axes, no labels, nothing but the line — for a nav, a list row or a table cell.
+
+```tsx
+<PackageTrend
+  package="react"
+  width={210} height={44}
+  dot
+/>
+```
+
+---
+https://tbudin.github.io/package-trends/sparkline/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Text
+
+*package-trends · Variants*
+
+One line: the count, the word, the change. It sets no colour of its own unless you ask, so it reads as part of the sentence around it.
+
+```tsx
+<PackageTrend
+  package="react"
+  variant="text"
+  colors={{ up: "#15803d", down: "#b3261e" }}
+/>
+```
+
+Unset, the change inherits the surrounding colour — which is what keeps the
+component out of a host's palette. The `data-direction` attribute is on the element
+either way, so a stylesheet can colour it instead of a prop.
+
+---
+https://tbudin.github.io/package-trends/text/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# KPI
+
+*package-trends · Variants*
+
+A tile. The number leads, the change qualifies it, and the chart is there to show the number is not a fluke.
+
+```tsx
+<PackageTrend
+  package="react"
+  variant="kpi"
+  height={40}
+  fill="color-mix(in oklab, currentColor 10%, transparent)"
+/>
+```
+
+---
+https://tbudin.github.io/package-trends/kpi/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Curves
+
+*package-trends · Charts*
+
+How the line joins its points. `smooth` is monotone cubic, not a cardinal spline: between any two points it stays within their values, so it can never draw a count that never happened.
+
+```tsx
+<PackageTrend
+  package="react"
+  curve="linear"
+/>
+```
+
+## Why not a cardinal spline
+
+A cardinal spline overshoots a local extreme to keep its curvature smooth. On a download count
+that means drawing a dip below the real low — and near zero, below zero. A reader cannot tell an
+invented value from a real one, so the curve has to be one that cannot invent them.
+
+## Questions
+
+**Why is smoothing monotone cubic rather than a spline?**
+
+A cardinal spline overshoots local extremes, which on a download count draws values that never happened — below the real low, and near zero, below zero. Monotone cubic stays within the two points it joins.
+
+---
+https://tbudin.github.io/package-trends/curves/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Columns
+
+*package-trends · Charts*
+
+Discrete days rather than a continuous line. Columns are anchored at zero, which is the honest baseline for a count.
+
+```tsx
+<PackageTrend
+  package="react"
+  chart="column"
+/>
+```
+
+Thirty days of a busy package, anchored at zero, draws thirty nearly identical
+bars. `aggregate="week"` gives four or five that actually differ — columns want fewer,
+fatter bars than a line does.
+
+---
+https://tbudin.github.io/package-trends/column/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Bands
+
+*package-trends · Charts*
+
+Each bucket's low, mean and high, drawn as a range with the mean marked.
+
+```tsx
+<PackageTrend
+  package="react"
+  chart="band"
+  bandSize={7}
+/>
+```
+
+## Why not candlesticks
+
+A candlestick needs an open and a close — a price at the start of the period and a price at the
+end. A day's downloads is one number. Borrowing the shape would mean inventing two of its four
+values, so the band shows what the data has: the spread, and the middle.
+
+---
+https://tbudin.github.io/package-trends/band/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Marks and axis
+
+*package-trends · Charts*
+
+Points worth calling out, and a rule at zero where zero is inside the range.
+
+```tsx
+<PackageTrend
+  package="react"
+  mark={["last", "peak"]}
+/>
+```
+
+`axis` only shows for data that crosses zero, which downloads never
+do — against `domain="auto"` the rule lands on the bottom edge and is invisible. It is
+there for a derived series, such as a day-over-day change, where zero sits in the middle.
+
+---
+https://tbudin.github.io/package-trends/marks/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Size
+
+*package-trends · Scale*
+
+A number is pixels. A CSS length leaves the `viewBox` alone and renders at that size instead, so a chart set in `em` scales with the text it sits in.
+
+```tsx
+<PackageTrend package="react" width="8em" height="1.6em" />
+```
+
+A chart never grows past its container either way: one wider than its box
+scales down with its aspect ratio kept, so it cannot give the page a horizontal scrollbar.
+
+---
+https://tbudin.github.io/package-trends/size/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Domain
+
+*package-trends · Scale*
+
+The y-range the values are laid out across. `auto` runs from the series' own low to its own high — the sparkline convention. A fixed pair is the only way two charts side by side can be compared.
+
+```tsx
+<PackageTrend package="react" domain="auto" />
+```
+
+Without a fixed domain a package with a thousand downloads draws exactly the
+same picture as one with a million. That is fine alone and misleading in a row.
+
+---
+https://tbudin.github.io/package-trends/domain/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Periods and smoothing
+
+*package-trends · Data*
+
+A named period, or an explicit pair of dates. Long periods bucket into whole weeks or months, measured back from the latest day.
+
+```tsx
+import { between } from "package-trends";
+
+<PackageTrend package="react" period="last-month" />
+<PackageTrend package="react" period={between("2026-06-01", "2026-08-31")} />
+```
+
+## Smoothing never touches the numbers
+
+Daily counts swing threefold across the week, so the drawn line is a 7-day mean by default. Every
+figure beside it — total, average, peak, change — comes from the raw series, so a smoothed chart
+cannot quietly restate the total. Never sum `trend.values`: it is the drawing, not the
+data.
+
+## Questions
+
+**Can I sum trend.values to get the total?**
+
+No. `values` is the smoothed series that gets drawn. Every figure — total, mean, peak, change — comes from the raw points, and `trend.total` is the one to use.
+
+---
+https://tbudin.github.io/package-trends/periods/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Gaps in npm's data
+
+*package-trends · Data*
+
+npm answers `0` for a day it has not aggregated, and gives you no way to tell that from a day nobody installed the package. Taken literally those zeros are not a small error.
+
+```tsx
+<PackageTrend package="react" gaps="fill" />
+
+// the days npm had no data for
+const { gapDays } = computeTrend(await fetchDownloads("react"));
+```
+
+Switch the policy above and watch every figure move. On a sample of `react` seven
+of thirty days came back zero: the mean fell by a quarter, the weekday profile inverted, and a flat
+month read as a falling one. Interior zeros are interpolated from their neighbours and listed in
+`gapDays`, so you can say so where it matters.
+
+## Questions
+
+**Why does npm report zero downloads for some days?**
+
+Those are days the registry has not aggregated, not days nobody installed the package — and the API gives you no way to tell the two apart. package-trends interpolates interior zeros from their neighbours and lists them in `gapDays`.
+
+---
+https://tbudin.github.io/package-trends/gaps/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# analyse()
+
+*package-trends · Data*
+
+The figures you would need to write about a package without looking at the chart.
+
+```tsx
+import { analyse, fetchDownloads } from "package-trends";
+
+const a = analyse(await fetchDownloads("react", { period: "last-month" }));
+
+a.direction;    // "rising" | "falling" | "flat"
+a.confidence;   // "strong" | "moderate" | "weak", from the r²
+a.weekendRatio; // weekday-driven use sits near 0.6
+```
+
+The field to build a sentence on is `confidence`. A slope alone will cheerfully
+report that react is falling by 390,000 a day; the r² behind it is what says the month was flat and
+the slope is noise.
+
+---
+https://tbudin.github.io/package-trends/analyse/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Comparing packages
+
+*package-trends · Compare*
+
+Several packages on one chart. An absolute scale only reads when the packages are of a like size — and they rarely are.
+
+```tsx
+import { PackageComparison } from "package-trends/compare";
+
+<PackageComparison
+  packages={["react", "vue", "svelte", "preact"]}
+  scale="indexed"
+/>
+```
+
+On `absolute` react takes the top and the rest collapse onto the floor: the chart
+is literally true and tells you nothing. `indexed` restates each series against its own
+start, so every line begins at 100 and the chart compares growth instead of size. The
+`spread` on the comparison is what tells you which one to use.
+
+---
+https://tbudin.github.io/package-trends/compare/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# On the server
+
+*package-trends · Using it*
+
+Fetch once where the page is built and pass it down. No visitor costs a request, and the chart is in the first paint rather than appearing a moment later.
+
+```tsx
+import { fetchDownloads } from "package-trends";
+import { PackageTrend } from "package-trends/react";
+
+const data = await fetchDownloads("react", { period: "last-month" });
+
+return <PackageTrend package="react" data={data} variant="kpi" />;
+```
+
+## Or without React at all
+
+```
+import { fetchDownloads, computeTrend, sparklineSvg } from "package-trends";
+
+const trend = computeTrend(await fetchDownloads("react"));
+const svg = sparklineSvg(trend.values, { width: 200, height: 40, dot: true });
+```
+
+The core is the whole library and the React entry is a wrapper over it. Every chart on
+this site is drawn by `sparklineSvg`, which is the same geometry the components use — this
+page loads no framework at all.
+
+---
+https://tbudin.github.io/package-trends/server/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Styling
+
+*package-trends · Using it*
+
+Nothing ships a stylesheet. The chart strokes in `currentColor` and the type is set in `em`, so it inherits rather than imposes.
+
+```tsx
+/* the only two colours it would choose for itself */
+.pt-change[data-direction="up"]   { color: #15803d; }
+.pt-change[data-direction="down"] { color: #b3261e; }
+```
+
+The same markup on three surfaces, with nothing changed but the surrounding text
+colour. A component that ships its own palette fights every site it lands on.
+
+---
+https://tbudin.github.io/package-trends/styling/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Accessibility
+
+*package-trends · Using it*
+
+A sparkline carries nothing a non-sighted reader can use, so every chart gets a sentence instead.
+
+```tsx
+<PackageTrend package="react" label="Weekly pulls from npm" />
+<PackageTrend package="react" label={(t) => `${t.total.toLocaleString()} downloads`} />
+```
+
+- The sentence is the SVG's `<title>`, and `label` replaces it.
+
+- Red and green never carry the meaning alone — the sign is always there, which is what a reader
+with a colour deficiency goes by.
+
+- `interactive` makes the chart focusable and arrow-key navigable, and announces the day
+under the cursor through a live region.
+
+- A failed fetch renders nothing by default. A download count is never worth breaking a footer
+over.
+
+---
+https://tbudin.github.io/package-trends/accessibility/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Every option
+
+*package-trends · Reference*
+
+The full surface. 4 entry points, and your bundler drops whatever you do not import.
+
+```tsx
+import { … } from "package-trends";          // 8.3 kB gzipped
+import { … } from "package-trends/react";    // 6.8 kB
+import { … } from "package-trends/compare";  // 6.9 kB
+import { … } from "package-trends/heatmap";  // 3.6 kB
+```
+
+## Core exports
+
+| Export | What it does |
+|---|---|
+| `fetchDownloads(name, options)` | One package's range from the npm API. |
+| `fetchMany(names, fetchOne)` | Several at once, asking for each distinct name only once. |
+| `computeTrend(range, options)` | Totals, peak, trough and change from the raw series, plus the shaped values to draw. |
+| `analyse(range, options)` | Growth, fit and r², weekday profile, volatility, spikes, streak. |
+| `compare(ranges, options)` | Several ranges on one scale, absolute or indexed. |
+| `sparklineSvg(values, options)` | A standalone SVG string, for anywhere outside React. |
+| `toWeekly / toMonthly / toBands` | Bucketing. |
+| `fillGaps / applyGaps` | The zero repair, on its own. |
+| `formatCount / formatChange / formatExact / formatWeekday` | Intl-backed formatting. |
+| `describeTrend(trend, locale)` | The sentence a screen reader gets. |
+| `between(from, to)` | An explicit date range. |
+
+## Props
+
+| Prop | Type | What it does |
+|---|---|---|
+| `package` | string | The package name, scoped names included. |
+| `data` | DownloadRange | A range already fetched. When set, nothing is requested. |
+| `period` | Period | between() | "last-week", "last-month", "last-year", or an explicit pair. |
+| `variant` | "sparkline" | "text" | "kpi" | Default sparkline. |
+| `chart` | "line" | "column" | "band" | The chart form. |
+| `curve` | "linear" | "smooth" | "step" | "step-before" | How the line joins its points. |
+| `domain` | [number, number] | "auto" | "zero" | The y-range the values are laid out across. |
+| `aggregate` | "week" | "month" | Buckets whole weeks or months back from the latest day. |
+| `smooth` | number | Moving-average window for the drawn line. Default 7. |
+| `gaps` | "fill" | "zero" | What to do with the days npm has no data for. Default fill. |
+| `width / height` | number | string | Pixels, or a CSS length that scales with the text. |
+| `fluid` | boolean | Fill the container's width rather than sit at a natural size. |
+| `mark / markColor` | MarkKind[] / record | Points to call out: last, peak, trough. |
+| `axis / axisColor` | boolean / string | A rule at zero where zero is inside the domain. |
+| `fill / fillPattern` | string / FillPattern | Area or bar fill, flat or patterned. |
+| `stroke / strokeWidth / strokeDasharray` | string / number / string | The line itself. |
+| `colors` | { up, down } | The rise and fall figures. Unset, they inherit. |
+| `styles` | record | Inline styles per part: weight, display, spacing. |
+| `numberFormat / percentFormat` | Intl.NumberFormatOptions | Merged over the defaults. |
+| `locale` | string | Passed to Intl. |
+| `label` | string | (trend) => string | The accessible name for the chart. |
+| `interactive / onActivePoint` | boolean / fn | Pointer and keyboard inspection. |
+| `fallback / renderError` | ReactNode / fn | While loading, and when it fails. |
+| `svgProps / pathProps` | record | Anything else the elements should carry. |
+| `children` | (state) => ReactNode | Replaces the built-in markup entirely. |
+
+---
+https://tbudin.github.io/package-trends/reference/ · package-trends 0.1.0 · MIT
+
+
+---
+
+# Changelog
+
+*package-trends · Releases*
+
+---
+https://tbudin.github.io/package-trends/changelog/ · package-trends 0.1.0 · MIT

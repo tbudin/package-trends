@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>package-trends releases</title>
+  <subtitle>npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.</subtitle>
+  <link rel="self" href="https://tbudin.github.io/package-trends/feed.xml"/>
+  <link href="https://tbudin.github.io/package-trends/changelog/"/>
+  <id>https://tbudin.github.io/package-trends/changelog/</id>
+  <updated>2026-10-28T22:19:48+08:00</updated>
+  <author><name>Thomas Budin</name></author>
+  <entry>
+    <title>package-trends 0.1.0</title>
+    <link href="https://tbudin.github.io/package-trends/changelog/#v0-1-0"/>
+    <id>https://tbudin.github.io/package-trends/changelog/#v0-1-0</id>
+    <updated>2026-10-28T22:19:48+08:00</updated>
+    <content type="html"><![CDATA[<h3>Minor Changes</h3>
+<ul class="release-changes"><li><p>Column charts, a fixed <code>domain</code> so two charts can be compared, point marks, settable up/down colours, and <code>analyse()</code> for writing about a series programmatically.</p><p>Adds a <code>styles</code> object for weight, display and spacing; <code>numberFormat</code> and <code>percentFormat</code> taking <code>Intl.NumberFormat</code> options; <code>interactive</code> for pointer and keyboard inspection; <code>aggregate: &quot;month&quot;</code>; <code>between()</code> for an explicit date range; a <code>band</code> chart of each period's low, mean and high; CSS lengths for <code>width</code> and <code>height</code> so a chart can scale with its text; <code>curve</code> for smooth, stepped or straight lines; <code>strokeDasharray</code>, <code>pathProps</code> and <code>fillPattern</code> for patterned charts; and <code>svgProps</code> for anything else the <code>&lt;svg&gt;</code> should carry.</p><p>Also repairs the zeros npm reports for days it has no data for. Taken literally they understate the mean by a quarter and invert the weekday profile; they are now interpolated, and listed in <code>gapDays</code>.</p></li><li><p>Compare several packages at once, from a new <code>/compare</code> entry: <code>&lt;PackageComparison&gt;</code> as an overlaid chart or a row each, <code>compare()</code> and <code>indexSeries()</code> in the core, and <code>fetchMany</code> so a page asks for each distinct name only once.</p><p><code>scale=&quot;indexed&quot;</code> restates each series against its own start, which is the only honest way to put packages of very different sizes on one chart.</p></li><li><p>First release. npm download trends as a sparkline, a line of text or a KPI block, with a framework-agnostic core and a React entry. Pass <code>data</code> from a server-side <code>fetchDownloads</code> to render without a request per visitor.</p></li></ul>]]></content>
+  </entry>
+</feed>

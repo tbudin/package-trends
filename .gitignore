@@ -13,3 +13,8 @@ examples/*.js
 
 # local editor/agent config
 .claude/
+
+# generated: the core bundle the site imports
+site/package-trends.js
+site/logos.js
+site/sizes.js

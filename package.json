@@ -63,8 +63,11 @@
     "changeset": "changeset",
     "bump": "changeset version",
     "prepublishOnly": "pnpm build",
-    "build:docs": "node scripts/build-docs.mjs",
-    "build:shots": "node scripts/build-shots.mjs"
+    "build:docs": "node scripts/build-logos.mjs && node scripts/build-sizes.mjs && node scripts/build-docs.mjs && node ../package-site/bin/package-site.mjs build",
+    "build:shots": "node scripts/build-shots.mjs",
+    "check:docs": "node scripts/build-logos.mjs && node scripts/build-sizes.mjs && node scripts/build-docs.mjs && node ../package-site/bin/package-site.mjs check && node scripts/check-reference.mjs",
+    "docs": "node scripts/build-logos.mjs && node scripts/build-sizes.mjs && node scripts/build-docs.mjs && node ../package-site/bin/package-site.mjs serve 4322",
+    "build:logos": "node scripts/build-logos.mjs"
   },
   "peerDependencies": {
     "react": ">=18"
@@ -84,6 +87,7 @@
     "publint": "0.2.12",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "simple-icons": "16.36.0",
     "typescript": "5.7.2",
     "vitest": "2.1.8"
   },

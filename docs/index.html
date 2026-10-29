@@ -3,56 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>package-trends</title>
-<meta name="description" content="package-trends: npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components, each with a live playground.">
+<title>package-trends: download trends small enough for a footer</title>
+<meta name="description" content="Install package-trends and draw a package's npm downloads as a sparkline, a line of text or a KPI block — no dependencies, no stylesheet, no chart library.">
 <link rel="canonical" href="https://tbudin.github.io/package-trends/">
 <meta name="author" content="Thomas Budin">
-<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="generator" content="package-site">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16161a" media="(prefers-color-scheme: dark)">
+<link rel="next" href="https://tbudin.github.io/package-trends/sparkline/">
+<link rel="alternate" type="text/markdown" href="https://tbudin.github.io/package-trends/index.md" title="Download trends, small enough for a footer as markdown">
+<link rel="alternate" type="text/plain" href="https://tbudin.github.io/package-trends/llms.txt" title="llms.txt">
+<link rel="alternate" type="application/atom+xml" href="https://tbudin.github.io/package-trends/feed.xml" title="package-trends releases">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="package-trends">
 <meta property="og:title" content="package-trends: download trends small enough for a footer">
-<meta property="og:description" content="A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — 10.5 kB with the React components.">
+<meta property="og:description" content="Install package-trends and draw a package's npm downloads as a sparkline, a line of text or a KPI block — no dependencies, no stylesheet, no chart library.">
 <meta property="og:url" content="https://tbudin.github.io/package-trends/">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://tbudin.github.io/package-trends/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="package-trends: a sparkline, the line 954.5M downloads +3.8%, and a KPI tile, drawn on warm paper">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="package-trends">
-<meta name="twitter:description" content="npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies.">
+<meta name="twitter:title" content="package-trends: download trends small enough for a footer">
+<meta name="twitter:description" content="Install package-trends and draw a package's npm downloads as a sparkline, a line of text or a KPI block — no dependencies, no stylesheet, no chart library.">
 <meta name="twitter:image" content="https://tbudin.github.io/package-trends/og.png">
+<meta name="twitter:image:alt" content="package-trends: a sparkline, the line 954.5M downloads +3.8%, and a KPI tile, drawn on warm paper">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a1a17'/%3E%3Cpath d='M5 23 L11 19 L15 21 L20 12 L27 8' fill='none' stroke='%23e09b6a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='27' cy='8' r='2.6' fill='%23e09b6a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;450;500;600;650&amp;display=swap">
 <link rel="preconnect" href="https://api.npmjs.org">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600;650&display=swap">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "package-trends",
-  "description": "npm download trends as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components.",
-  "url": "https://tbudin.github.io/package-trends/",
-  "codeRepository": "https://github.com/tbudin/package-trends",
-  "programmingLanguage": "TypeScript",
-  "runtimePlatform": "Node.js",
-  "license": "https://opensource.org/licenses/MIT",
-  "author": { "@type": "Person", "name": "Thomas Budin" },
-  "copyrightHolder": { "@type": "Organization", "name": "Plain Matter Pte Ltd" }
-}
-</script>
+<link rel="stylesheet" href="assets/chrome.css">
+<link rel="stylesheet" href="assets/credit.css">
 <style>
-/* Site chrome. Layout: header, sidebar of pages, and a page with a live
-   preview, a controls column and the code for whatever is on screen. */
 :root {
-  color-scheme: light;
-  --bg: #fbfaf7;
-  --fg: #1a1a17;
-  --muted: #6a6a62;
-  --line: #e2e0d8;
-  --panel: #f2f0e9;
-  --code: #f3f1ea;
+  --bg: #ffffff;
+  --fg: #191917;
+  --muted: #64646b;
+  --line: #e7e7ea;
+  --line-strong: #8a8a90;
+  --panel: #f5f5f6;
+  --code: #f7f7f8;
   --accent: #9a4a1e;
   --mark: #f0d9a8;
   --up: #15803d;
@@ -63,850 +56,226 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #16161a; --fg: #eceae4; --muted: #9b9b93; --line: #2e2e34;
-    --panel: #1d1d22; --code: #1c1c21; --accent: #e09b6a; --mark: #4a3c22;
-    --up: #4ac98a; --down: #e2766c; color-scheme: dark;
+    --bg: #16161a;
+    --fg: #eceae4;
+    --muted: #9b9b93;
+    --line: #2e2e34;
+    --line-strong: #6e6e78;
+    --panel: #1d1d22;
+    --code: #1c1c21;
+    --accent: #e09b6a;
+    --mark: #4a3c22;
+    --up: #4ac98a;
+    --down: #e2766c;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #16161a; --fg: #eceae4; --muted: #9b9b93; --line: #2e2e34;
-  --panel: #1d1d22; --code: #1c1c21; --accent: #e09b6a; --mark: #4a3c22;
-  --up: #4ac98a; --down: #e2766c; color-scheme: dark;
+  --bg: #16161a;
+  --fg: #eceae4;
+  --muted: #9b9b93;
+  --line: #2e2e34;
+  --line-strong: #6e6e78;
+  --panel: #1d1d22;
+  --code: #1c1c21;
+  --accent: #e09b6a;
+  --mark: #4a3c22;
+  --up: #4ac98a;
+  --down: #e2766c;
 }
-
-* { box-sizing: border-box; }
-html, body { margin: 0; background: var(--bg); color: var(--fg); }
-body { font: 15px/24px var(--f-ui); -webkit-font-smoothing: antialiased; }
-a { color: var(--accent); text-underline-offset: 2px; }
-::selection { background: color-mix(in srgb, var(--mark) 80%, transparent); }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-
-/* header */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap;
-  padding-block: 10px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--line);
-}
-.brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--fg); }
-.brand b { font: 500 21px/32px var(--f-mono); letter-spacing: -.02em; color: var(--accent); }
-.brand span { font-size: 12px; font-family: var(--f-mono); color: var(--muted); }
-.top-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-left: auto; font-size: 13px; }
-.top-ctl label { display: flex; align-items: center; gap: 6px; color: var(--muted); }
-select, input[type="text"], input[type="search"] {
-  font: 13px/18px var(--f-ui); color: var(--fg); background: var(--bg);
-  border: 1px solid var(--line); border-radius: 4px; padding: 5px 7px;
-}
-select:focus-visible, input:focus-visible, button:focus-visible, a:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 2px;
-}
-
-/* navigation */
-.menu-btn { display: none; align-items: center; gap: 6px; font: inherit; font-size: 14px; color: var(--fg); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px 4px 8px; cursor: pointer; }
-.here { display: none; }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.wrap { display: grid; grid-template-columns: 248px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
-.side { position: sticky; top: 57px; align-self: start; max-height: calc(100vh - 57px); overflow-y: auto;
-  padding: 16px 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); border-right: 1px solid var(--line); }
-.side-head, .side-settings:empty { display: none; }
-.find { position: relative; display: block; margin-bottom: 14px; }
-.find input { width: 100%; padding-right: 30px; }
-.find kbd { position: absolute; right: 7px; top: 6px; font: 11px var(--f-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; }
-.side h4 { margin: 16px 0 2px; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.side a { display: block; padding: 2px 8px; margin: 0 -8px; color: var(--fg); text-decoration: none; font-size: 14px; line-height: 26px; border-radius: 3px; }
-.side a:hover { background: var(--panel); }
-.side a[aria-current] { background: var(--mark); }
-.nothing { font-size: 13px; color: var(--muted); }
-.scrim { position: fixed; inset: 0; z-index: 19; background: rgba(20, 18, 14, .4); }
-main#page { min-width: 0; padding: 28px 32px 80px; padding-right: max(32px, env(safe-area-inset-right, 0px)); }
-@media (max-width: 860px) {
-  .menu-btn { display: inline-flex; }
-  .brand span { display: none; }
-  .here { display: block; min-width: 0; flex: 1; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
-  .top { flex-wrap: nowrap; gap: 12px; }
-  .top > .top-ctl { display: none; }
-  .wrap { grid-template-columns: minmax(0, 1fr); }
-  .side {
-    position: fixed; z-index: 20; top: 0; bottom: 0; left: 0; max-height: none;
-    width: min(320px, 86vw); padding: 0 18px 32px; padding-left: max(18px, env(safe-area-inset-left, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
-    background: var(--bg); border-right: 1px solid var(--line); box-shadow: 8px 0 30px rgba(0,0,0,.18);
-    transform: translateX(-105%); transition: transform .25s ease; visibility: hidden;
-  }
-  .side.open { transform: none; visibility: visible; }
-  .side-head { display: flex; justify-content: space-between; align-items: center; height: 52px; position: sticky; top: 0; background: var(--bg); z-index: 1; }
-  .side-head b { font: 500 17px var(--f-mono); color: var(--accent); }
-  .side-head button { font: 13px var(--f-ui); color: var(--fg); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; cursor: pointer; }
-  .side-settings:not(:empty) { display: block; padding: 4px 0 14px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
-  .side-settings .top-ctl { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0; }
-  .side-settings label { justify-content: space-between; }
-  .find kbd { display: none; }
-  .side a { line-height: 36px; font-size: 15px; }
-  main#page { padding: 20px 16px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  .pager a { flex: 1; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; }
-}
-@media (prefers-reduced-motion: reduce) { .side { transition: none; } }
-
-/* page */
-.crumb { font: 500 11px/18px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
-h1.title { margin: 2px 0 6px; font: 400 34px/42px var(--f-head); letter-spacing: -.015em; text-wrap: balance; }
-.lead { margin: 0 0 24px; max-width: 64ch; color: color-mix(in srgb, var(--fg) 82%, var(--bg)); text-wrap: pretty; }
-.page h2 { margin: 36px 0 10px; font: 400 22px/30px var(--f-head); }
-.page p { max-width: 68ch; }
-.page ul { max-width: 68ch; padding-left: 20px; }
-.page li { margin-bottom: 6px; }
-.play { display: grid; grid-template-columns: minmax(0, 1fr) 272px; border: 1px solid var(--line); border-radius: 8px; overflow: clip; }
-.play.solo { grid-template-columns: minmax(0, 1fr); }
-@media (max-width: 1100px) { .play { grid-template-columns: minmax(0, 1fr); } }
-.stage { position: relative; min-width: 0; background: var(--panel); padding: 28px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 190px; }
-.stage > * { max-width: 100%; }
-@media (max-width: 600px) { .stage { padding: 14px; } }
-.play-tabs { display: none; }
-@media (max-width: 860px) {
-  .play-tabs { display: flex; margin-bottom: 10px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; width: max-content; }
-  .play-tabs button { font: 14px var(--f-ui); color: var(--muted); background: none; border: 0; padding: 7px 18px; cursor: pointer; }
-  .play-tabs button[aria-selected="true"] { color: var(--fg); background: var(--mark); }
-  .play[data-view="preview"] > .ctls, .play[data-view="settings"] > .stage { display: none; }
-  .play[data-view="settings"] > .ctls { border-top: 0; }
-}
-.ctls { display: flex; flex-direction: column; gap: 14px; padding: 18px; background: var(--bg); border-left: 1px solid var(--line); min-width: 0; }
-@media (max-width: 1100px) { .ctls { border-left: 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
-.ctls h3 { margin: 0; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.ctl { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 18px; }
-.ctl > label > span, .ctl > span { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); }
-.ctl output { color: var(--fg); font-variant-numeric: tabular-nums; }
-.ctl input[type="range"] { width: 100%; accent-color: var(--accent); }
-.ctl.check { flex-direction: row; align-items: center; gap: 8px; }
-.code { position: relative; margin-top: 16px; background: var(--code); border: 1px solid var(--line); border-radius: 8px; }
-.code pre { margin: 0; padding: 14px 16px; padding-right: 72px; overflow-x: auto; font: 13px/21px var(--f-mono); color: var(--fg); white-space: pre; tab-size: 2; }
-.code .c { color: var(--muted); }
-.code .copy { position: absolute; top: 8px; right: 8px; font: 12px var(--f-ui); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 10px; cursor: pointer; }
-.code-label { margin: 22px 0 0; font: 500 11px/18px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.ref-wrap { overflow-x: auto; }
-table.ref { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13px; line-height: 20px; }
-.ref th, .ref td { text-align: left; vertical-align: top; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); }
-.ref th { font-weight: 500; font-size: 11px; font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.ref td:first-child { white-space: nowrap; }
-.ref code, .page p code, .page li code, .lead code { font: 12.5px var(--f-mono); background: var(--code); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; }
-.grid-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
-.grid-links a { display: block; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; color: var(--fg); }
-.grid-links a:hover { background: var(--panel); }
-.grid-links b { display: block; font: 400 17px/24px var(--f-head); }
-.grid-links span { font-size: 13px; color: var(--muted); }
-.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); }
-.pager a { text-decoration: none; font-size: 14px; }
-.pager small { display: block; font: 500 11px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
-
-/* preview helpers */
 .col-stack { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; width: 100%; }
 .cap { font: 500 10.5px/16px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
 .figs { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 0; max-width: none; }
 .figs b { color: var(--fg); font-weight: 500; }
 .kpi-n { font: 650 30px/1 var(--f-ui); letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
-.up { color: var(--up); } .down { color: var(--down); }
+.up { color: var(--up); }
+.down { color: var(--down); }
 .note { color: var(--muted); font-size: 13.5px; }
 .err { color: var(--down); font-size: 13px; }
 .loading { color: var(--muted); font-size: 13px; }
 dl.facts { display: grid; grid-template-columns: auto 1fr; gap: 2px 18px; margin: 0; font-size: 13.5px; }
 dl.facts dt { color: var(--muted); font-family: var(--f-mono); font-size: 12px; line-height: 22px; }
 dl.facts dd { margin: 0; font-variant-numeric: tabular-nums; }
-
-/* footer */
-.colophon { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 26px; align-items: baseline; }
-.colophon b { font-weight: 500; color: var(--fg); }
-.colophon .spacer { margin-left: auto; }
+#g-pick { --mark-size: 15px; --mark-gap: 7px; }
+#g-pick:has(option[value="react"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2361DAFB'%3E%3Cpath d='M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="vue"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234FC08D'%3E%3Cpath d='M24,1.61H14.06L12,5.16,9.94,1.61H0L12,22.39ZM12,14.08,5.16,2.23H9.59L12,6.41l2.41-4.18h4.43Z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="svelte"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF3E00'%3E%3Cpath d='M10.354 21.125a4.44 4.44 0 0 1-4.765-1.767 4.109 4.109 0 0 1-.703-3.107 3.898 3.898 0 0 1 .134-.522l.105-.321.287.21a7.21 7.21 0 0 0 2.186 1.092l.208.063-.02.208a1.253 1.253 0 0 0 .226.83 1.337 1.337 0 0 0 1.435.533 1.231 1.231 0 0 0 .343-.15l5.59-3.562a1.164 1.164 0 0 0 .524-.778 1.242 1.242 0 0 0-.211-.937 1.338 1.338 0 0 0-1.435-.533 1.23 1.23 0 0 0-.343.15l-2.133 1.36a4.078 4.078 0 0 1-1.135.499 4.44 4.44 0 0 1-4.765-1.766 4.108 4.108 0 0 1-.702-3.108 3.855 3.855 0 0 1 1.742-2.582l5.589-3.563a4.072 4.072 0 0 1 1.135-.499 4.44 4.44 0 0 1 4.765 1.767 4.109 4.109 0 0 1 .703 3.107 3.943 3.943 0 0 1-.134.522l-.105.321-.286-.21a7.204 7.204 0 0 0-2.187-1.093l-.208-.063.02-.207a1.255 1.255 0 0 0-.226-.831 1.337 1.337 0 0 0-1.435-.532 1.231 1.231 0 0 0-.343.15L8.62 9.368a1.162 1.162 0 0 0-.524.778 1.24 1.24 0 0 0 .211.937 1.338 1.338 0 0 0 1.435.533 1.235 1.235 0 0 0 .344-.151l2.132-1.36a4.067 4.067 0 0 1 1.135-.498 4.44 4.44 0 0 1 4.765 1.766 4.108 4.108 0 0 1 .702 3.108 3.857 3.857 0 0 1-1.742 2.583l-5.589 3.562a4.072 4.072 0 0 1-1.135.499m10.358-17.95C18.484-.015 14.082-.96 10.9 1.068L5.31 4.63a6.412 6.412 0 0 0-2.896 4.295 6.753 6.753 0 0 0 .666 4.336 6.43 6.43 0 0 0-.96 2.396 6.833 6.833 0 0 0 1.168 5.167c2.229 3.19 6.63 4.135 9.812 2.108l5.59-3.562a6.41 6.41 0 0 0 2.896-4.295 6.756 6.756 0 0 0-.665-4.336 6.429 6.429 0 0 0 .958-2.396 6.831 6.831 0 0 0-1.167-5.168Z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="preact"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23673AB8'%3E%3Cpath d='M 12,10.406 A 1.594,1.594 0 0 0 10.406,12 1.594,1.594 0 0 0 12,13.594 1.594,1.594 0 0 0 13.594,12 1.594,1.594 0 0 0 12,10.406 Z m 5.499,-4.33 a 2.998,2.998 0 0 1 0.643,0.054 1.668,1.668 0 0 1 0.48,0.172 1.085,1.085 0 0 1 0.29,0.235 1.032,1.032 0 0 1 0.185,0.315 1.454,1.454 0 0 1 0.084,0.452 c 0.007,0.195 -0.015,0.398 -0.058,0.603 -0.054,0.261 -0.14,0.521 -0.244,0.778 -0.137,0.334 -0.304,0.66 -0.49,0.978 -0.245,0.417 -0.52,0.818 -0.817,1.207 -0.145,0.191 -0.3,0.376 -0.455,0.561 -0.22,-0.238 -0.443,-0.472 -0.673,-0.7 a 23.61,23.61 0 0 0 -2.05,-1.797 l -0.23,0.296 0.23,-0.296 -0.018,-0.014 -0.461,0.592 0.018,0.014 a 22.864,22.864 0 0 1 1.984,1.74 c 0.241,0.237 0.475,0.48 0.703,0.73 -0.099,0.108 -0.194,0.22 -0.296,0.326 -0.099,0.104 -0.2,0.207 -0.301,0.308 l 0.53,0.53 c 0.106,-0.105 0.21,-0.212 0.313,-0.32 0.085,-0.088 0.164,-0.182 0.248,-0.272 0.065,0.078 0.135,0.152 0.198,0.231 a 13.317,13.317 0 0 1 0.909,1.262 c 0.211,0.336 0.404,0.681 0.564,1.036 a 5.23,5.23 0 0 1 0.293,0.806 3.019,3.019 0 0 1 0.102,0.637 c 0.008,0.178 -0.007,0.351 -0.05,0.508 -0.034,0.123 -0.087,0.239 -0.157,0.338 h -10e-4 c -0.068,0.098 -0.157,0.186 -0.26,0.256 -0.121,0.083 -0.264,0.146 -0.418,0.191 -0.188,0.054 -0.39,0.081 -0.6,0.09 -0.266,0.01 -0.538,-0.01 -0.814,-0.05 -0.357,-0.051 -0.713,-0.134 -1.067,-0.238 -0.464,-0.137 -0.92,-0.307 -1.369,-0.5 h -0.001 c -0.584,-0.253 -1.153,-0.543 -1.71,-0.86 L 12.708,16.26 c 0.578,-0.377 1.144,-0.77 1.686,-1.194 l -0.21,-0.27 0.211,0.27 0.018,-0.015 -0.463,-0.59 -0.017,0.014 c -0.695,0.542 -1.418,1.047 -2.168,1.505 A 18.53,18.53 0 0 1 9.938,16.963 C 9.465,17.182 8.984,17.378 8.494,17.539 A 8.68,8.68 0 0 1 7.352,17.835 C 7.066,17.887 6.781,17.921 6.499,17.925 6.277,17.928 6.061,17.912 5.856,17.87 5.681,17.834 5.518,17.778 5.376,17.698 5.265,17.635 5.166,17.556 5.086,17.464 5.007,17.373 4.944,17.265 4.901,17.149 4.85,17.012 4.823,16.857 4.817,16.696 a 2.54,2.54 0 0 1 0.058,-0.603 c 0.055,-0.261 0.14,-0.52 0.245,-0.777 a 7.704,7.704 0 0 1 0.49,-0.978 12.09,12.09 0 0 1 1.271,-1.767 c 0.232,0.251 0.469,0.497 0.712,0.737 a 23.645,23.645 0 0 0 2.02,1.765 l 0.461,-0.591 A 22.9,22.9 0 0 1 8.119,12.773 C 7.865,12.523 7.618,12.267 7.378,12.004 7.477,11.896 7.573,11.785 7.673,11.679 7.776,11.572 7.879,11.466 7.983,11.362 l -0.53,-0.53 C 7.345,10.94 7.238,11.05 7.132,11.16 7.047,11.249 6.967,11.343 6.884,11.433 6.829,11.367 6.77,11.305 6.715,11.238 6.386,10.832 6.077,10.411 5.799,9.975 5.585,9.637 5.391,9.292 5.228,8.935 5.102,8.66 4.995,8.38 4.92,8.097 4.863,7.882 4.826,7.669 4.818,7.46 A 1.67,1.67 0 0 1 4.868,6.953 C 4.902,6.829 4.955,6.714 5.025,6.614 H 5.026 C 5.094,6.516 5.184,6.428 5.286,6.358 A 1.446,1.446 0 0 1 5.705,6.168 C 5.892,6.113 6.094,6.086 6.304,6.078 a 4.545,4.545 0 0 1 0.814,0.048 7.708,7.708 0 0 1 1.067,0.24 12.092,12.092 0 0 1 1.369,0.5 17.248,17.248 0 0 1 1.736,0.874 24.003,24.003 0 0 0 -1.694,1.202 l 0.462,0.59 c 0.683,-0.534 1.393,-1.031 2.13,-1.484 0.594,-0.363 1.203,-0.697 1.83,-0.99 0.474,-0.222 0.956,-0.42 1.448,-0.583 A 8.816,8.816 0 0 1 16.612,6.172 C 16.91,6.116 17.207,6.08 17.499,6.076 Z m -0.01,-0.75 -0.001,0 C 17.142,5.331 16.804,5.373 16.474,5.434 A 9.546,9.546 0 0 0 15.229,5.763 14.202,14.202 0 0 0 13.7,6.379 C 13.117,6.651 12.554,6.961 12.004,7.289 11.883,7.216 11.761,7.144 11.637,7.074 11.06,6.745 10.466,6.442 9.852,6.177 9.38,5.974 8.897,5.792 8.397,5.646 8.017,5.534 7.625,5.442 7.225,5.384 6.916,5.34 6.599,5.316 6.275,5.329 6.021,5.339 5.759,5.372 5.499,5.446 5.281,5.51 5.063,5.602 4.863,5.74 A 1.774,1.774 0 0 0 4.146,6.754 C 4.078,7.001 4.059,7.251 4.069,7.491 a 3.728,3.728 0 0 0 0.127,0.798 6.016,6.016 0 0 0 0.351,0.959 9.548,9.548 0 0 0 0.62,1.128 14.203,14.203 0 0 0 0.967,1.335 c 0.08,0.098 0.166,0.19 0.248,0.286 C 6.193,12.219 6.007,12.443 5.83,12.676 5.519,13.084 5.226,13.51 4.963,13.958 A 8.44,8.44 0 0 0 4.425,15.033 5.28,5.28 0 0 0 4.142,15.941 C 4.089,16.19 4.059,16.453 4.069,16.723 a 2.182,2.182 0 0 0 0.13,0.688 v 10e-4 a 1.775,1.775 0 0 0 0.81,0.94 2.403,2.403 0 0 0 0.697,0.253 3.699,3.699 0 0 0 0.805,0.07 5.97,5.97 0 0 0 0.977,-0.102 l 10e-4,-0.001 a 9.412,9.412 0 0 0 1.24,-0.32 c 0.523,-0.173 1.031,-0.38 1.526,-0.61 0.599,-0.278 1.178,-0.593 1.742,-0.93 0.121,0.072 0.243,0.144 0.366,0.214 a 17.99,17.99 0 0 0 1.785,0.898 12.832,12.832 0 0 0 1.455,0.53 c 0.38,0.112 0.772,0.204 1.172,0.262 a 5.284,5.284 0 0 0 0.95,0.056 c 0.254,-0.01 0.516,-0.044 0.776,-0.118 0.218,-0.063 0.436,-0.156 0.636,-0.294 a 1.775,1.775 0 0 0 0.717,-1.014 c 0.068,-0.248 0.087,-0.497 0.077,-0.736 -0.011,-0.277 -0.06,-0.544 -0.127,-0.799 -0.085,-0.322 -0.202,-0.629 -0.335,-0.923 -0.178,-0.393 -0.387,-0.767 -0.612,-1.127 -0.294,-0.466 -0.618,-0.908 -0.959,-1.333 -0.09,-0.111 -0.188,-0.216 -0.28,-0.324 0.189,-0.222 0.374,-0.447 0.552,-0.679 0.311,-0.409 0.604,-0.835 0.867,-1.283 A 8.441,8.441 0 0 0 19.575,8.967 5.277,5.277 0 0 0 19.858,8.06 C 19.911,7.81 19.941,7.547 19.931,7.277 19.924,7.051 19.886,6.817 19.801,6.589 V 6.588 a 1.775,1.775 0 0 0 -0.81,-0.94 C 18.767,5.522 18.529,5.444 18.294,5.396 A 3.7,3.7 0 0 0 17.489,5.326 Z M 12,0 22.392,6 V 18 L 12,24 1.607,18 V 6 Z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="solid-js"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232C4F7C'%3E%3Cpath d='M11.558.788A9.082 9.082 0 0 0 9.776.99l-.453.15c-.906.303-1.656.755-2.1 1.348l-.301.452-2.035 3.528c.426-.387.974-.698 1.643-.894h.001l.613-.154h.001a8.82 8.82 0 0 1 1.777-.206c2.916-.053 6.033 1.148 8.423 2.36 2.317 1.175 3.888 2.32 3.987 2.39L24 5.518c-.082-.06-1.66-1.21-3.991-2.386-2.393-1.206-5.521-2.396-8.45-2.343zM8.924 5.366a8.634 8.634 0 0 0-1.745.203l-.606.151c-1.278.376-2.095 1.16-2.43 2.108-.334.948-.188 2.065.487 3.116.33.43.747.813 1.216 1.147L12.328 10h.001a6.943 6.943 0 0 1 6.013 1.013l2.844-.963c-.17-.124-1.663-1.2-3.91-2.34-2.379-1.206-5.479-2.396-8.352-2.344zm5.435 4.497a6.791 6.791 0 0 0-1.984.283L2.94 13.189 0 18.334l9.276-2.992a6.945 6.945 0 0 1 7.408 2.314v.001c.695.903.89 1.906.66 2.808l2.572-4.63c.595-1.041.45-2.225-.302-3.429a6.792 6.792 0 0 0-5.255-2.543zm-3.031 5.341a6.787 6.787 0 0 0-2.006.283L.008 18.492c.175.131 2.02 1.498 4.687 2.768 2.797 1.332 6.37 2.467 9.468 1.712l.454-.152h.002c1.278-.376 2.134-1.162 2.487-2.09.353-.93.207-2.004-.541-2.978a6.791 6.791 0 0 0-5.237-2.548z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="next"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1a17'%3E%3Cpath d='M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="typescript"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233178C6'%3E%3Cpath d='M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="vite"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239135FF'%3E%3Cpath d='M13.056 23.238a.57.57 0 0 1-1.02-.355v-5.202c0-.63-.512-1.143-1.144-1.143H5.148a.57.57 0 0 1-.464-.903l3.777-5.29c.54-.753 0-1.804-.93-1.804H.57a.574.574 0 0 1-.543-.746.6.6 0 0 1 .08-.157L5.008.78a.57.57 0 0 1 .467-.24h14.589a.57.57 0 0 1 .466.903l-3.778 5.29c-.54.755 0 1.806.93 1.806h5.745c.238 0 .424.138.513.322a.56.56 0 0 1-.063.603z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="express"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1a17'%3E%3Cpath d='M12.262 16.666h1.146l6.975-9.325H19.22zm9.778 1.441v.004l-4.334-5.706-.557.74 4.873 6.682H.945V4.173h9.505l5.026 6.7.574-.772-4.374-5.928h.003l-.719-.945H0v17.544h24zM10.917 8.705a3.8 3.8 0 0 0-1.292-1.183q-.796-.45-1.916-.45c-.746 0-1.37.14-1.906.424a3.76 3.76 0 0 0-1.31 1.12 4.9 4.9 0 0 0-.75 1.581 7.17 7.17 0 0 0 0 3.696c.148.567.402 1.101.75 1.573a3.5 3.5 0 0 0 1.31 1.066q.803.39 1.906.389 1.77 0 2.739-.868.966-.867 1.328-2.457h-1.139q-.271 1.084-.977 1.734-.704.651-1.952.65-.812 0-1.392-.342a3.1 3.1 0 0 1-.957-.869 3.5 3.5 0 0 1-.551-1.182 5 5 0 0 1-.17-1.133 9 9 0 0 0-.015-.286 4.5 4.5 0 0 1 .015-.829c.047-.418.147-.83.296-1.223A3.7 3.7 0 0 1 5.54 9.05a2.9 2.9 0 0 1 .922-.742q.541-.28 1.246-.28c.47 0 .869.093 1.23.28q.541.281.922.742.379.461.587 1.057t.225 1.246H5.625l.004.957h6.182a7.3 7.3 0 0 0-.18-1.924 4.9 4.9 0 0 0-.715-1.68z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="lodash"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233492FF'%3E%3Cpath d='m0 20.253h24v2.542h-24zm18.061-15.041.223.031c1.933-.071 3.885 1.006 4.882 2.674.844 1.566.976 3.458.712 5.187-.204 1.657-1.149 3.234-2.644 4.027-2.177 1.139-5.085 1.017-7.017-.59-1.994-1.942-2.461-5.136-1.444-7.678.711-2.207 3-3.661 5.288-3.63zm.234 1.8h-.183c-1.424-.03-2.777.915-3.285 2.237-.732 1.831-.732 4.17.691 5.695 1.17 1.434 3.458 1.597 4.882.438 1.525-1.312 1.83-3.59 1.322-5.451-.275-1.648-1.78-2.929-3.458-2.929zm-18.295-5.807h2.237v14.847h8.848v1.831h-11.085z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="zod"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23408AFF'%3E%3Cpath d='M2.584 3.582a2.247 2.247 0 0 1 2.112-1.479h14.617c.948 0 1.794.595 2.115 1.487l2.44 6.777a2.248 2.248 0 0 1-.624 2.443l-9.61 8.52a2.247 2.247 0 0 1-2.963.018L.776 12.773a2.248 2.248 0 0 1-.64-2.467Zm12.038 4.887-9.11 5.537 5.74 5.007c.456.399 1.139.396 1.593-.006l5.643-5.001H14.4l6.239-3.957c.488-.328.69-.947.491-1.5l-1.24-3.446a1.535 1.535 0 0 0-1.456-1.015H5.545a1.535 1.535 0 0 0-1.431 1.01l-1.228 3.37z'/%3E%3C/svg%3E"); }
+#g-pick:has(option[value="other"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23CB3837'%3E%3Cpath d='M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z'/%3E%3C/svg%3E"); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #g-pick:has(option[value="next"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eceae4'%3E%3Cpath d='M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z'/%3E%3C/svg%3E"); }
+  :root:not([data-theme="light"]) #g-pick:has(option[value="express"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eceae4'%3E%3Cpath d='M12.262 16.666h1.146l6.975-9.325H19.22zm9.778 1.441v.004l-4.334-5.706-.557.74 4.873 6.682H.945V4.173h9.505l5.026 6.7.574-.772-4.374-5.928h.003l-.719-.945H0v17.544h24zM10.917 8.705a3.8 3.8 0 0 0-1.292-1.183q-.796-.45-1.916-.45c-.746 0-1.37.14-1.906.424a3.76 3.76 0 0 0-1.31 1.12 4.9 4.9 0 0 0-.75 1.581 7.17 7.17 0 0 0 0 3.696c.148.567.402 1.101.75 1.573a3.5 3.5 0 0 0 1.31 1.066q.803.39 1.906.389 1.77 0 2.739-.868.966-.867 1.328-2.457h-1.139q-.271 1.084-.977 1.734-.704.651-1.952.65-.812 0-1.392-.342a3.1 3.1 0 0 1-.957-.869 3.5 3.5 0 0 1-.551-1.182 5 5 0 0 1-.17-1.133 9 9 0 0 0-.015-.286 4.5 4.5 0 0 1 .015-.829c.047-.418.147-.83.296-1.223A3.7 3.7 0 0 1 5.54 9.05a2.9 2.9 0 0 1 .922-.742q.541-.28 1.246-.28c.47 0 .869.093 1.23.28q.541.281.922.742.379.461.587 1.057t.225 1.246H5.625l.004.957h6.182a7.3 7.3 0 0 0-.18-1.924 4.9 4.9 0 0 0-.715-1.68z'/%3E%3C/svg%3E"); }
+}
+:root[data-theme="dark"] #g-pick:has(option[value="next"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eceae4'%3E%3Cpath d='M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] #g-pick:has(option[value="express"]:checked) { --mark-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23eceae4'%3E%3Cpath d='M12.262 16.666h1.146l6.975-9.325H19.22zm9.778 1.441v.004l-4.334-5.706-.557.74 4.873 6.682H.945V4.173h9.505l5.026 6.7.574-.772-4.374-5.928h.003l-.719-.945H0v17.544h24zM10.917 8.705a3.8 3.8 0 0 0-1.292-1.183q-.796-.45-1.916-.45c-.746 0-1.37.14-1.906.424a3.76 3.76 0 0 0-1.31 1.12 4.9 4.9 0 0 0-.75 1.581 7.17 7.17 0 0 0 0 3.696c.148.567.402 1.101.75 1.573a3.5 3.5 0 0 0 1.31 1.066q.803.39 1.906.389 1.77 0 2.739-.868.966-.867 1.328-2.457h-1.139q-.271 1.084-.977 1.734-.704.651-1.952.65-.812 0-1.392-.342a3.1 3.1 0 0 1-.957-.869 3.5 3.5 0 0 1-.551-1.182 5 5 0 0 1-.17-1.133 9 9 0 0 0-.015-.286 4.5 4.5 0 0 1 .015-.829c.047-.418.147-.83.296-1.223A3.7 3.7 0 0 1 5.54 9.05a2.9 2.9 0 0 1 .922-.742q.541-.28 1.246-.28c.47 0 .869.093 1.23.28q.541.281.922.742.379.461.587 1.057t.225 1.246H5.625l.004.957h6.182a7.3 7.3 0 0 0-.18-1.924 4.9 4.9 0 0 0-.715-1.68z'/%3E%3C/svg%3E"); }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "package-trends",
+      "item": "https://tbudin.github.io/package-trends/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "package-trends",
+  "description": "npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.",
+  "url": "https://tbudin.github.io/package-trends/",
+  "codeRepository": "https://github.com/tbudin/package-trends",
+  "programmingLanguage": "TypeScript",
+  "runtimePlatform": "Node.js",
+  "license": "https://opensource.org/licenses/MIT",
+  "version": "0.1.0",
+  "keywords": "npm, downloads, trends, sparkline, heatmap, calendar-heatmap, chart, kpi, stats, badge, react",
+  "author": {
+    "@type": "Person",
+    "name": "Thomas Budin"
+  },
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "Plain Matter Pte Ltd"
+  },
+  "image": "https://tbudin.github.io/package-trends/og.png"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "package-trends",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "description": "npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.",
+  "url": "https://tbudin.github.io/package-trends/",
+  "softwareVersion": "0.1.0",
+  "downloadUrl": "https://www.npmjs.com/package/package-trends",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Thomas Budin"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "package-trends",
+  "url": "https://tbudin.github.io/package-trends/",
+  "description": "npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.",
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Plain Matter Pte Ltd"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does it need an API key or a proxy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The npm downloads API is public and sends access-control-allow-origin: *, so a browser can call it directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How big is it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "8.3 kB gzipped for the framework-agnostic core, 6.8 kB for the React entry, 6.9 kB for the comparison chart and 3.6 kB for the heatmap. Each figure is that entry on its own, minified and gzipped, measured on every build. There are no dependencies, and react is a peer you already have."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work without React?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. sparklineSvg returns an SVG string and the core has no framework in it. This site uses that path and loads no framework at all."
+      }
+    }
+  ]
+}
+</script>
 </head>
-<body>
+<script>/* before paint, or the page flashes the other theme */try{var t=localStorage.getItem('package-site:theme');if(t&&t!=='system')document.documentElement.dataset.theme=t;}catch(e){}</script>
+<body data-page="intro">
+<a class="skip" href="#page">Skip to the page</a>
 
 <header class="top">
-  <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="side">
+  <button class="btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="side">
     <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Menu</span>
   </button>
-  <a class="brand" href="#intro"><b>package-trends</b><span id="version"></span></a>
+  <a class="brand" href="./"><b>package-trends</b><span>v0.1.0</span></a>
   <span class="here" id="here"></span>
-  <div class="top-ctl" id="settings" role="group" aria-label="Site settings">
-    <label for="g-pkg">Package <input type="text" id="g-pkg" value="react" size="12" autocomplete="off" spellcheck="false"></label>
-    <label for="g-period">Period <select id="g-period">
-      <option value="last-week">last week</option>
-      <option value="last-month" selected>last month</option>
-      <option value="last-year">last year</option>
-    </select></label>
-  </div>
+<div class="top-ctl" id="settings" role="group" aria-label="Site settings"><label for="g-pick">Package <select id="g-pick" data-k="pick"><option value="react" selected>react</option><option value="vue">vue</option><option value="svelte">svelte</option><option value="preact">preact</option><option value="solid-js">solid-js</option><option value="next">next</option><option value="typescript">typescript</option><option value="vite">vite</option><option value="express">express</option><option value="lodash">lodash</option><option value="zod">zod</option><option value="other">other…</option></select></label><label for="g-pkg" hidden>Name <input type="text" id="g-pkg" data-k="pkg" value="react" size="12" autocomplete="off" spellcheck="false"></label><label for="g-period">Period <select id="g-period" data-k="period"><option value="last-week">last week</option><option value="last-month" selected>last month</option><option value="last-year">last year</option></select></label><button class="switch" type="button" role="switch" id="g-theme" aria-checked="false" aria-label="Dark mode"><span class="switch-track" aria-hidden="true"><span class="switch-knob"></span></span><span class="switch-text">Dark</span></button></div>
+
 </header>
 
 <div class="scrim" id="scrim" hidden></div>
 <div class="wrap">
   <nav class="side" id="side" aria-label="Pages">
-    <div class="side-head"><b>package-trends</b><button type="button" id="side-close">Close</button></div>
+    <div class="side-head"><b>package-trends</b><button class="btn" type="button" id="side-close">Close</button></div>
     <div class="side-settings" id="side-settings"></div>
     <label class="find" for="find"><span class="sr">Find a page</span><input type="search" id="find" placeholder="Find a page" autocomplete="off"><kbd>/</kbd></label>
-    <div id="nav-list"></div>
+    <div id="nav-list">
+<div class="nav-group" role="group" aria-labelledby="nav-g0"><p class="nav-group-label" id="nav-g0">Start</p><a href="./" data-id="intro" data-words="download trends, small enough for a footer get started start install start hello intro npm downloads" aria-current="page">Get started</a></div><div class="nav-group" role="group" aria-labelledby="nav-g1"><p class="nav-group-label" id="nav-g1">Variants</p><a href="sparkline/" data-id="sparkline" data-words="sparkline  variants chart line default shape nav table cell">Sparkline</a><a href="text/" data-id="text" data-words="text  variants inline sentence count change footer">Text</a><a href="kpi/" data-id="kpi" data-words="kpi  variants tile dashboard card number block">KPI</a></div><div class="nav-group" role="group" aria-labelledby="nav-g2"><p class="nav-group-label" id="nav-g2">Charts</p><a href="curves/" data-id="curves" data-words="curves  charts smooth step linear monotone cubic line">Curves</a><a href="column/" data-id="column" data-words="columns  charts bar chart discrete days aggregate bucket">Columns</a><a href="band/" data-id="band" data-words="bands  charts range high low spread candlestick ohlc">Bands</a><a href="marks/" data-id="marks" data-words="marks and axis  charts dot peak trough annotate point zero rule">Marks and axis</a></div><div class="nav-group" role="group" aria-labelledby="nav-g3"><p class="nav-group-label" id="nav-g3">Scale</p><a href="size/" data-id="size" data-words="size  scale width height em fluid responsive scale inline">Size</a><a href="domain/" data-id="domain" data-words="domain  scale scale compare y-range zero auto fixed">Domain</a></div><div class="nav-group" role="group" aria-labelledby="nav-g4"><p class="nav-group-label" id="nav-g4">Data</p><a href="periods/" data-id="periods" data-words="periods and smoothing  data week month year range between aggregate smooth">Periods and smoothing</a><a href="gaps/" data-id="gaps" data-words="gaps in npm's data  data zero missing repair interpolate npm holes">Gaps in npm's data</a><a href="analyse/" data-id="analyse" data-words="analyse()  data statistics growth fit r2 volatility weekday streak">analyse()</a></div><div class="nav-group" role="group" aria-labelledby="nav-g5"><p class="nav-group-label" id="nav-g5">Compare</p><a href="compare/" data-id="compare" data-words="comparing packages  compare versus rivals indexed absolute multi spread">Comparing packages</a></div><div class="nav-group" role="group" aria-labelledby="nav-g6"><p class="nav-group-label" id="nav-g6">Using it</p><a href="server/" data-id="server" data-words="on the server  using it ssr next prefetch data prop static core">On the server</a><a href="styling/" data-id="styling" data-words="styling  using it colour font theme css inherit dark currentcolor">Styling</a><a href="accessibility/" data-id="accessibility" data-words="accessibility  using it a11y screen reader label aria keyboard colour">Accessibility</a></div><div class="nav-group" role="group" aria-labelledby="nav-g7"><p class="nav-group-label" id="nav-g7">Reference</p><a href="reference/" data-id="reference" data-words="every option  reference api props reference table exports size">Every option</a></div><div class="nav-group" role="group" aria-labelledby="nav-g8"><p class="nav-group-label" id="nav-g8">Releases</p><a href="changelog/" data-id="changelog" data-words="changelog changelog releases changelog releases versions history news feed">Changelog</a></div>
+    </div>
+    <div id="results" class="results" hidden></div>
     <p class="nothing" id="nothing" hidden>Nothing matches. Try “gaps” or “compare”.</p>
   </nav>
-  <main id="page" class="page"></main>
-</div>
-
-<script type="module">
-import {
-  fetchDownloads, fetchMany, computeTrend, analyse, compare,
-  sparklineSvg, toBands, formatCount, formatChange, formatExact,
-  formatWeekday, describeTrend,
-} from "./assets/package-trends.js";
-
-const VERSION = "0.1.0";
-const L = "en-US";
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-/* ---------- global settings: which package, over what period ---------- */
-
-const G = { pkg: "react", period: "last-month" };
-const cache = new Map();
-const load = () => {
-  const key = `${G.pkg}|${G.period}`;
-  if (!cache.has(key)) cache.set(key, fetchDownloads(G.pkg, { period: G.period }));
-  return cache.get(key);
-};
-
-const RIVALS = ["react", "vue", "svelte", "preact"];
-let rivalsPromise = null;
-const loadRivals = () => (rivalsPromise ??= fetchMany(RIVALS, (n) => fetchDownloads(n, { period: "last-month" })));
-
-/* A fixed series for the pages that illustrate layout rather than data. */
-const SAMPLE = [41, 44, 43, 47, 52, 49, 55, 58, 56, 61, 64, 62, 68, 71, 74];
-
-/* ---------- the pages ---------- */
-
-/* A fluid chart keeps the viewBox it is given and stretches to the container,
-   so the width here is really an aspect ratio against the height: leave it at
-   the default 300 and a wide box scales the stroke up with it. */
-const chart = (values, options) => sparklineSvg(values, { width: 760, fluid: true, ...options });
-
-const figs = (t) => `<p class="figs"><b>${formatCount(t.total, L)}</b> downloads ·
-  <span class="${t.changeRatio >= 0 ? "up" : "down"}">${formatChange(t.changeRatio, L)}</span> ·
-  ${t.start} to ${t.end}${t.gapDays.length ? ` · ${t.gapDays.length} day${t.gapDays.length === 1 ? "" : "s"} repaired` : ""}</p>`;
-
-const PAGES = [
-  {
-    id: "intro", group: "Start", title: "Download trends, small enough for a footer",
-    keywords: "install start hello intro",
-    lead: `A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — <code>9.1 kB</code> for the core and <code>10.5 kB</code> with the React components, gzipped as a bundler ships them.`,
-    render: (s, d) => {
-      const t = computeTrend(d);
-      return `<div class="col-stack">
-        <div style="width:100%">${chart(t.values, { height: 90, dot: true, strokeWidth: 2, fill: "color-mix(in oklab, currentColor 10%, transparent)", label: describeTrend(t, L) })}</div>
-        ${figs(t)}</div>`;
-    },
-    code: () => `npm install package-trends`,
-    after: () => `<h2>Three shapes, one component</h2>
+  <main id="page" class="page" tabindex="-1">
+<p class="sr" id="say" role="status"></p>
+<article>
+<h1 class="title">Download trends, small enough for a footer</h1>
+<p class="lead">A package's npm downloads as a sparkline, a line of text or a KPI block. No dependencies, no stylesheet, no chart library — <code>8.3 kB</code> for the core and <code>6.8 kB</code> for the React entry, gzipped as a bundler ships them.</p>
+<div class="play solo" data-view="preview"><div class="stage" id="stage"><div class="col-stack">
+        <div style="width:100%"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 90" width="760" height="90" style="display:block;width:100%;height:auto" role="img" aria-label="974,362,450 downloads for react between 2026-09-28 and 2026-10-27, up 1.5% against the half before."><title>974,362,450 downloads for react between 2026-09-28 and 2026-10-27, up 1.5% against the half before.</title><path d="M0 54.57 L33.04 56.78 L66.09 59.54 L99.13 61.4 L132.17 62.91 L165.22 58.06 L198.26 56.96 L231.3 55.23 L264.35 56.72 L297.39 57.94 L330.43 58.91 L363.48 63.47 L396.52 60.7 L429.57 59.48 L462.61 58.48 L495.65 79.89 L528.7 88 L561.74 82.83 L594.78 64.36 L627.83 57.96 L660.87 57.61 L693.91 57.55 L726.96 22.61 L760 2 L760 90 L0 90 Z" fill="color-mix(in oklab, currentColor 10%, transparent)" stroke="none"/><path d="M0 54.57 L33.04 56.78 L66.09 59.54 L99.13 61.4 L132.17 62.91 L165.22 58.06 L198.26 56.96 L231.3 55.23 L264.35 56.72 L297.39 57.94 L330.43 58.91 L363.48 63.47 L396.52 60.7 L429.57 59.48 L462.61 58.48 L495.65 79.89 L528.7 88 L561.74 82.83 L594.78 64.36 L627.83 57.96 L660.87 57.61 L693.91 57.55 L726.96 22.61 L760 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="760" cy="2" r="2.8" fill="currentColor"/></svg></div>
+        <p class="figs"><b>974.4M</b> downloads ·
+  <span class="up">+1.5%</span> ·
+  2026-09-28 to 2026-10-27 · 7 days repaired</p></div></div></div>
+<p class="code-label">Install</p>
+      <div class="code code-tabs" data-remember="manager"><div class="code-head"><div class="seg" role="group" aria-label="Package manager"><button type="button" data-pane="npm" aria-pressed="true">npm</button><button type="button" data-pane="pnpm" aria-pressed="false">pnpm</button><button type="button" data-pane="yarn" aria-pressed="false">yarn</button><button type="button" data-pane="bun" aria-pressed="false">bun</button><button type="button" data-pane="deno" aria-pressed="false">deno</button></div></div><pre data-pane="npm">npm install package-trends</pre><pre data-pane="pnpm" hidden>pnpm add package-trends</pre><pre data-pane="yarn" hidden>yarn add package-trends</pre><pre data-pane="bun" hidden>bun add package-trends</pre><pre data-pane="deno" hidden>deno add npm:package-trends</pre><button class="btn copy" type="button"><svg class="sheets" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="5.6" y="1.6" width="8.8" height="10.8" rx="1.5"/><path d="M11 14.4H3.1a1.5 1.5 0 0 1-1.5-1.5V4.4"/></svg><svg class="tick" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 6 12l7.5-8"/></svg><span class="copy-label">Copy</span></button></div>
+      <h2>Three shapes, one component</h2>
       <div class="grid-links">
-        <a href="#sparkline"><b>Sparkline</b><span>Shape only, for a nav or a table cell.</span></a>
-        <a href="#text"><b>Text</b><span>One line, inside a sentence.</span></a>
-        <a href="#kpi"><b>KPI</b><span>The number leads, the chart confirms.</span></a>
+        <a href="./sparkline/"><b>Sparkline</b><span>Shape only, for a nav or a table cell.</span></a>
+        <a href="./text/"><b>Text</b><span>One line, inside a sentence.</span></a>
+        <a href="./kpi/"><b>KPI</b><span>The number leads, the chart confirms.</span></a>
       </div>
       <h2>The npm API needs no key</h2>
       <p>It sends <code>access-control-allow-origin: *</code>, so this works straight from a browser
       with no proxy of your own. Every chart on this site was fetched by your browser as you loaded
-      it — change the package in the header and watch them all follow.</p>`,
-  },
-  {
-    id: "sparkline", group: "Variants", title: "Sparkline", keywords: "chart line default shape",
-    lead: `The default. Shape only — no axes, no labels, nothing but the line — for a nav, a list row or a table cell.`,
-    state: { w: 210, h: 44, sw: 1.5, dot: true, fill: false },
-    controls: [
-      { k: "w", type: "range", label: "Width", min: 60, max: 420, step: 10, unit: "px" },
-      { k: "h", type: "range", label: "Height", min: 14, max: 120, step: 2, unit: "px" },
-      { k: "sw", type: "range", label: "Stroke", min: 0.5, max: 4, step: 0.25 },
-      { k: "dot", type: "toggle", label: "Dot on the last point" },
-      { k: "fill", type: "toggle", label: "Fill the area" },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d);
-      return sparklineSvg(t.values, {
-        width: s.w, height: s.h, dot: s.dot, strokeWidth: s.sw,
-        fill: s.fill ? "color-mix(in oklab, currentColor 12%, transparent)" : undefined,
-        label: describeTrend(t, L),
-      });
-    },
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  width={${s.w}} height={${s.h}}${s.sw !== 1.5 ? `\n  strokeWidth={${s.sw}}` : ""}${s.dot ? "\n  dot" : ""}${s.fill ? `\n  fill="color-mix(in oklab, currentColor 12%, transparent)"` : ""}\n/>`,
-  },
-  {
-    id: "text", group: "Variants", title: "Text", keywords: "inline sentence count change footer",
-    lead: `One line: the count, the word, the change. It sets no colour of its own unless you ask, so it reads as part of the sentence around it.`,
-    state: { colour: true, word: true, weight: "500" },
-    controls: [
-      { k: "colour", type: "toggle", label: "Colour the change" },
-      { k: "word", type: "toggle", label: "Show “downloads”" },
-      { k: "weight", type: "select", label: "Change weight", options: [["400", "regular"], ["500", "medium"], ["650", "bold"]] },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d);
-      const cls = s.colour ? ` class="${t.changeRatio >= 0 ? "up" : "down"}"` : "";
-      return `<p style="font-size:18px;margin:0;max-width:none">
-        <strong style="font-variant-numeric:tabular-nums">${formatCount(t.total, L)}</strong>${s.word ? " downloads" : ""}
-        <span${cls} style="font-weight:${s.weight};font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span></p>`;
-    },
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  variant="text"${s.colour ? `\n  colors={{ up: "#15803d", down: "#b3261e" }}` : ""}${s.weight !== "500" ? `\n  styles={{ change: { fontWeight: ${s.weight} } }}` : ""}\n/>`,
-    after: () => `<p class="note">Unset, the change inherits the surrounding colour — which is what keeps the
-      component out of a host's palette. The <code>data-direction</code> attribute is on the element
-      either way, so a stylesheet can colour it instead of a prop.</p>`,
-  },
-  {
-    id: "kpi", group: "Variants", title: "KPI", keywords: "tile dashboard card number block",
-    lead: `A tile. The number leads, the change qualifies it, and the chart is there to show the number is not a fluke.`,
-    state: { h: 40, fill: true, name: true },
-    controls: [
-      { k: "h", type: "range", label: "Chart height", min: 20, max: 96, step: 2, unit: "px" },
-      { k: "fill", type: "toggle", label: "Fill the area" },
-      { k: "name", type: "toggle", label: "Show the package name" },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d);
-      return `<div style="width:min(300px,100%)">
-        <div style="display:flex;align-items:baseline;gap:9px">
-          <span class="kpi-n">${formatCount(t.total, L)}</span>
-          <span class="${t.changeRatio >= 0 ? "up" : "down"}" style="font-size:13px;font-weight:500;font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span>
-        </div>
-        ${s.name ? `<div class="cap" style="margin:7px 0 11px">${esc(G.pkg)}</div>` : `<div style="height:11px"></div>`}
-        ${chart(t.values, { height: s.h, fill: s.fill ? "color-mix(in oklab, currentColor 10%, transparent)" : undefined, label: describeTrend(t, L) })}
-      </div>`;
-    },
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  variant="kpi"\n  height={${s.h}}${s.fill ? `\n  fill="color-mix(in oklab, currentColor 10%, transparent)"` : ""}\n/>`,
-  },
-  {
-    id: "curves", group: "Charts", title: "Curves", keywords: "smooth step linear monotone cubic line",
-    lead: `How the line joins its points. <code>smooth</code> is monotone cubic, not a cardinal spline: between any two points it stays within their values, so it can never draw a count that never happened.`,
-    state: { curve: "linear", sw: 1.75, dash: "" },
-    controls: [
-      { k: "curve", type: "select", label: "Curve", options: ["linear", "smooth", "step", "step-before"] },
-      { k: "sw", type: "range", label: "Stroke", min: 0.5, max: 4, step: 0.25 },
-      { k: "dash", type: "select", label: "Dash", options: [["", "solid"], ["5 3", "5 3"], ["2 2", "2 2"], ["7 2 2 2", "7 2 2 2"]] },
-    ],
-    render: (s, d) => chart(computeTrend(d).values, {
-      height: 110, curve: s.curve, strokeWidth: s.sw, dot: true,
-      strokeDasharray: s.dash || undefined,
-      fill: "color-mix(in oklab, currentColor 8%, transparent)",
-    }),
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  curve="${s.curve}"${s.dash ? `\n  strokeDasharray="${s.dash}"` : ""}\n/>`,
-    after: () => `<h2>Why not a cardinal spline</h2>
-      <p>A cardinal spline overshoots a local extreme to keep its curvature smooth. On a download count
-      that means drawing a dip below the real low — and near zero, below zero. A reader cannot tell an
-      invented value from a real one, so the curve has to be one that cannot invent them.</p>`,
-  },
-  {
-    id: "column", group: "Charts", title: "Columns", keywords: "bar chart discrete days aggregate",
-    lead: `Discrete days rather than a continuous line. Columns are anchored at zero, which is the honest baseline for a count.`,
-    state: { h: 90, aggregate: "day" },
-    controls: [
-      { k: "h", type: "range", label: "Height", min: 30, max: 160, step: 5, unit: "px" },
-      { k: "aggregate", type: "select", label: "Bucket", options: [["day", "day"], ["week", "week"], ["month", "month"]] },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d, s.aggregate === "day" ? {} : { aggregate: s.aggregate });
-      return chart(t.values, { chart: "column", height: s.h, fill: "currentColor" });
-    },
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  chart="column"${s.aggregate !== "day" ? `\n  aggregate="${s.aggregate}"` : ""}\n/>`,
-    after: () => `<p class="note">Thirty days of a busy package, anchored at zero, draws thirty nearly identical
-      bars. <code>aggregate="week"</code> gives four or five that actually differ — columns want fewer,
-      fatter bars than a line does.</p>`,
-  },
-  {
-    id: "band", group: "Charts", title: "Bands", keywords: "range high low spread candlestick ohlc",
-    lead: `Each bucket's low, mean and high, drawn as a range with the mean marked.`,
-    state: { size: 7, h: 110 },
-    controls: [
-      { k: "size", type: "range", label: "Days per band", min: 2, max: 14, step: 1 },
-      { k: "h", type: "range", label: "Height", min: 50, max: 180, step: 5, unit: "px" },
-    ],
-    render: (s, d) => {
-      const bands = toBands(computeTrend(d).points, s.size);
-      return chart(bands.map((b) => b.mean), { chart: "band", bands, height: s.h });
-    },
-    code: (s) => `<PackageTrend\n  package="${G.pkg}"\n  chart="band"\n  bandSize={${s.size}}\n/>`,
-    after: () => `<h2>Why not candlesticks</h2>
-      <p>A candlestick needs an open and a close — a price at the start of the period and a price at the
-      end. A day's downloads is one number. Borrowing the shape would mean inventing two of its four
-      values, so the band shows what the data has: the spread, and the middle.</p>`,
-  },
-  {
-    id: "marks", group: "Charts", title: "Marks and axis", keywords: "dot peak trough annotate point zero",
-    lead: `Points worth calling out, and a rule at zero where zero is inside the range.`,
-    state: { last: true, peak: true, trough: false, axis: false },
-    controls: [
-      { k: "last", type: "toggle", label: "Last point" },
-      { k: "peak", type: "toggle", label: "Peak" },
-      { k: "trough", type: "toggle", label: "Trough" },
-      { k: "axis", type: "toggle", label: "Zero rule (forces domain)" },
-    ],
-    render: (s, d) => {
-      const mark = [s.last && "last", s.peak && "peak", s.trough && "trough"].filter(Boolean);
-      return chart(computeTrend(d).values, {
-        height: 110, mark, axis: s.axis, domain: s.axis ? "zero" : "auto",
-        markColor: { peak: "var(--up)", trough: "var(--down)" },
-        fill: "color-mix(in oklab, currentColor 8%, transparent)",
-      });
-    },
-    code: (s) => {
-      const mark = [s.last && '"last"', s.peak && '"peak"', s.trough && '"trough"'].filter(Boolean);
-      return `<PackageTrend\n  package="${G.pkg}"${mark.length ? `\n  mark={[${mark.join(", ")}]}` : ""}${s.axis ? `\n  axis domain="zero"` : ""}\n/>`;
-    },
-    after: () => `<p class="note"><code>axis</code> only shows for data that crosses zero, which downloads never
-      do — against <code>domain="auto"</code> the rule lands on the bottom edge and is invisible. It is
-      there for a derived series, such as a day-over-day change, where zero sits in the middle.</p>`,
-  },
-  {
-    id: "size", group: "Scale", title: "Size", keywords: "width height em fluid responsive scale inline",
-    lead: `A number is pixels. A CSS length leaves the <code>viewBox</code> alone and renders at that size instead, so a chart set in <code>em</code> scales with the text it sits in.`,
-    state: { mode: "em", px: 200, em: 8, text: 15 },
-    controls: [
-      { k: "mode", type: "select", label: "Width given as", options: [["px", "pixels"], ["em", "em"], ["pc", "100%"]] },
-      { k: "px", type: "range", label: "Pixels", min: 60, max: 420, step: 10, unit: "px" },
-      { k: "em", type: "range", label: "Em", min: 3, max: 20, step: 0.5, unit: "em" },
-      { k: "text", type: "range", label: "Surrounding text", min: 11, max: 30, step: 1, unit: "px" },
-    ],
-    render: (s) => {
-      const width = s.mode === "px" ? s.px : s.mode === "em" ? `${s.em}em` : "100%";
-      const height = s.mode === "px" ? 40 : s.mode === "em" ? "1.6em" : 40;
-      return `<div style="font-size:${s.text}px;width:100%;text-align:center;line-height:1.7">
-        Downloads have been moving
-        ${sparklineSvg(SAMPLE, { width, height, dot: true, attrs: { style: "display:inline-block;vertical-align:-.2em" } })}
-        all month.</div>`;
-    },
-    code: (s) => s.mode === "px"
-      ? `<PackageTrend package="${G.pkg}" width={${s.px}} height={40} />`
-      : s.mode === "em"
-        ? `<PackageTrend package="${G.pkg}" width="${s.em}em" height="1.6em" />`
-        : `<PackageTrend package="${G.pkg}" fluid height={40} />`,
-    after: () => `<p class="note">A chart never grows past its container either way: one wider than its box
-      scales down with its aspect ratio kept, so it cannot give the page a horizontal scrollbar.</p>`,
-  },
-  {
-    id: "domain", group: "Scale", title: "Domain", keywords: "scale compare y-range zero auto fixed",
-    lead: `The y-range the values are laid out across. <code>auto</code> runs from the series' own low to its own high — the sparkline convention. A fixed pair is the only way two charts side by side can be compared.`,
-    state: { domain: "auto" },
-    controls: [{ k: "domain", type: "select", label: "Domain", options: [["auto", "auto"], ["zero", "zero"], ["fixed", "fixed pair"]] }],
-    render: (s, d) => {
-      const t = computeTrend(d);
-      const dom = s.domain === "fixed" ? [0, Math.max(...t.values) * 1.35] : s.domain;
-      return `<div class="col-stack">
-        <div style="width:100%">${chart(t.values, { height: 100, domain: dom, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>
-        <p class="figs">low <b>${formatCount(t.trough.downloads, L)}</b> · high <b>${formatCount(t.peak.downloads, L)}</b></p></div>`;
-    },
-    code: (s) => s.domain === "fixed"
-      ? `<PackageTrend package="${G.pkg}" domain={[0, 40_000_000]} />`
-      : `<PackageTrend package="${G.pkg}" domain="${s.domain}" />`,
-    after: () => `<p class="note">Without a fixed domain a package with a thousand downloads draws exactly the
-      same picture as one with a million. That is fine alone and misleading in a row.</p>`,
-  },
-  {
-    id: "periods", group: "Data", title: "Periods and smoothing", keywords: "week month year range between aggregate smooth",
-    lead: `A named period, or an explicit pair of dates. Long periods bucket into whole weeks or months, measured back from the latest day.`,
-    state: { aggregate: "day", smooth: 7 },
-    controls: [
-      { k: "aggregate", type: "select", label: "Bucket", options: [["day", "day"], ["week", "week"], ["month", "month"]] },
-      { k: "smooth", type: "range", label: "Smoothing window", min: 1, max: 14, step: 1, unit: " d" },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d, { ...(s.aggregate === "day" ? {} : { aggregate: s.aggregate }), smooth: s.smooth });
-      return `<div class="col-stack"><div style="width:100%">${chart(t.values, { height: 110, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>${figs(t)}</div>`;
-    },
-    code: (s) => `import { between } from "package-trends";\n\n<PackageTrend package="${G.pkg}" period="${G.period}"${s.aggregate !== "day" ? ` aggregate="${s.aggregate}"` : ""}${s.smooth !== 7 ? ` smooth={${s.smooth}}` : ""} />\n<PackageTrend package="${G.pkg}" period={between("2026-06-01", "2026-08-31")} />`,
-    after: () => `<h2>Smoothing never touches the numbers</h2>
-      <p>Daily counts swing threefold across the week, so the drawn line is a 7-day mean by default. Every
-      figure beside it — total, average, peak, change — comes from the raw series, so a smoothed chart
-      cannot quietly restate the total. Never sum <code>trend.values</code>: it is the drawing, not the
-      data.</p>`,
-  },
-  {
-    id: "gaps", group: "Data", title: "Gaps in npm's data", keywords: "zero missing repair interpolate npm holes",
-    lead: `npm answers <code>0</code> for a day it has not aggregated, and gives you no way to tell that from a day nobody installed the package. Taken literally those zeros are not a small error.`,
-    state: { gaps: "fill" },
-    controls: [{ k: "gaps", type: "select", label: "Policy", options: [["fill", "fill — the default"], ["zero", "zero — take them literally"]] }],
-    render: (s, d) => {
-      const a = analyse(d, { gaps: s.gaps });
-      const t = computeTrend(d, { gaps: s.gaps });
-      return `<div class="col-stack">
-        <div style="width:100%">${chart(t.values, { height: 110, dot: true, fill: "color-mix(in oklab, currentColor 9%, transparent)" })}</div>
-        <dl class="facts">
-          <dt>mean/day</dt><dd>${formatExact(Math.round(a.mean), L)}</dd>
-          <dt>direction</dt><dd>${a.direction}</dd>
-          <dt>quietest</dt><dd>${formatWeekday(a.quietestWeekday.weekday, L)}</dd>
-          <dt>weekend ratio</dt><dd>${a.weekendRatio.toFixed(2)}</dd>
-          <dt>days npm missed</dt><dd>${computeTrend(d).gapDays.length} of ${t.points.length}</dd>
-        </dl></div>`;
-    },
-    code: (s) => `<PackageTrend package="${G.pkg}" gaps="${s.gaps}" />\n\n// the days npm had no data for\nconst { gapDays } = computeTrend(await fetchDownloads("${G.pkg}"));`,
-    after: () => `<p>Switch the policy above and watch every figure move. On a sample of <code>react</code> seven
-      of thirty days came back zero: the mean fell by a quarter, the weekday profile inverted, and a flat
-      month read as a falling one. Interior zeros are interpolated from their neighbours and listed in
-      <code>gapDays</code>, so you can say so where it matters.</p>`,
-  },
-  {
-    id: "analyse", group: "Data", title: "analyse()", keywords: "statistics growth fit r2 volatility weekday streak",
-    lead: `The figures you would need to write about a package without looking at the chart.`,
-    render: (s, d) => {
-      const a = analyse(d);
-      return `<dl class="facts" style="font-size:14px">
-        <dt>direction</dt><dd>${a.direction} <span class="note">(${a.confidence}, r² ${a.fit.rSquared.toFixed(2)})</span></dd>
-        <dt>weekly growth</dt><dd>${(a.weeklyGrowth * 100).toFixed(2)}%</dd>
-        <dt>annualised</dt><dd>${(a.annualisedGrowth * 100).toFixed(1)}%</dd>
-        <dt>mean</dt><dd>${formatExact(Math.round(a.mean), L)}</dd>
-        <dt>median</dt><dd>${formatExact(Math.round(a.median), L)}</dd>
-        <dt>busiest day</dt><dd>${formatWeekday(a.busiestWeekday.weekday, L)}</dd>
-        <dt>quietest day</dt><dd>${formatWeekday(a.quietestWeekday.weekday, L)}</dd>
-        <dt>weekend ratio</dt><dd>${a.weekendRatio.toFixed(2)}</dd>
-        <dt>volatility</dt><dd>${(a.volatility * 100).toFixed(1)}%</dd>
-        <dt>spikes</dt><dd>${a.spikes.length}</dd>
-        <dt>streak</dt><dd>${a.streak.weeks} ${a.streak.direction} week${a.streak.weeks === 1 ? "" : "s"}</dd>
-      </dl>`;
-    },
-    code: () => `import { analyse, fetchDownloads } from "package-trends";\n\nconst a = analyse(await fetchDownloads("${G.pkg}", { period: "${G.period}" }));\n\na.direction;    // "rising" | "falling" | "flat"\na.confidence;   // "strong" | "moderate" | "weak", from the r²\na.weekendRatio; // weekday-driven use sits near 0.6`,
-    after: () => `<p>The field to build a sentence on is <code>confidence</code>. A slope alone will cheerfully
-      report that react is falling by 390,000 a day; the r² behind it is what says the month was flat and
-      the slope is noise.</p>`,
-  },
-  {
-    id: "compare", group: "Compare", title: "Comparing packages", keywords: "versus rivals indexed absolute multi spread",
-    lead: `Several packages on one chart. An absolute scale only reads when the packages are of a like size — and they rarely are.`,
-    state: { scale: "indexed" }, needs: "rivals",
-    controls: [{ k: "scale", type: "select", label: "Scale", options: [["absolute", "absolute"], ["indexed", "indexed"]] }],
-    render: (s, d, extra) => {
-      if (!extra) return `<p class="loading">Fetching ${RIVALS.join(", ")}…</p>`;
-      const c = compare(extra, { scale: s.scale });
-      const colours = ["#3b82f6", "#f97316", "#14b8a6", "#a855f7"];
-      const dashes = ["", "5 3", "2 2", "7 2 2 2"];
-      const lines = c.series.map((series, i) => sparklineSvg(series.values, {
-        width: 760, height: 150, domain: c.domain, stroke: colours[i],
-        strokeDasharray: dashes[i] || undefined, strokeWidth: 1.75,
-      }).replace(/^<svg[^>]*>|<\/svg>$/g, "")).join("");
-      return `<div style="width:100%">
-        <svg viewBox="0 0 760 150" role="img" aria-label="${esc(RIVALS.join(", "))} compared, ${s.scale}" style="display:block;width:100%;height:auto">${lines}</svg>
-        <p class="figs" style="margin-top:14px">${c.series.map((series, i) =>
-          `<span style="display:inline-flex;align-items:center;gap:.4em;margin-right:1.3em">
-            <svg width="20" height="8" aria-hidden="true"><path d="M0 4H20" stroke="${colours[i]}" stroke-width="1.75"${dashes[i] ? ` stroke-dasharray="${dashes[i]}"` : ""} stroke-linecap="round"/></svg>${esc(series.package)}</span>`).join("")}
-        <br style="line-height:2.4">spread <b>${c.spread.toFixed(1)}×</b> · largest <b>${esc(c.leader)}</b></p></div>`;
-    },
-    code: (s) => `import { PackageComparison } from "package-trends/compare";\n\n<PackageComparison\n  packages={["react", "vue", "svelte", "preact"]}\n  scale="${s.scale}"\n/>`,
-    after: () => `<p>On <code>absolute</code> react takes the top and the rest collapse onto the floor: the chart
-      is literally true and tells you nothing. <code>indexed</code> restates each series against its own
-      start, so every line begins at 100 and the chart compares growth instead of size. The
-      <code>spread</code> on the comparison is what tells you which one to use.</p>`,
-  },
-  {
-    id: "server", group: "Using it", title: "On the server", keywords: "ssr next prefetch data prop static core",
-    lead: `Fetch once where the page is built and pass it down. No visitor costs a request, and the chart is in the first paint rather than appearing a moment later.`,
-    render: (s, d) => {
-      const t = computeTrend(d);
-      return `<div class="col-stack"><div style="width:100%">${chart(t.values, { height: 80, dot: true })}</div>
-        <p class="note">This one was fetched by your browser. On a server-rendered page it would have
-        arrived with the HTML.</p></div>`;
-    },
-    code: () => `import { fetchDownloads } from "package-trends";\nimport { PackageTrend } from "package-trends/react";\n\nconst data = await fetchDownloads("${G.pkg}", { period: "${G.period}" });\n\nreturn <PackageTrend package="${G.pkg}" data={data} variant="kpi" />;`,
-    after: () => `<h2>Or without React at all</h2>
-      <div class="code"><pre>import { fetchDownloads, computeTrend, sparklineSvg } from "package-trends";
-
-const trend = computeTrend(await fetchDownloads("react"));
-const svg = sparklineSvg(trend.values, { width: 200, height: 40, dot: true });</pre></div>
-      <p class="note">The core is the whole library and the React entry is a wrapper over it. Every chart on
-      this site is drawn by <code>sparklineSvg</code>, which is the same geometry the components use — this
-      page loads no framework at all.</p>`,
-  },
-  {
-    id: "styling", group: "Using it", title: "Styling", keywords: "colour font theme css inherit dark currentcolor",
-    lead: `Nothing ships a stylesheet. The chart strokes in <code>currentColor</code> and the type is set in <code>em</code>, so it inherits rather than imposes.`,
-    state: { bg: "paper", size: 15 },
-    controls: [
-      { k: "bg", type: "select", label: "Surface", options: [["paper", "the page"], ["dark", "dark panel"], ["accent", "accent"]] },
-      { k: "size", type: "range", label: "Text size", min: 11, max: 28, step: 1, unit: "px" },
-    ],
-    render: (s, d) => {
-      const t = computeTrend(d);
-      const skin = s.bg === "dark" ? "background:#15151a;color:#ececef"
-        : s.bg === "accent" ? "background:var(--accent);color:#fff"
-        : "background:var(--bg);color:var(--fg)";
-      return `<div style="${skin};padding:24px 28px;border-radius:10px;font-size:${s.size}px;width:min(420px,100%)">
-        <div style="display:flex;align-items:baseline;gap:8px">
-          <strong style="font-size:1.7em;font-variant-numeric:tabular-nums">${formatCount(t.total, L)}</strong>
-          <span style="opacity:.75;font-variant-numeric:tabular-nums">${formatChange(t.changeRatio, L)}</span>
-        </div>
-        <div style="margin-top:.7em">${chart(t.values, { height: "2.6em", dot: true })}</div></div>`;
-    },
-    code: () => `/* the only two colours it would choose for itself */\n.pt-change[data-direction="up"]   { color: #15803d; }\n.pt-change[data-direction="down"] { color: #b3261e; }`,
-    after: () => `<p class="note">The same markup on three surfaces, with nothing changed but the surrounding text
-      colour. A component that ships its own palette fights every site it lands on.</p>`,
-  },
-  {
-    id: "accessibility", group: "Using it", title: "Accessibility", keywords: "a11y screen reader label aria keyboard colour",
-    lead: `A sparkline carries nothing a non-sighted reader can use, so every chart gets a sentence instead.`,
-    render: (s, d) => {
-      const t = computeTrend(d);
-      return `<div class="col-stack">
-        <div style="width:100%">${chart(t.values, { height: 70, dot: true, label: describeTrend(t, L) })}</div>
-        <div><div class="cap">what a screen reader reads</div>
-        <p style="margin:7px 0 0">${esc(describeTrend(t, L))}</p></div></div>`;
-    },
-    code: () => `<PackageTrend package="${G.pkg}" label="Weekly pulls from npm" />\n<PackageTrend package="${G.pkg}" label={(t) => \`\${t.total.toLocaleString()} downloads\`} />`,
-    after: () => `<ul>
-      <li>The sentence is the SVG's <code>&lt;title&gt;</code>, and <code>label</code> replaces it.</li>
-      <li>Red and green never carry the meaning alone — the sign is always there, which is what a reader
-      with a colour deficiency goes by.</li>
-      <li><code>interactive</code> makes the chart focusable and arrow-key navigable, and announces the day
-      under the cursor through a live region.</li>
-      <li>A failed fetch renders nothing by default. A download count is never worth breaking a footer
-      over.</li></ul>`,
-  },
-  {
-    id: "reference", group: "Reference", title: "Every option", keywords: "api props reference table exports size",
-    lead: `The full surface. Three entry points, and your bundler drops whatever you do not import.`,
-    hidePlay: true,
-    code: () => `import { … } from "package-trends";          // 9.1 kB gzipped\nimport { … } from "package-trends/react";    // 10.5 kB\nimport { … } from "package-trends/compare";  // 12.4 kB`,
-    after: () => `<h2>Props</h2><div class="ref-wrap"><table class="ref">
-      <tr><th>Prop</th><th>Type</th><th>What it does</th></tr>${[
-        ["package", "string", "The package name, scoped names included."],
-        ["data", "DownloadRange", "A range already fetched. When set, nothing is requested."],
-        ["period", "Period | between()", '"last-week", "last-month", "last-year", or an explicit pair.'],
-        ["variant", '"sparkline" | "text" | "kpi"', "Default sparkline."],
-        ["chart", '"line" | "column" | "band"', "The chart form."],
-        ["curve", '"linear" | "smooth" | "step" | "step-before"', "How the line joins its points."],
-        ["domain", '[number, number] | "auto" | "zero"', "The y-range the values are laid out across."],
-        ["aggregate", '"week" | "month"', "Buckets whole weeks or months back from the latest day."],
-        ["smooth", "number", "Moving-average window for the drawn line. Default 7."],
-        ["gaps", '"fill" | "zero"', "What to do with the days npm has no data for. Default fill."],
-        ["width / height", "number | string", "Pixels, or a CSS length that scales with the text."],
-        ["fluid", "boolean", "Fill the container's width rather than sit at a natural size."],
-        ["mark / markColor", "MarkKind[] / record", "Points to call out: last, peak, trough."],
-        ["axis / axisColor", "boolean / string", "A rule at zero where zero is inside the domain."],
-        ["fill / fillPattern", "string / FillPattern", "Area or bar fill, flat or patterned."],
-        ["stroke / strokeWidth / strokeDasharray", "string / number / string", "The line itself."],
-        ["colors", "{ up, down }", "The rise and fall figures. Unset, they inherit."],
-        ["styles", "record", "Inline styles per part: weight, display, spacing."],
-        ["numberFormat / percentFormat", "Intl.NumberFormatOptions", "Merged over the defaults."],
-        ["locale", "string", "Passed to Intl."],
-        ["label", "string | (trend) => string", "The accessible name for the chart."],
-        ["interactive / onActivePoint", "boolean / fn", "Pointer and keyboard inspection."],
-        ["fallback / renderError", "ReactNode / fn", "While loading, and when it fails."],
-        ["svgProps / pathProps", "record", "Anything else the elements should carry."],
-        ["children", "(state) => ReactNode", "Replaces the built-in markup entirely."],
-      ].map(([a, b, c]) => `<tr><td><code>${esc(a)}</code></td><td><code>${esc(b)}</code></td><td>${esc(c)}</td></tr>`).join("")}
-      </table></div>
-      <h2>Core exports</h2><div class="ref-wrap"><table class="ref">
-      <tr><th>Export</th><th>What it does</th></tr>${[
-        ["fetchDownloads(name, options)", "One package's range from the npm API."],
-        ["fetchMany(names, fetchOne)", "Several at once, asking for each distinct name only once."],
-        ["computeTrend(range, options)", "Totals, peak, trough and change from the raw series, plus the shaped values to draw."],
-        ["analyse(range, options)", "Growth, fit and r², weekday profile, volatility, spikes, streak."],
-        ["compare(ranges, options)", "Several ranges on one scale, absolute or indexed."],
-        ["sparklineSvg(values, options)", "A standalone SVG string, for anywhere outside React."],
-        ["toWeekly / toMonthly / toBands", "Bucketing."],
-        ["fillGaps / applyGaps", "The zero repair, on its own."],
-        ["formatCount / formatChange / formatExact / formatWeekday", "Intl-backed formatting."],
-        ["describeTrend(trend, locale)", "The sentence a screen reader gets."],
-        ["between(from, to)", "An explicit date range."],
-      ].map(([a, b]) => `<tr><td><code>${esc(a)}</code></td><td>${esc(b)}</td></tr>`).join("")}
-      </table></div>`,
-  },
-];
-
-/* ---------- navigation ---------- */
-
-const GROUPS = [...new Set(PAGES.map((p) => p.group))];
-const list = document.getElementById("nav-list");
-list.innerHTML = GROUPS.map((g) =>
-  `<div class="nav-group"><h4>${esc(g)}</h4>` +
-  PAGES.filter((p) => p.group === g).map((p) =>
-    `<a href="#${p.id}" data-id="${p.id}" data-words="${esc((p.title + " " + p.group + " " + (p.keywords || "")).toLowerCase())}">${esc(p.title)}</a>`).join("") +
-  `</div>`).join("");
-
-const find = document.getElementById("find");
-const nothing = document.getElementById("nothing");
-find.addEventListener("input", () => {
-  const q = find.value.trim().toLowerCase();
-  let hits = 0;
-  for (const a of list.querySelectorAll("a")) {
-    const on = !q || a.dataset.words.includes(q);
-    a.hidden = !on;
-    if (on) hits++;
-  }
-  for (const g of list.querySelectorAll(".nav-group")) {
-    g.hidden = ![...g.querySelectorAll("a")].some((a) => !a.hidden);
-  }
-  nothing.hidden = hits > 0;
-});
-addEventListener("keydown", (e) => {
-  if (e.key === "/" && e.target === document.body) { e.preventDefault(); find.focus(); }
-});
-
-const side = document.getElementById("side");
-const scrim = document.getElementById("scrim");
-const menuBtn = document.getElementById("menu-btn");
-const setMenu = (open) => {
-  side.classList.toggle("open", open);
-  scrim.hidden = !open;
-  menuBtn.setAttribute("aria-expanded", String(open));
-};
-menuBtn.addEventListener("click", () => setMenu(!side.classList.contains("open")));
-scrim.addEventListener("click", () => setMenu(false));
-document.getElementById("side-close").addEventListener("click", () => setMenu(false));
-
-/* On a phone the settings move into the drawer, where there is room for them. */
-const settings = document.getElementById("settings");
-const sideSettings = document.getElementById("side-settings");
-const placeSettings = () => {
-  const narrow = matchMedia("(max-width: 860px)").matches;
-  const home = narrow ? sideSettings : document.querySelector(".top");
-  if (settings.parentElement !== home) home.appendChild(settings);
-};
-placeSettings();
-addEventListener("resize", placeSettings);
-
-document.getElementById("version").textContent = `v${VERSION}`;
-
-/* ---------- controls ---------- */
-
-function controlHtml(c, v) {
-  const id = `c-${c.k}`;
-  if (c.type === "select") {
-    const opts = c.options.map((o) => (Array.isArray(o) ? o : [o, o]));
-    return `<div class="ctl"><label for="${id}"><span>${esc(c.label)}</span></label><select id="${id}" data-k="${c.k}">${
-      opts.map(([val, lab]) => `<option value="${esc(val)}"${String(val) === String(v) ? " selected" : ""}>${esc(lab)}</option>`).join("")}</select></div>`;
-  }
-  if (c.type === "range") {
-    return `<div class="ctl"><label for="${id}"><span>${esc(c.label)}<output id="${id}-o">${v}${esc(c.unit || "")}</output></span></label>
-      <input type="range" id="${id}" data-k="${c.k}" min="${c.min}" max="${c.max}" step="${c.step}" value="${v}"></div>`;
-  }
-  return `<label class="ctl check" for="${id}"><input type="checkbox" id="${id}" data-k="${c.k}"${v ? " checked" : ""}><span>${esc(c.label)}</span></label>`;
-}
-
-/* ---------- rendering a page ---------- */
-
-const page = document.getElementById("page");
-const here = document.getElementById("here");
-const state = new Map();
-let current = null;
-
-/* A code box takes plain text. It has to: the samples are JSX, and an
-   unescaped <PackageTrend> is parsed as an unknown element and renders as
-   nothing at all. Comments are picked out after escaping, never before. */
-const renderCode = (text) => esc(text)
-  .replace(/(\/\*[\s\S]*?\*\/|\/\/[^\n]*)/g, '<span class="c">$1</span>');
-const codeBox = (text) => `<div class="code"><pre>${renderCode(text)}</pre><button class="copy" type="button">Copy</button></div>`;
-
-function paint(p, data, extra) {
-  const s = state.get(p.id);
-  const controls = p.controls || [];
-  const stageInner = data
-    ? p.render(s, data, extra)
-    : `<p class="loading">Fetching ${esc(G.pkg)} from npm…</p>`;
-
-  const play = p.hidePlay ? "" : `
-    ${controls.length ? `<div class="play-tabs" role="tablist">
-      <button type="button" role="tab" data-view="preview" aria-selected="true">Preview</button>
-      <button type="button" role="tab" data-view="settings" aria-selected="false">Settings</button>
-    </div>` : ""}
-    <div class="play${controls.length ? "" : " solo"}" data-view="preview">
-      <div class="stage" id="stage">${stageInner}</div>
-      ${controls.length ? `<div class="ctls"><h3>Settings</h3>${controls.map((c) => controlHtml(c, s[c.k])).join("")}</div>` : ""}
-    </div>`;
-
-  const i = PAGES.indexOf(p);
-  const prev = PAGES[i - 1], next = PAGES[i + 1];
-
-  page.innerHTML = `
-    <p class="crumb">${esc(p.group)}</p>
-    <h1 class="title">${esc(p.title)}</h1>
-    <p class="lead">${p.lead}</p>
-    ${play}
-    ${p.code ? `<p class="code-label">The code for what is on screen</p>${codeBox(p.code(s))}` : ""}
-    ${p.after ? p.after(s) : ""}
-    <nav class="pager" aria-label="Pages">
-      ${prev ? `<a href="#${prev.id}"><small>Previous</small>${esc(prev.title)}</a>` : "<span></span>"}
-      ${next ? `<a href="#${next.id}" style="text-align:right"><small>Next</small>${esc(next.title)}</a>` : ""}
-    </nav>
-    <footer class="colophon">
-      <span>MIT · © Plain Matter Pte Ltd</span>
-      <span>Built by <b>Thomas Budin</b></span>
-      <span class="spacer"><a href="https://github.com/tbudin/package-trends">GitHub</a></span>
-      <span><a href="https://www.npmjs.com/package/package-trends">npm</a></span>
-    </footer>`;
-
-  page.querySelectorAll("[data-k]").forEach((el) => {
-    const c = controls.find((x) => x.k === el.dataset.k);
-    el.addEventListener(el.type === "range" ? "input" : "change", () => {
-      s[c.k] = el.type === "checkbox" ? el.checked : el.type === "range" ? Number(el.value) : el.value;
-      if (el.type === "range") page.querySelector(`#c-${c.k}-o`).textContent = `${s[c.k]}${c.unit || ""}`;
-      redraw(p, extra);
-    });
-  });
-
-  page.querySelectorAll(".play-tabs button").forEach((b) => b.addEventListener("click", () => {
-    page.querySelector(".play").dataset.view = b.dataset.view;
-    page.querySelectorAll(".play-tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
-  }));
-
-  page.querySelectorAll(".code .copy").forEach((b) => b.addEventListener("click", async () => {
-    const pre = b.previousElementSibling;
-    try { await navigator.clipboard.writeText(pre.textContent); b.textContent = "Copied"; }
-    catch { getSelection().selectAllChildren(pre); b.textContent = "Select it"; }
-    setTimeout(() => (b.textContent = "Copy"), 1400);
-  }));
-}
-
-/* Redraws the stage and the code box without rebuilding the whole page. */
-function redraw(p, extra) {
-  const s = state.get(p.id);
-  const data = ready.get(p.id);
-  const stage = page.querySelector("#stage");
-  if (stage && data) stage.innerHTML = p.render(s, data, extra);
-  const pre = page.querySelector(".code pre");
-  if (pre && p.code) pre.innerHTML = renderCode(p.code(s));
-}
-
-const ready = new Map();
-
-async function show(id) {
-  const p = PAGES.find((x) => x.id === id) || PAGES[0];
-  current = p;
-  if (!state.has(p.id)) state.set(p.id, { ...(p.state || {}) });
-
-  here.textContent = p.title;
-  for (const a of list.querySelectorAll("a")) {
-    if (a.dataset.id === p.id) a.setAttribute("aria-current", "page");
-    else a.removeAttribute("aria-current");
-  }
-  setMenu(false);
-  scrollTo(0, 0);
-  paint(p, null, null);
-
-  try {
-    const data = await load();
-    if (current !== p) return;
-    ready.set(p.id, data);
-    const extra = p.needs === "rivals" ? await loadRivals() : null;
-    if (current !== p) return;
-    paint(p, data, extra);
-  } catch (error) {
-    const stage = page.querySelector("#stage");
-    if (stage) stage.innerHTML = `<p class="err">Could not reach the npm downloads API: ${esc(error.message)}</p>`;
-  }
-}
-
-/* Changing the package or the period redraws whatever is open. */
-document.getElementById("g-pkg").addEventListener("change", (e) => {
-  const v = e.target.value.trim();
-  if (v) { G.pkg = v; ready.clear(); show(current.id); }
-});
-document.getElementById("g-period").addEventListener("change", (e) => {
-  G.period = e.target.value; ready.clear(); show(current.id);
-});
-
-/* ---------- routing ---------- */
-const route = () => show(location.hash.slice(1) || "intro");
-addEventListener("hashchange", route);
-route();
-</script>
-
+      it — change the package in the header and watch them all follow.</p>
+<h2 id="questions">Questions</h2><div class="faq"><details open><summary>Does it need an API key or a proxy?</summary><p>No. The npm downloads API is public and sends <code>access-control-allow-origin: *</code>, so a browser can call it directly.</p></details><details open><summary>How big is it?</summary><p>8.3 kB gzipped for the framework-agnostic core, 6.8 kB for the React entry, 6.9 kB for the comparison chart and 3.6 kB for the heatmap. Each figure is that entry on its own, minified and gzipped, measured on every build. There are no dependencies, and react is a peer you already have.</p></details><details open><summary>Does it work without React?</summary><p>Yes. <code>sparklineSvg</code> returns an SVG string and the core has no framework in it. This site uses that path and loads no framework at all.</p></details></div>
+</article>
+<nav class="pager" aria-label="Previous and next page"><span></span><a href="sparkline/" style="text-align:right"><small>Next</small>Sparkline</a></nav>
+<footer class="colophon"><span class="nods" aria-describedby="nods-summary"><a class="nods-lead" href="https://github.com/tbudin/package-trends/blob/main/LICENSE">MIT</a><span class="nods-sep"> · </span><span class="nods-lead">© Plain Matter Pte Ltd</span><span class="nods-sep"> · </span><span class="nods-label">package-trends</span><span class="nods-label">, made by </span><a class="nods-name" href="https://github.com/tbudin/package-trends" rel="author nofollow noopener" target="_blank">Thomas Budin</a><span class="nods-sr" id="nods-summary">package-trends, 2026. Build: Thomas Budin. Made with IBM Plex, Newsreader, GitHub Pages.</span></span><span class="spacer"></span><nav aria-label="Elsewhere"><a href="https://github.com/tbudin/package-trends">GitHub</a><a href="https://www.npmjs.com/package/package-trends">npm</a><a href="index.md">Markdown</a><a href="https://github.com/tbudin/package-trends/edit/main/site/pages.js">Edit</a><a href="llms.txt">llms.txt</a></nav></footer>
+  </main>
+</div>
+<script type="module" src="assets/chrome.js"></script>
 </body>
 </html>

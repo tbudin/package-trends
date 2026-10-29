@@ -1,0 +1,58 @@
+# package-trends
+
+> npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.
+
+A package's npm downloads as a sparkline, a line of text or a KPI block. Zero dependencies, a framework-agnostic core and React components. It fetches straight from the npm registry, which needs no key and sends a permissive CORS header, so no proxy is involved.
+
+- Version 0.1.0, MIT, © Plain Matter Pte Ltd.
+- Install: `npm i package-trends`
+- Source: https://github.com/tbudin/package-trends
+- Every page below is also available as markdown at its URL plus `index.md`.
+- The whole documentation as one file: https://tbudin.github.io/package-trends/llms-full.txt
+
+## Start
+
+- [package-trends: download trends small enough for a footer](https://tbudin.github.io/package-trends/index.md): Install package-trends and draw a package's npm downloads as a sparkline, a line of text or a KPI block — no dependencies, no stylesheet, no chart library.
+
+## Variants
+
+- [Sparkline](https://tbudin.github.io/package-trends/sparkline/index.md): The default variant: shape only, no axes and no labels, sized for a nav, a list row or a table cell.
+- [Text](https://tbudin.github.io/package-trends/text/index.md): The text variant: the count, the word and the change on one line, inheriting the colour of the sentence it sits in.
+- [KPI](https://tbudin.github.io/package-trends/kpi/index.md): The KPI variant: a tile where the number leads, the change qualifies it and a small chart shows the number is not a fluke.
+
+## Charts
+
+- [Curves](https://tbudin.github.io/package-trends/curves/index.md): How the line joins its points: linear, step, or monotone cubic smoothing that can never draw a count that never happened.
+- [Columns](https://tbudin.github.io/package-trends/column/index.md): Discrete days as columns anchored at zero, with weekly or monthly bucketing for packages busy enough that thirty bars look identical.
+- [Bands](https://tbudin.github.io/package-trends/band/index.md): Each bucket's low, mean and high drawn as a range — the honest alternative to a candlestick, which a daily count cannot fill.
+- [Marks and axis](https://tbudin.github.io/package-trends/marks/index.md): Calling out the last point, the peak or the trough, and when a rule at zero is worth drawing at all.
+
+## Scale
+
+- [Size](https://tbudin.github.io/package-trends/size/index.md): Sizing a chart in pixels, in em so it scales with the text it sits in, or fluid so it fills its container.
+- [Domain](https://tbudin.github.io/package-trends/domain/index.md): The y-range values are laid out across, and why two charts side by side are only comparable on a fixed one.
+
+## Data
+
+- [Periods and smoothing](https://tbudin.github.io/package-trends/periods/index.md): Named periods and explicit date ranges, weekly and monthly bucketing, and why smoothing never touches the figures beside the chart.
+- [Gaps in npm's data](https://tbudin.github.io/package-trends/gaps/index.md): npm answers 0 for a day it has not aggregated, indistinguishable from a real zero. What that does to the figures, and the repair.
+- [analyse()](https://tbudin.github.io/package-trends/analyse/index.md): Growth, linear fit and r², weekday profile, weekend ratio, volatility, spikes and streak — the figures behind a sentence about a package.
+
+## Compare
+
+- [Comparing packages](https://tbudin.github.io/package-trends/compare/index.md): Several packages on one chart, on an absolute scale or indexed against their own start, and the spread figure that tells you which to use.
+
+## Using it
+
+- [On the server](https://tbudin.github.io/package-trends/server/index.md): Fetch once where the page is built and pass the range down, so no visitor costs a request and the chart is in the first paint.
+- [Styling](https://tbudin.github.io/package-trends/styling/index.md): No stylesheet ships. The chart strokes in currentColor and sets its type in em, so it inherits a host's palette instead of imposing one.
+- [Accessibility](https://tbudin.github.io/package-trends/accessibility/index.md): Every chart carries a sentence for a screen reader, the sign always accompanies the colour, and a failed fetch renders nothing rather than breaking a footer.
+
+## Reference
+
+- [Every option](https://tbudin.github.io/package-trends/reference/index.md): The full surface: every prop on the components, every export of the core, and what each of the 4 entry points costs.
+
+## Releases
+
+- [Changelog](https://tbudin.github.io/package-trends/changelog/index.md): Every released version of package-trends, newest first, with what changed in each — and an Atom feed to follow new ones.
+
