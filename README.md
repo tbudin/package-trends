@@ -7,10 +7,11 @@ npm download trends as a sparkline, a line of text, or a KPI block.
   <img alt="The three variants rendered from react's last 30 days: a bare sparkline, the line “954.5M downloads +3.8%”, and a KPI tile pairing the number with a filled chart" src="https://tbudin.github.io/package-trends/img/variants-light.png" width="940">
 </picture>
 
-Zero dependencies. Measured as a bundler ships it, gzipped: **9.1 kB** for the
-framework-agnostic core, **10.5 kB** with the React components, **12.4 kB** with
-comparison as well — the three entries share their modules, so nothing is
-counted twice, and your bundler drops whatever you do not import.
+Zero dependencies. Measured as a bundler ships it, minified and gzipped:
+**8.3 kB** for the framework-agnostic core, **12.5 kB** with the React
+components, **14.8 kB** with comparison as well, and **17.1 kB** with the
+heatmap too — the four entries share their modules, so nothing is counted
+twice, and your bundler drops whatever you do not import.
 
 The npm downloads API needs no key and sends `access-control-allow-origin: *`,
 so this works straight from a browser with no proxy of your own.
@@ -453,6 +454,19 @@ wording can still carry the numbers:
 <PackageTrend package="react" label="Weekly pulls from npm" />
 <PackageTrend package="react" label={(t) => `${t.total.toLocaleString()} downloads this month`} />
 ```
+
+The heatmap labels itself whether or not you ask. `<PackageHeatmap>` always
+carries `role="img"` and an `aria-label`, built from the package name, the total
+across the range, how many days were interpolated and the busiest day's figure.
+`label` replaces it with a string or a function of the `Heatmap`. The string
+renderer is the stricter one: `heatmapSvg()` marks its output `aria-hidden`
+unless you pass a `label`, on the same reasoning as an unlabelled sparkline.
+
+`cellTitles` gives every square its own `<title>`, which is the browser's
+tooltip and costs no script. It is on in the component and off in
+`heatmapSvg()`: on a live page a square whose value cannot be read is of little
+use, while the string renderer's output usually ends up rasterised in a README,
+where 365 unreachable titles are only weight.
 
 ## API
 
