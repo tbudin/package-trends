@@ -30,13 +30,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
+      # No registry-url here, deliberately. Given one, setup-node writes an
+      # .npmrc whose auth token is $NODE_AUTH_TOKEN and sets that variable to
+      # its own placeholder, XXXXX-XXXXX-XXXXX-XXXXX, when no token is passed.
+      # npm then believes it has credentials, never attempts the OIDC exchange,
+      # and publishes with the placeholder; the registry answers 404, which
+      # reads like a missing package rather than a refused login. npm already
+      # defaults to registry.npmjs.org, so trusted publishing wants nothing set.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
-          registry-url: https://registry.npmjs.org
       # trusted publishing needs npm 11.5.1 or later
-      - run: npm install -g npm@11.21.0
+      - run: npm install -g npm@11.21.0 && npm --version
       - run: pnpm install --frozen-lockfile
 
       - name: The tag matches package.json
