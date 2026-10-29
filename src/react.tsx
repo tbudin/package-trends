@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { fetchDownloads, type FetchDownloadsOptions } from "./api.js";
+import { asError, derive } from "./error.js";
 import { computeTrend } from "./trend.js";
 import {
   bandGeometry,
@@ -82,7 +83,7 @@ export function usePackageTrend(name: string, options: UsePackageTrendOptions = 
       })
       .catch((cause: unknown) => {
         if (!active || (cause as { name?: string })?.name === "AbortError") return;
-        setError(cause instanceof Error ? cause : new Error(String(cause)));
+        setError(asError(cause));
       });
 
     return () => {
@@ -92,12 +93,16 @@ export function usePackageTrend(name: string, options: UsePackageTrendOptions = 
   }, [name, period, endpoint, fetchImpl, provided]);
 
   const range = data ?? fetched;
-  const trend = useMemo(
-    () => (range ? computeTrend(range, { aggregate, smooth, gaps }) : null),
+  const derived = useMemo(
+    () => (range ? derive(() => computeTrend(range, { aggregate, smooth, gaps })) : null),
     [range, aggregate, smooth, gaps],
   );
 
-  return { trend, loading: range === null && error === null, error };
+  return {
+    trend: derived?.value ?? null,
+    loading: range === null && error === null,
+    error: error ?? derived?.error ?? null,
+  };
 }
 
 export type ChartKind = "line" | "column" | "band";
@@ -142,7 +147,8 @@ export interface ChartProps extends SparklineOptions {
    * `preserveAspectRatio`, a `ref`. Applied last, so it can override what the
    * component sets.
    */
-  svgProps?: SVGProps<SVGSVGElement>;
+  svgProps?: SVGProps<SVGSVGElement> &
+    Partial<Record<`data-${string}`, string | number | boolean>>;
   /** Anything else for the line itself: a filter, a marker, a dash. */
   pathProps?: SVGProps<SVGPathElement>;
   className?: string;
@@ -159,7 +165,9 @@ export function Sparkline({
   values,
   bands,
   chart = "line",
-  bandSize,
+  // swallowed: Sparkline is given its buckets in `bands`, and anything left
+  // in the rest goes on to the geometry functions as a SparklineOption
+  bandSize: _bandSize,
   label,
   stroke = "currentColor",
   strokeWidth = 1.5,

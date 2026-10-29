@@ -36,6 +36,22 @@ export type { FillPattern, PatternSpec, PatternTile } from "./pattern.js";
 export { compare, indexSeries, fetchMany, commonDays } from "./compare.js";
 export type { Comparison, CompareOptions, CompareScale, Series } from "./compare.js";
 
+export {
+  heatmapGeometry,
+  heatmapSvg,
+  levelFill,
+  levelOpacity,
+  localeWeekStart,
+} from "./heatmap.js";
+export type {
+  Heatmap,
+  HeatmapCell,
+  HeatmapMonth,
+  HeatmapOptions,
+  HeatmapScale,
+  HeatmapSvgOptions,
+} from "./heatmap.js";
+
 export { toBands } from "./bands.js";
 export type { Band } from "./bands.js";
 

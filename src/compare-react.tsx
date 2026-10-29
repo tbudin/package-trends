@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { fetchDownloads, type FetchDownloadsOptions } from "./api.js";
+import { asError, derive } from "./error.js";
 import { compare, fetchMany, type CompareScale, type Comparison } from "./compare.js";
 import { changeDirection, formatChange, formatCount, type NumberFormat } from "./format.js";
 import type { ShapeOptions } from "./series.js";
@@ -73,7 +74,7 @@ export function usePackageComparison(
       })
       .catch((cause: unknown) => {
         if (!active || (cause as { name?: string })?.name === "AbortError") return;
-        setError(cause instanceof Error ? cause : new Error(String(cause)));
+        setError(asError(cause));
       });
 
     return () => {
@@ -83,12 +84,19 @@ export function usePackageComparison(
   }, [key, period, endpoint, fetchImpl, provided]);
 
   const ranges = data ?? fetched;
-  const comparison = useMemo(
-    () => (ranges && ranges.length > 0 ? compare(ranges, { scale, aggregate, smooth, gaps }) : null),
+  const derived = useMemo(
+    () =>
+      ranges && ranges.length > 0
+        ? derive(() => compare(ranges, { scale, aggregate, smooth, gaps }))
+        : null,
     [ranges, scale, aggregate, smooth, gaps],
   );
 
-  return { comparison, loading: ranges === null && error === null, error };
+  return {
+    comparison: derived?.value ?? null,
+    loading: ranges === null && error === null,
+    error: error ?? derived?.error ?? null,
+  };
 }
 
 export interface PackageComparisonProps

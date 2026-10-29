@@ -1,12 +1,15 @@
 {
   "name": "package-trends",
   "version": "0.1.0",
-  "description": "npm download trends as a sparkline, a line of text, or a KPI block. Zero dependencies, works without a proxy.",
+  "description": "npm download trends as a sparkline, a calendar heatmap, a line of text, or a KPI block. Compare packages, repair npm's missing days. Zero dependencies, works without a proxy.",
   "keywords": [
     "npm",
     "downloads",
     "trends",
     "sparkline",
+    "heatmap",
+    "calendar-heatmap",
+    "chart",
     "kpi",
     "stats",
     "badge",
@@ -32,6 +35,10 @@
       "types": "./types/compare-react.d.ts",
       "default": "./dist/compare-react.js"
     },
+    "./heatmap": {
+      "types": "./types/heatmap-react.d.ts",
+      "default": "./dist/heatmap-react.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -46,10 +53,12 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -p tsconfig.check.json",
     "test": "vitest run",
+    "lint": "oxlint --deny-warnings src test scripts",
     "lint:package": "publint --strict",
-    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm lint:package",
+    "lint:types": "attw --pack . --profile esm-only",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm lint:package && pnpm lint:types",
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
     "changeset": "changeset",
     "bump": "changeset version",
@@ -66,10 +75,12 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
     "@changesets/cli": "2.27.10",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
     "esbuild": "0.24.2",
+    "oxlint": "1.90.0",
     "publint": "0.2.12",
     "react": "19.0.0",
     "react-dom": "19.0.0",

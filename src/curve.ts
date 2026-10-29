@@ -55,7 +55,7 @@ function monotone(points: readonly Point[]): string {
   }
 
   // tangents, then the Fritsch–Carlson correction that forbids overshoot
-  const tangents: number[] = new Array(n);
+  const tangents: number[] = Array.from({ length: n }, () => 0);
   tangents[0] = slopes[0]!;
   tangents[n - 1] = slopes[n - 2]!;
   for (let i = 1; i < n - 1; i++) {

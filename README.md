@@ -107,7 +107,7 @@ points. **Only the drawn line is shaped.** Every figure — `total`, `average`,
 `latest`, `peak`, `trough`, `change` — is computed from the raw daily series, so
 a smoothed chart never changes the numbers beside it.
 
-## Size
+## Fitting the container
 
 The chart renders at its natural size and **never overflows its container**: a
 120px chart inside an 80px column scales down with its aspect ratio kept, rather
@@ -222,7 +222,7 @@ through rather than learning a second vocabulary:
 />
 ```
 
-## Size
+## Sizing with the text
 
 Everything is relative to the surrounding text by default. The text variant
 sets no font size at all, the KPI headline is `1.5em` and its label `0.875em`,
@@ -298,6 +298,57 @@ lines.
 
 `fetchMany` asks for each distinct name only once, so a page comparing the same
 five packages in three places makes five requests rather than fifteen.
+
+## Calendar heatmap
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://tbudin.github.io/package-trends/img/heatmap-dark.png">
+  <img alt="A year of react downloads as a calendar: one column per week, one row per weekday. The five weekday rows run visibly darker than the two weekend rows across the whole year" src="https://tbudin.github.io/package-trends/img/heatmap-light.png" width="940">
+</picture>
+
+```tsx
+import { PackageHeatmap } from "package-trends/heatmap";
+
+<PackageHeatmap package="react" />
+<PackageHeatmap package="react" weekdays legend />
+```
+
+One square per day, one column per week. It shows the two things a sparkline
+averages away: **where** in the year a quiet stretch fell, and the weekday
+rhythm. Across react's last year Wednesday averages 20.6M against Saturday's
+11.3M — a 1.8× swing that a 7-day mean exists precisely to erase.
+
+The period defaults to `last-year`, and the daily series is drawn raw. There is
+no `smooth` here: a heatmap that aggregated first would be drawing something
+other than days.
+
+**The ramp is opacity over `currentColor`.** Lightness alone carries the value,
+so the chart inherits the surrounding text colour, inverts correctly on a dark
+ground with no second palette, and stays readable in monochrome and to a reader
+who cannot rely on hue. For GitHub's own two-tone look, give the quietest level
+a colour of its own:
+
+```tsx
+<PackageHeatmap package="react" color="#216e39" emptyColor="#ebedf0" />
+```
+
+`scale` is `"linear"` by default, spanning zero to the busiest day, so a year
+that doubled gets visibly darker towards the right. `"quantile"` puts an equal
+number of days in every level — it fills the ramp evenly and hides exactly that
+growth, which is why it is not the default. Reach for it only when one spike
+flattens everything else into the bottom level.
+
+**Interpolated days are hatched**, not shaded. Thirteen of react's 365 days are
+days npm reported nothing for; a solid square would state a number nobody
+measured. See [Gaps in npm's data](#gaps-in-npms-data).
+
+A year at the default `cellSize` is 739px wide. It is a README, dashboard or
+package-page chart rather than a footer one — pass `cellSize` and `cellGap` to
+shrink it, or `fluid` to fill the container.
+
+Without React, `heatmapSvg(points, options)` returns the same calendar as a
+standalone SVG string, and `heatmapGeometry(points, options)` returns the
+squares as data so you can draw them yourself.
 
 ## Curves
 
@@ -405,15 +456,54 @@ wording can still carry the numbers:
 
 ## API
 
+Everything below is exported from `package-trends`. The components live on
+their own entries so a project that never draws a chart never pulls React in:
+`package-trends/react`, `/compare` and `/heatmap`.
+
+**Fetching**
+
 | | |
 | --- | --- |
 | `fetchDownloads(name, options?)` | Reads the daily series. `period`, `signal`, `endpoint`, `fetch`. |
-| `computeTrend(range, options?)` | Totals, extremes, the half-over-half change, and the drawable series. |
-| `sparkline(values, options?)` | SVG path geometry. |
-| `sparklineSvg(values, options?)` | A complete SVG string. |
-| `movingAverage` · `toWeekly` · `shapeSeries` | The shaping, on their own. |
-| `formatCount` · `formatExact` · `formatChange` · `changeDirection` · `describeTrend` | Presentation helpers. |
+| `normaliseRange(name, body)` | Turns a raw API payload into a `DownloadRange`, or throws. |
+| `between(from, to)` | Builds and validates an explicit `YYYY-MM-DD:YYYY-MM-DD` range. |
+| `NPM_DOWNLOADS_ENDPOINT` | The default host, for pointing at a mirror or a proxy. |
+
+**Reading a series**
+
+| | |
+| --- | --- |
+| `computeTrend(range, options?)` | Totals, extremes, the half-over-half change, and the drawable series. Throws on a range with no points. |
+| `analyse(range, options?)` | Fit, weekday profile, spikes and streaks, for writing about a series. |
+| `compare` · `indexSeries` · `fetchMany` · `commonDays` | Several packages at once. |
+| `shapeSeries` · `movingAverage` · `toWeekly` · `toMonthly` | The aggregating and smoothing, on their own. |
+| `fillGaps` · `applyGaps` | npm's missing days, repaired or taken literally. |
+
+**Drawing**
+
+| | |
+| --- | --- |
+| `sparkline` · `columns` · `bandGeometry` · `toBands` | Chart geometry as data, for your own markup. |
+| `sparklineSvg(values, options?)` | A complete SVG string, no React. |
+| `heatmapGeometry` · `heatmapSvg` | The calendar, as data or as an SVG string. |
+| `scaleFor` · `boxOf` · `marksFor` · `pathFrom` | The pieces that geometry is built from. |
+| `localeWeekStart` · `levelOpacity` · `levelFill` | The heatmap's week start, and its ramp. |
+| `patternId` · `patternTile` · `patternMarkup` | Fill patterns, shared by both renderers. |
+
+**Presenting**
+
+| | |
+| --- | --- |
+| `formatCount` · `formatExact` · `formatChange` · `changeDirection` · `describeTrend` · `formatWeekday` | Number, date and sentence helpers. |
 | `PackageTrendsError` | Thrown with `package` and, for an HTTP failure, `status`. |
+
+**Components and hooks**
+
+| | |
+| --- | --- |
+| `PackageTrend` · `Sparkline` · `usePackageTrend` | `package-trends/react` |
+| `PackageComparison` · `usePackageComparison` | `package-trends/compare` |
+| `PackageHeatmap` · `usePackageHeatmap` | `package-trends/heatmap` |
 
 `period` takes npm's own values (`last-day`, `last-week`, `last-month`,
 `last-year`) or an explicit range, which `between()` builds and validates:

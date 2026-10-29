@@ -25,6 +25,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
@@ -33,6 +34,11 @@ jobs:
     # publint checks the exports map and the files list; attw checks the types
     # resolve for every kind of consumer. Three entry points and emitted
     # modules is exactly the shape that breaks here and nowhere else.
+    #
+    # attw runs against the esm-only profile: the package is "type": "module"
+    # with no CommonJS build, so a require() of it failing is the design, not a
+    # defect. node10 is ignored for the same reason — handing it declarations
+    # for JavaScript it cannot load would be worse than failing clearly.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,3 +50,4 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm lint:package
+      - run: pnpm lint:types

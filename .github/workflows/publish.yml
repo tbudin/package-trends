@@ -42,17 +42,18 @@ jobs:
       - name: The tag matches package.json
         run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
 
+      - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
       - run: pnpm lint:package
+      - run: pnpm lint:types
 
-      # docs/assets is build output, but Pages serves it from the repository,
-      # so a stale commit would ship a site that does not match the source.
-      - name: The committed site bundles match the source
-        run: |
-          pnpm build:docs
-          git diff --exit-code -- docs/assets
+      # The site is deliberately not checked here. `pnpm build:docs` shells out
+      # to ../package-site, a sibling repository this checkout does not have,
+      # so the step could only ever fail — and the published tarball carries
+      # dist, types, src, README and LICENSE, never docs/. A site that lags its
+      # source is a site problem; it must not hold back a package release.
 
       - name: Publish to npm
         run: npm publish

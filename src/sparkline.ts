@@ -445,7 +445,8 @@ function round(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
-function escapeXml(value: string): string {
+/** Shared with the other string renderers; not part of the public API. */
+export function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

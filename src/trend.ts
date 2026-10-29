@@ -1,3 +1,4 @@
+import { PackageTrendsError } from "./error.js";
 import { applyGaps } from "./gaps.js";
 import { shapeSeries, type ShapeOptions } from "./series.js";
 import type { DownloadPoint, DownloadRange, Trend } from "./types.js";
@@ -14,10 +15,21 @@ import type { DownloadPoint, DownloadRange, Trend } from "./types.js";
  * before it. The two halves are always the same length, so on an odd number of
  * points the oldest one is left out rather than giving the recent half an extra
  * point and a bias to match.
+ *
+ * Throws on a range with no points. A renderer can draw nothing — `sparkline`
+ * and `heatmapGeometry` both do — but there is no honest summary of nothing:
+ * every figure here would be 0 or NaN and read as a real measurement.
  */
 export function computeTrend(range: DownloadRange, options: ShapeOptions = {}): Trend {
   const repaired = applyGaps(range.points, options.gaps);
   const points = repaired.points;
+
+  if (points.length === 0) {
+    throw new PackageTrendsError(
+      `No downloads to summarise for "${range.package}".`,
+      { package: range.package },
+    );
+  }
 
   let total = 0;
   let peak = points[0]!;

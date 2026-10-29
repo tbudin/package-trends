@@ -1,3 +1,4 @@
+import { PackageTrendsError } from "./error.js";
 import { applyGaps, type GapPolicy } from "./gaps.js";
 import { movingAverage, toWeekly } from "./series.js";
 import type { DownloadPoint, DownloadRange } from "./types.js";
@@ -104,10 +105,23 @@ export interface Analysis {
 /**
  * Derives the figures you would need to write about a package's downloads
  * without looking at the chart.
+ *
+ * Throws on a range with no points, as `computeTrend` does: with nothing to
+ * read, `mean` and `median` are NaN and `peak` and `trough` are undefined
+ * behind a type that promises a point. A sentence written from those says
+ * something false rather than nothing.
  */
 export function analyse(range: DownloadRange, options: AnalyseOptions = {}): Analysis {
   const repaired = applyGaps(range.points, options.gaps);
   const points = repaired.points;
+
+  if (points.length === 0) {
+    throw new PackageTrendsError(
+      `No downloads to analyse for "${range.package}".`,
+      { package: range.package },
+    );
+  }
+
   const values = points.map((p) => p.downloads);
   const total = values.reduce((sum, v) => sum + v, 0);
   const mean = total / points.length;

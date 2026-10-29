@@ -7,7 +7,7 @@
 //
 // Needs Google Chrome; set CHROME to point at another binary.
 
-import { mkdir, writeFile, rm, readFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -16,13 +16,17 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { fetchDownloads, computeTrend, analyse, formatCount, formatWeekday } from "../dist/index.js";
+import { heatmapGeometry } from "../dist/heatmap.js";
 import { PackageTrend } from "../dist/react.js";
 import { PackageComparison } from "../dist/compare-react.js";
+import { PackageHeatmap } from "../dist/heatmap-react.js";
 import { compare as compareRanges } from "../dist/compare.js";
 
 const run = promisify(execFile);
 const root = path.resolve(fileURLToPath(import.meta.url), "../..");
-const out = path.join(root, "docs", "img");
+// the site serves site/static as its root, so figures live beside the rest of
+// its static files; docs/ is generated output and anything written there is lost
+const out = path.join(root, "site", "static", "img");
 const work = path.join(root, "node_modules", ".cache", "shots");
 
 const CHROME =
@@ -197,6 +201,44 @@ function compare({ rivals }) {
   </div>`;
 }
 
+function heatmap({ year }) {
+  const map = heatmapGeometry(year.points, { locale: "en-GB" });
+  const weekday = [0, 0, 0, 0, 0, 0, 0];
+  const counts = [0, 0, 0, 0, 0, 0, 0];
+  for (const cell of map.cells) {
+    const index = new Date(`${cell.day}T00:00:00Z`).getUTCDay();
+    weekday[index] += cell.downloads;
+    counts[index] += 1;
+  }
+  const mean = weekday.map((total, i) => total / counts[i]);
+  const quiet = mean.indexOf(Math.min(...mean));
+  const busy = mean.indexOf(Math.max(...mean));
+  const ratio = (mean[busy] / mean[quiet]).toFixed(1);
+  const repaired = map.cells.filter((cell) => cell.filled).length;
+
+  return `<figure style="margin:0">
+    <div class="k">a year of ${SUBJECT}, one square per day</div>
+    ${renderToStaticMarkup(
+      el(PackageHeatmap, {
+        package: SUBJECT,
+        data: year,
+        locale: "en-GB",
+        weekdays: true,
+        legend: true,
+        cellTitles: false,
+        cellSize: 11,
+      }),
+    )}
+    <p class="why" style="margin-top:14px">
+      The weekday rhythm is the whole picture: ${formatWeekday(busy, "en-US")} averages
+      ${formatCount(Math.round(mean[busy]), "en-US")} against
+      ${formatWeekday(quiet, "en-US")}'s ${formatCount(Math.round(mean[quiet]), "en-US")},
+      a ${ratio}&times; swing that a sparkline averages away. The ${repaired} hatched
+      squares are days npm reported nothing for.
+    </p>
+  </figure>`;
+}
+
 function og({ month }) {
   const t = computeTrend(month);
   return `<div style="height:570px;display:flex;flex-direction:column;justify-content:space-between;padding:16px 10px">
@@ -227,6 +269,7 @@ const SHOTS = [
   { id: "charts", width: 940, build: charts },
   { id: "gaps", width: 940, build: gaps },
   { id: "compare", width: 940, build: compare },
+  { id: "heatmap", width: 940, build: heatmap },
 ];
 
 /* ── capture ──────────────────────────────────────────────────────────── */
@@ -245,7 +288,7 @@ async function main() {
       // page first and open the window at exactly that size.
       const height = shot.height ?? (await measure(file, shot.width));
       const png = shot.id === "og"
-        ? path.join(root, "docs", "og.png")
+        ? path.join(root, "site", "static", "og.png")
         : path.join(out, `${shot.id}-${theme}.png`);
       await run(CHROME, [
         "--headless=new",
