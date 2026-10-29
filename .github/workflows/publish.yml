@@ -9,11 +9,10 @@ name: Publish
 #   git tag vX.Y.Z && git push origin vX.Y.Z
 #
 # The tag is what starts this workflow. It checks the tag against package.json,
-# runs the whole suite, stages the release on npm with trusted publishing (no
-# token: npm trusts this workflow by name, and the registry attaches the
-# provenance attestation itself), copies it to GitHub Packages, and
-# writes the GitHub release from CHANGELOG.md. The npm release goes public once
-# a maintainer approves it on npmjs.com, under Staged Packages.
+# runs the whole suite, publishes to npm with trusted publishing (no token: npm
+# trusts this workflow by name, and the registry attaches the provenance
+# attestation itself), copies it to GitHub Packages, and writes the GitHub
+# release from CHANGELOG.md. The tag is the only manual step.
 on:
   push:
     tags: ['v*']
@@ -36,7 +35,7 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
-      # trusted publishing needs npm 11.5.1 or later, and npm stage needs 11.15
+      # trusted publishing needs npm 11.5.1 or later
       - run: npm install -g npm@11.21.0
       - run: pnpm install --frozen-lockfile
 
@@ -55,8 +54,8 @@ jobs:
           pnpm build:docs
           git diff --exit-code -- docs/assets
 
-      - name: Stage on npm (approve it on npmjs.com, Staged Packages)
-        run: npm stage publish
+      - name: Publish to npm
+        run: npm publish
 
       - name: Release notes from CHANGELOG.md
         run: |
