@@ -28,16 +28,16 @@ jobs:
       id-token: write   # npm trusted publishing
       packages: write   # the copy on GitHub Packages
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      # registry-url is required, not optional. It writes the .npmrc entry for
-      # registry.npmjs.org that the OIDC exchange fills in; without it npm has
-      # no auth slot for the registry and gives up with ENEEDAUTH before ever
-      # asking GitHub for a token. setup-node also sets NODE_AUTH_TOKEN to its
-      # own placeholder here, which `npm publish` would send as a real token
-      # and be answered with a 404 — one more reason the release stages rather
-      # than publishes direct. This is papertooth's arrangement exactly.
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      # registry-url is required, not optional: it writes the .npmrc entry for
+      # registry.npmjs.org that the OIDC exchange fills in. Without it npm has
+      # no auth slot for the registry and gives up with ENEEDAUTH before it
+      # ever asks GitHub for a token. Through setup-node v6 this also exported
+      # a dummy NODE_AUTH_TOKEN that npm sent as though it were real, and the
+      # registry answered 404; v7 removed it, and trusted publishing never
+      # reads the variable in any case.
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -85,7 +85,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       # GitHub only lists packages from its own registry on the repository page, under a scoped name
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com
