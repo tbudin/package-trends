@@ -1,5 +1,23 @@
 # package-trends
 
+## 0.2.1
+
+### Patch Changes
+
+- The README stated three bundle sizes and all three had drifted, the React one
+  by 2 kB in the flattering direction, because nothing measured them. They are
+  corrected — 8.3 kB for the core, 12.5 kB with the React components, 14.8 kB
+  with comparison, 17.1 kB with the heatmap as well — and `pnpm check` now fails
+  on a figure the package no longer has, or on an entry point the README never
+  mentions.
+
+  Accessibility covers the heatmap too: it always carries `role="img"` and a
+  generated `aria-label`, where an unlabelled sparkline marks itself
+  `aria-hidden`, and `cellTitles` is explained along with why it is on in the
+  component and off in `heatmapSvg`.
+
+  No runtime code changed, so the published bundles are identical to 0.2.0.
+
 ## 0.2.0
 
 ### Minor Changes
